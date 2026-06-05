@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andamiaje · Incidencia Política</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --verde:      #1c6b4a;
+      --verde-sec:  #2fa36b;
+      --amarillo:   #f4c20d;
+      --blanco:     #ffffff;
+      --ink:        #1a1a1a;
+      --ink-sec:    #4a4a4a;
+      --ink-ter:    #888;
+      --rule:       #e8e8e6;
+      --hover-bg:   #f5f5f3;
+      --tag-bg:     #eef7f2;
+      --tag-text:   #1c6b4a;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--blanco);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ─── BREADCRUMB ─────────────────────────────────────── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 20px 40px 0;
+      font-size: 12px;
+      color: var(--ink-ter);
+      letter-spacing: 0.01em;
+    }
+
+    .breadcrumb a {
+      color: var(--ink-ter);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--verde);
+    }
+
+    .breadcrumb-sep {
+      opacity: 0.4;
+      font-size: 11px;
+    }
+
+    .breadcrumb-current {
+      color: var(--ink-sec);
+      font-weight: 500;
+    }
+
+    /* ─── MAIN LAYOUT ────────────────────────────────────── */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 96px;
+    }
+
+    /* ─── SECTION HEADER ─────────────────────────────────── */
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    .section-tag .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--verde-sec);
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink-sec);
+      line-height: 1.65;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    /* ─── DIVIDER ────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--rule);
+      margin-bottom: 40px;
+    }
+
+    /* ─── SUBTEMAS HEADER ────────────────────────────────── */
+    .subtemas-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .subtemas-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-ter);
+    }
+
+    .subtemas-count {
+      font-size: 11px;
+      color: var(--ink-ter);
+    }
+
+    /* ─── SUBTEMA ITEMS ──────────────────────────────────── */
+    .subtemas-list {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .subtema-item {
+      border-top: 1px solid var(--rule);
+    }
+
+    .subtema-item:last-child {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .subtema-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 12px;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 4px;
+      transition: background 0.12s;
+      cursor: pointer;
+    }
+
+    .subtema-link:hover {
+      background: var(--hover-bg);
+    }
+
+    .subtema-link:hover .subtema-arrow {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    .subtema-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: var(--tag-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .subtema-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subtema-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+
+    .subtema-desc {
+      font-size: 13px;
+      color: var(--ink-ter);
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .subtema-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .subtema-arrow {
+      font-size: 15px;
+      color: var(--ink-ter);
+      opacity: 0;
+      transition: opacity 0.12s, transform 0.12s;
+    }
+
+    /* Estado badge */
+    .status {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 2px;
+    }
+
+    .status--disponible {
+      background: #e6f4ee;
+      color: #1c6b4a;
+    }
+
+    .status--pronto {
+      background: #f5f5f3;
+      color: #999;
+    }
+
+    /* ─── PLACEHOLDER SECTION ────────────────────────────── */
+    .coming-soon {
+      margin-top: 48px;
+      padding: 28px;
+      border: 1.5px dashed var(--rule);
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .coming-soon p {
+      font-size: 13px;
+      color: var(--ink-ter);
+      line-height: 1.6;
+    }
+
+    .coming-soon strong {
+      color: var(--ink-sec);
+      font-weight: 500;
+    }
+
+    /* ─── VOCABULARY STRIP ───────────────────────────────── */
+    .vocab-strip {
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .vocab-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-ter);
+      margin-bottom: 12px;
+    }
+
+    .vocab-terms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .vocab-term {
+      font-size: 12px;
+      color: var(--ink-sec);
+      background: var(--hover-bg);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--rule);
+      cursor: default;
+      transition: border-color 0.12s, color 0.12s;
+    }
+
+    .vocab-term:hover {
+      border-color: var(--verde);
+      color: var(--verde);
+    }
+
+    /* ─── MOBILE ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .breadcrumb {
+        padding: 16px 20px 0;
+      }
+
+      .page {
+        padding: 36px 20px 72px;
+      }
+
+      .section-title {
+        font-size: 26px;
+      }
+
+      .subtema-desc {
+        display: none;
+      }
+
+      .subtema-arrow {
+        opacity: 0.4;
+      }
+
+      .subtema-meta {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="Ubicación">
+    <a href="/">Cooperativa Notebook</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="/contents/">Contenidos</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="/contents/incidencia-politica/">Incidencia Política</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Andamiaje</span>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="page">
+
+    <!-- HEADER -->
+    <div class="section-eyebrow">
+      <span class="section-tag">
+        <span class="dot"></span>
+        Incidencia Política
+      </span>
+    </div>
+
+    <h1 class="section-title">Andamiaje</h1>
+
+    <p class="section-subtitle">
+      Conceptos fundacionales que sostienen la práctica de incidencia.
+      Explorar este material antes de avanzar hacia estrategias y casos.
+    </p>
+
+    <div class="divider"></div>
+
+    <!-- SUBTEMAS -->
+    <div class="subtemas-header">
+      <span class="subtemas-label">En esta sección</span>
+      <span class="subtemas-count" id="count">— microtemas</span>
+    </div>
+
+    <ul class="subtemas-list" id="subtemas-list">
+
+      <!-- DISPONIBLE -->
+      <li class="subtema-item">
+        <a class="subtema-link" href="/contents/incidencia-politica/andamiaje/que-es-incidir/">
+          <span class="subtema-icon">🔍</span>
+          <div class="subtema-body">
+            <div class="subtema-name">¿Qué es incidir?</div>
+            <div class="subtema-desc">Definición, alcance y distinción frente a otras formas de acción cooperativa</div>
+          </div>
+          <div class="subtema-meta">
+            <span class="status status--disponible">Disponible</span>
+            <span class="subtema-arrow">→</span>
+          </div>
+        </a>
+      </li>
+
+      <!-- PRÓXIMAMENTE — plantillas para futuros microtemas -->
+      <li class="subtema-item subtema-coming">
+        <span class="subtema-link" style="cursor: default; opacity: 0.45;">
+          <span class="subtema-icon" style="background: #f5f5f3;">📐</span>
+          <div class="subtema-body">
+            <div class="subtema-name">Tipos de incidencia</div>
+            <div class="subtema-desc">Legislativa, administrativa, presupuestaria y territorial</div>
+          </div>
+          <div class="subtema-meta">
+            <span class="status status--pronto">Próximamente</span>
+          </div>
+        </span>
+      </li>
+
+      <li class="subtema-item subtema-coming">
+        <span class="subtema-link" style="cursor: default; opacity: 0.45;">
+          <span class="subtema-icon" style="background: #f5f5f3;">🏛️</span>
+          <div class="subtema-body">
+            <div class="subtema-name">Marco normativo de la incidencia</div>
+            <div class="subtema-desc">Base legal en LCH, RLCH y Constitución de la República</div>
+          </div>
+          <div class="subtema-meta">
+            <span class="status status--pronto">Próximamente</span>
+          </div>
+        </span>
+      </li>
+
+    </ul>
+
+    <!-- VOCABULARY STRIP -->
+    <div class="vocab-strip">
+      <div class="vocab-label">Términos en esta sección</div>
+      <div class="vocab-terms">
+        <span class="vocab-term">incidencia</span>
+        <span class="vocab-term">actor político</span>
+        <span class="vocab-term">agenda cooperativa</span>
+        <span class="vocab-term">poder de decisión</span>
+        <span class="vocab-term">política pública</span>
+        <span class="vocab-term">representación</span>
+        <span class="vocab-term">movilización</span>
+        <span class="vocab-term">articulación territorial</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Contar solo los disponibles para el indicador
+    const disponibles = document.querySelectorAll('.status--disponible').length;
+    const total = document.querySelectorAll('.subtema-item').length;
+    document.getElementById('count').textContent =
+      `${disponibles} de ${total} disponible${disponibles !== 1 ? 's' : ''}`;
+
+    // Preparado para extensión dinámica: si en el futuro se carga
+    // la lista desde un JSON, reemplazar el <ul> con renderSubtemas(data).
+    // Estructura esperada por ítem:
+    // { title, desc, href, icon, status: 'disponible'|'pronto' }
+  </script>
+
+</body>
+</html>
