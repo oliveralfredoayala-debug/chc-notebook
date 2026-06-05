@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clasificación de las Cooperativas</title>
+<style>
+  :root {
+    --verde: #1c6b4a;
+    --verde-claro: #e8f4ef;
+    --verde-medio: #2a8060;
+    --verde-acento: #d4eddf;
+    --texto: #1a1a1a;
+    --texto-sec: #4a5568;
+    --borde: #d1d5db;
+    --fondo: #ffffff;
+    --fondo-gris: #f8f9fa;
+    --fondo-sec: #f4f7f5;
+    --amarillo-bg: #fffbeb;
+    --amarillo-borde: #f59e0b;
+    --amarillo-texto: #78350f;
+    --azul-bg: #eff6ff;
+    --azul-borde: #bfdbfe;
+    --azul-texto: #1e3a8a;
+    --rojo-bg: #fef2f2;
+    --rojo-borde: #fca5a5;
+    --rojo-texto: #7f1d1d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--fondo);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── TÍTULO ── */
+  .mod-titulo {
+    padding: 28px 32px 22px;
+    border-bottom: 3px solid var(--verde);
+    background: var(--fondo);
+  }
+  .mod-titulo h1 {
+    font-size: clamp(20px, 3.5vw, 26px);
+    font-weight: 700;
+    color: var(--texto);
+    line-height: 1.3;
+  }
+  .mod-titulo .subtitulo {
+    font-size: 15px;
+    color: var(--texto-sec);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  /* ── BLOQUE STICKY ── */
+  .bloque-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--fondo);
+    border-left: 4px solid var(--verde);
+    border-bottom: 1px solid var(--borde);
+    padding: 14px 32px;
+  }
+  .sticky-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .sticky-bloque h3 {
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--verde);
+    margin-bottom: 6px;
+  }
+  .sticky-bloque ul {
+    list-style: none;
+    padding: 0;
+  }
+  .sticky-bloque ul li {
+    font-size: 13px;
+    color: var(--texto-sec);
+    padding: 2px 0;
+    padding-left: 12px;
+    position: relative;
+  }
+  .sticky-bloque ul li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--verde);
+    font-size: 10px;
+    top: 3px;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    padding: 0 32px 40px;
+  }
+  .tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    border-bottom: 2px solid var(--verde);
+    margin-top: 20px;
+  }
+  .tab-btn {
+    background: var(--fondo-gris);
+    border: 1px solid var(--borde);
+    border-bottom: none;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    color: var(--texto-sec);
+    cursor: pointer;
+    min-height: 44px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .tab-btn:hover { background: var(--verde-acento); color: var(--verde); }
+  .tab-btn.active { background: var(--verde); color: #fff; font-weight: 700; border-color: var(--verde); }
+
+  .tab-panel {
+    display: none;
+    border: 1px solid var(--borde);
+    border-top: none;
+    padding: 28px;
+    background: var(--fondo);
+    min-height: 300px;
+  }
+  .tab-panel.active { display: block; }
+
+  /* ── SECCIÓN ── */
+  .seccion { margin-bottom: 30px; }
+  .sec-titulo {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--verde);
+    border-bottom: 2px solid var(--verde-acento);
+    padding-bottom: 7px;
+    margin-bottom: 14px;
+  }
+  p.cuerpo {
+    font-size: 14px;
+    color: var(--texto-sec);
+    margin-bottom: 10px;
+  }
+
+  /* ── BADGE LEGAL ── */
+  .bl {
+    display: inline-block;
+    background: var(--verde-acento);
+    color: var(--verde);
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    padding: 1px 6px;
+    border: 1px solid var(--verde);
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-left: 2px;
+  }
+
+  /* ── ACORDEONES ── */
+  .acord { border: 1px solid var(--borde); margin-bottom: 5px; }
+  .acord-btn {
+    width: 100%;
+    background: var(--fondo-gris);
+    border: none;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    transition: background 0.15s;
+  }
+  .acord-btn:hover { background: var(--verde-acento); }
+  .acord-btn.open { background: var(--verde); color: #fff; }
+  .acord-btn .ch { font-size: 11px; transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+  .acord-btn.open .ch { transform: rotate(180deg); }
+  .acord-body {
+    display: none;
+    padding: 16px;
+    background: var(--fondo);
+    border-top: 1px solid var(--borde);
+    font-size: 14px;
+    color: var(--texto-sec);
+    line-height: 1.7;
+  }
+  .acord-body.open { display: block; }
+
+  /* ── CAJAS ── */
+  .caja-amarilla {
+    background: var(--amarillo-bg);
+    border: 1px solid var(--amarillo-borde);
+    border-left: 4px solid var(--amarillo-borde);
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .caja-amarilla strong { display: block; color: #92400e; margin-bottom: 6px; font-size: 13px; }
+  .caja-amarilla p { color: var(--amarillo-texto); }
+  .caja-azul {
+    background: var(--azul-bg);
+    border: 1px solid var(--azul-borde);
+    border-left: 4px solid #2563eb;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--azul-texto);
+  }
+  .caja-azul strong { display: block; font-size: 12px; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .caja-roja {
+    background: var(--rojo-bg);
+    border: 1px solid var(--rojo-borde);
+    border-left: 4px solid #dc2626;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--rojo-texto);
+  }
+
+  /* ── GRIDS ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .card {
+    border: 1px solid var(--borde);
+    padding: 14px;
+    background: var(--fondo-sec);
+  }
+  .card h4 {
+    font-size: 13px;
+    color: var(--verde);
+    margin-bottom: 7px;
+    border-bottom: 1px solid var(--verde-acento);
+    padding-bottom: 5px;
+  }
+  .card p { font-size: 13px; color: var(--texto-sec); }
+
+  /* ── SEGUNDO GRADO GRID ── */
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .sg-item {
+    border: 1px solid var(--verde);
+    padding: 10px 12px;
+    background: var(--fondo);
+  }
+  .sg-item .sigla {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--verde);
+    margin-bottom: 3px;
+  }
+  .sg-item .nombre { font-size: 12px; color: var(--texto-sec); }
+
+  /* ── TABLA ── */
+  .tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 12px 0;
+  }
+  .tabla th {
+    background: var(--verde);
+    color: #fff;
+    padding: 9px 13px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+  }
+  .tabla td {
+    padding: 9px 13px;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: top;
+  }
+  .tabla tr:nth-child(even) td { background: var(--fondo-sec); }
+
+  /* ── STATS ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .stat {
+    border: 1px solid var(--borde);
+    padding: 12px;
+    text-align: center;
+    background: var(--fondo-sec);
+  }
+  .stat-n {
+    display: block;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--verde);
+    font-family: 'Courier New', monospace;
+  }
+  .stat-l { font-size: 12px; color: var(--texto-sec); margin-top: 3px; }
+
+  /* ── LISTA LIMPIA ── */
+  ul.lista {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+  ul.lista li {
+    font-size: 14px;
+    color: var(--texto-sec);
+    padding: 5px 0 5px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+  }
+  ul.lista li:last-child { border-bottom: none; }
+  ul.lista li::before { content: "●"; position: absolute; left: 0; color: var(--verde); font-size: 9px; top: 9px; }
+
+  /* ── ACTIVIDADES ── */
+  .act-box {
+    background: var(--fondo-sec);
+    border: 1px solid var(--borde);
+    border-top: 4px solid var(--verde);
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+  .act-box h3 { font-size: 15px; color: var(--verde); margin-bottom: 10px; }
+  .act-tipo {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    background: var(--verde);
+    padding: 2px 8px;
+    margin-bottom: 10px;
+  }
+  .caso-texto {
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.7;
+    margin: 10px 0;
+  }
+  ol.instrucciones {
+    list-style: none;
+    padding: 0;
+    counter-reset: inst;
+    margin-top: 10px;
+  }
+  ol.instrucciones li {
+    counter-increment: inst;
+    font-size: 14px;
+    color: var(--texto-sec);
+    padding: 8px 0 8px 32px;
+    border-bottom: 1px solid var(--borde);
+    position: relative;
+  }
+  ol.instrucciones li:last-child { border-bottom: none; }
+  ol.instrucciones li::before {
+    content: counter(inst);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    background: var(--verde);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── ANÁLISIS CRÍTICO ── */
+  .pregunta-ac {
+    border: 1px solid var(--borde);
+    padding: 18px;
+    margin-bottom: 14px;
+    background: var(--fondo-sec);
+  }
+  .pregunta-ac h4 { font-size: 14px; color: var(--verde); margin-bottom: 8px; }
+  .pregunta-ac p { font-size: 14px; color: var(--texto-sec); }
+  .btn-pistas {
+    margin-top: 10px;
+    background: none;
+    border: 1px solid var(--verde);
+    color: var(--verde);
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    min-height: 36px;
+  }
+  .btn-pistas:hover { background: var(--verde-acento); }
+  .pistas {
+    display: none;
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    font-size: 13px;
+    color: var(--texto-sec);
+  }
+  .pistas.show { display: block; }
+  .pistas ul { padding-left: 16px; }
+  .pistas li { margin-bottom: 4px; }
+
+  /* ── VERIFICAR COMPRENSIÓN ── */
+  .preg-bloque {
+    border: 1px solid var(--borde);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .preg-texto { font-size: 15px; font-weight: 600; color: var(--texto); margin-bottom: 12px; }
+  ul.opciones { list-style: none; padding: 0; margin-bottom: 10px; }
+  ul.opciones li { margin-bottom: 5px; }
+  .op-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid var(--borde);
+    background: var(--fondo-gris);
+    cursor: pointer;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    min-height: 44px;
+    transition: background 0.15s;
+  }
+  .op-btn:hover { background: var(--verde-acento); border-color: var(--verde); }
+  .op-btn.ok { background: #d1fae5; border-color: #059669; color: #065f46; font-weight: 600; }
+  .op-btn.mal { background: var(--rojo-bg); border-color: var(--rojo-borde); color: var(--rojo-texto); }
+  .op-btn:disabled { cursor: default; }
+  .retro {
+    display: none;
+    padding: 12px 14px;
+    margin-top: 8px;
+    font-size: 14px;
+    border-left: 4px solid var(--verde);
+    background: var(--verde-acento);
+    color: var(--texto);
+    line-height: 1.6;
+  }
+  .retro.show { display: block; }
+  .retro .ref {
+    margin-top: 6px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: var(--verde);
+    border-top: 1px solid #a7f3d0;
+    padding-top: 6px;
+  }
+
+  /* ── MAPA LEGAL ── */
+  .art-item { border: 1px solid var(--borde); margin-bottom: 5px; }
+  .art-header {
+    width: 100%;
+    background: var(--fondo-gris);
+    border: none;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    color: var(--texto);
+    transition: background 0.15s;
+    gap: 8px;
+  }
+  .art-header:hover { background: var(--verde-acento); }
+  .art-ref {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--verde);
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .art-desc { font-size: 14px; color: var(--texto-sec); flex: 1; }
+  .art-btn-ver {
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    padding: 3px 8px;
+    background: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-height: 28px;
+  }
+  .art-btn-ver:hover { background: var(--verde); color: #fff; }
+  .art-contenido {
+    display: none;
+    padding: 16px;
+    background: var(--fondo-sec);
+    border-top: 1px solid var(--borde);
+    font-size: 13px;
+    color: var(--texto-sec);
+    line-height: 1.8;
+    font-family: Georgia, serif;
+  }
+  .art-contenido.show { display: block; }
+  .art-contenido blockquote {
+    border-left: 3px solid var(--verde);
+    padding-left: 14px;
+    margin: 0;
+    font-style: italic;
+    color: var(--texto);
+  }
+  .art-fuente {
+    margin-top: 10px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--verde);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .mod-titulo, .bloque-sticky, .tabs-wrap { padding-left: 16px; padding-right: 16px; }
+    .tab-panel { padding: 16px; }
+    .tab-btn { padding: 8px 10px; font-size: 12px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .sg-grid { grid-template-columns: repeat(2, 1fr); }
+    .sticky-inner { grid-template-columns: 1fr; }
+    .tabla { font-size: 13px; }
+    .tabla th, .tabla td { padding: 8px; }
+  }
+  @media (max-width: 480px) {
+    .tabs-nav { gap: 1px; }
+    .tab-btn { padding: 8px 7px; font-size: 11px; }
+    .sg-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ TÍTULO ══ -->
+<div class="mod-titulo">
+  <h1>Clasificación de las Cooperativas</h1>
+  <div class="subtitulo">Tipos, grados de integración y distribución de excedentes en el cooperativismo hondureño</div>
+</div>
+
+<!-- ══ BLOQUE STICKY ══ -->
+<div class="bloque-sticky">
+  <div class="sticky-inner">
+    <div class="sticky-bloque">
+      <h3>Temas del subtema</h3>
+      <ul>
+        <li>Clasificación por grado: 1°, 2° y 3°</li>
+        <li>Organismos de segundo grado (CHC)</li>
+        <li>Clasificación por tipo: producción, servicio, mixtas</li>
+        <li>Cooperativas escolares: reglas particulares</li>
+        <li>Excedentes según tipo de cooperativa</li>
+        <li>El objeto social como límite de actuación</li>
+      </ul>
+    </div>
+    <div class="sticky-bloque">
+      <h3>Conceptos clave</h3>
+      <ul>
+        <li>Grado de integración cooperativa</li>
+        <li>Objeto social y documento constitutivo</li>
+        <li>Excedente (≠ utilidad / ganancia)</li>
+        <li>Patrocinio: base del excedente</li>
+        <li>Excedentes con no afiliados</li>
+      </ul>
+    </div>
+    <div class="sticky-bloque">
+      <h3>Elementos a considerar</h3>
+      <ul>
+        <li>La LCH define tipos; el Reglamento define clases</li>
+        <li>Vivienda: solo en el Reglamento (Art. 46)</li>
+        <li>Mixta: restricción para A y C abierta</li>
+        <li>Cada tipo distribuye excedentes diferente</li>
+        <li>La cooperativa solo hace lo que su documento autoriza</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TABS ══ -->
+<div class="tabs-wrap">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="abrirTab('aprendizaje', this)">📘 Aprendizaje</button>
+    <button class="tab-btn" onclick="abrirTab('actividades', this)">🎯 Actividades</button>
+    <button class="tab-btn" onclick="abrirTab('analisis', this)">🔍 Análisis crítico</button>
+    <button class="tab-btn" onclick="abrirTab('verificacion', this)">🧠 Verificar comprensión</button>
+    <button class="tab-btn" onclick="abrirTab('mapa', this)">📚 Mapa legal</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TAB 1: APRENDIZAJE
+  ══════════════════════════════════ -->
+  <div id="tab-aprendizaje" class="tab-panel active">
+
+    <!-- GRADOS -->
+    <div class="seccion">
+      <div class="sec-titulo">Clasificación por Grado de Integración</div>
+      <p class="cuerpo">Las cooperativas pueden organizarse entre sí en distintos niveles denominados <strong>grados</strong>. Esta clasificación determina quiénes son sus integrantes y qué rol cumplen dentro del movimiento cooperativo. <span class="bl">Art. 149 Reg.</span></p>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas de Primer Grado <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p>Son las cooperativas de base, integradas por <strong>personas naturales</strong>. Son las organizaciones que el afiliado conoce directamente: la cooperativa cafetalera de su comunidad, la cooperativa de ahorro y crédito, la cooperativa de transporte. <span class="bl">Art. 149 Reg.</span></p>
+          <p style="margin-top:8px;"><span class="bl">Art. 10 LCH</span> Ninguna cooperativa podrá constituirse con un número menor de <strong>12 cooperativistas</strong>.</p>
+        </div>
+      </div>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas de Segundo Grado — Lista completa <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p>Son asociaciones de cooperativas de primer grado. Pueden denominarse: alianzas, asociaciones, uniones, centrales o federaciones. <span class="bl">Art. 88 LCH</span> <span class="bl">Art. 149 Reg.</span></p>
+          <p style="margin-top:10px; margin-bottom:8px; font-size:14px;"><strong>Organismos de segundo grado afiliados a la CHC (2024):</strong></p>
+          <div class="sg-grid">
+            <div class="sg-item"><span class="sigla">AHPROCAFE</span><span class="nombre">Asociación Hondureña de Productores de Café</span></div>
+            <div class="sg-item"><span class="sigla">FACACH</span><span class="nombre">Federación de Cooperativas de Ahorro y Crédito de Honduras</span></div>
+            <div class="sg-item"><span class="sigla">FEHCACREL</span><span class="nombre">Federación de Cooperativas de Crédito y Servicios</span></div>
+            <div class="sg-item"><span class="sigla">FEHCAFOR</span><span class="nombre">Federación Hondureña de Cooperativas Agroforestales</span></div>
+            <div class="sg-item"><span class="sigla">FECORAH</span><span class="nombre">Federación de Cooperativas de la Reforma Agraria</span></div>
+            <div class="sg-item"><span class="sigla">FENACOTRAL</span><span class="nombre">Federación Nacional de Cooperativas de Transporte</span></div>
+            <div class="sg-item"><span class="sigla">La Central</span><span class="nombre">Central de Cooperativas</span></div>
+            <div class="sg-item"><span class="sigla">UNIOCOOP</span><span class="nombre">Unión de Cooperativas</span></div>
+            <div class="sg-item"><span class="sigla">UCDOL</span><span class="nombre">Unión de Cooperativas de Desarrollo Olancho</span></div>
+            <div class="sg-item"><span class="sigla">ACAN</span><span class="nombre">Asociación Cooperativa del Atlántico Norte</span></div>
+            <div class="sg-item"><span class="sigla">FECOVISOH</span><span class="nombre">Federación de Cooperativas de Vivienda de Honduras</span></div>
+          </div>
+          <p style="font-size:13px; margin-top:10px; color:var(--texto-sec);"><span class="bl">Art. 161 Reg.</span> Se constituyen con <strong>20 o más cooperativas</strong> y deben afiliarse a la CHC. <span class="bl">CHC 2024: 11 organismos</span></p>
+        </div>
+      </div>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas de Tercer Grado — La Confederación <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p><span class="bl">Art. 152 Reg.</span> La Confederación es el máximo organismo de integración representativa. Se constituye con los organismos de segundo grado. En Honduras solo puede existir una.</p>
+          <p style="margin-top:8px;">La <strong>Confederación Hondureña de Cooperativas (CHC)</strong> es el organismo privado superior del Movimiento Cooperativo Hondureño. <span class="bl">Art. 90 LCH</span></p>
+          <p style="font-size:13px; margin-top:8px; color:var(--texto-sec);"><span class="bl">CHC 2024:</span> 1 Confederación · 11 organismos de 2° grado · más de 1,000 cooperativas · más de 2 millones de personas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPOS -->
+    <div class="seccion">
+      <div class="sec-titulo">Clasificación por Tipo de Actividad</div>
+      <p class="cuerpo"><span class="bl">Art. 47 LCH</span> Las cooperativas serán de producción, de servicios, de consumo o mixtas. El Reglamento (Secciones III y IV) desarrolla las clases específicas de cada tipo.</p>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas de Producción — Clases según el Reglamento <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p><span class="bl">Art. 48 LCH</span> Constituidas por personas que se asocian para <strong>trabajar, producir, transformar y vender en común</strong> los productos que elaboran.</p>
+          <p style="margin-top:10px; margin-bottom:8px;"><span class="bl">Sección III, Arts. 21–28 Reg.</span></p>
+          <div class="grid-2">
+            <div class="card"><h4>Agrícola <span class="bl">Art. 22</span></h4><p>Producción de la tierra mediante siembra de cultivos permanentes o estacionarios y su comercialización.</p></div>
+            <div class="card"><h4>Pecuaria <span class="bl">Art. 23</span></h4><p>Crianza, conservación y desarrollo de ganado mayor (carne, lecheras) y menor (avicultura, apicultura).</p></div>
+            <div class="card"><h4>Acuícola <span class="bl">Art. 24</span></h4><p>Cultivo o crianza de especies acuáticas en ambientes hídricos naturales o artificiales.</p></div>
+            <div class="card"><h4>Agropecuaria <span class="bl">Art. 25</span></h4><p>Combinación de actividades agrícolas y pecuarias.</p></div>
+            <div class="card"><h4>Artesanal <span class="bl">Art. 26</span></h4><p>Producción, transformación y comercialización de bienes mediante intervención manual.</p></div>
+            <div class="card"><h4>Industrial <span class="bl">Art. 27</span></h4><p>Transformación de materias primas mediante procesos mecanizados y su comercialización.</p></div>
+            <div class="card"><h4>Agroindustrial / Agroforestal <span class="bl">Art. 28</span></h4><p>Produce materia prima agropecuaria y la procesa. Incluye primer grado (cadena completa), segundo grado (actividades separadas) y agroforestal (manejo sostenible de bosques).</p></div>
+            <div class="card"><h4>Otras <span class="bl">Art. 21g</span></h4><p>Otras clases que autorice el CONSUCOOP.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas de Servicio — Clases según el Reglamento <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p><span class="bl">Art. 49 LCH</span> Formadas por personas que se asocian para la <strong>prestación de servicios al público y a sí mismas</strong>. El Reglamento integra aquí también las cooperativas de consumo.</p>
+          <p style="margin-top:10px; margin-bottom:8px;"><span class="bl">Sección IV, Arts. 29–46 Reg.</span></p>
+          <div class="grid-2">
+            <div class="card"><h4>Ahorro y Crédito <span class="bl">Art. 30</span></h4><p>Brindan servicios financieros solidarios de carácter voluntario para satisfacer necesidades comunes de sus afiliados.</p></div>
+            <div class="card"><h4>Transporte <span class="bl">Art. 31</span></h4><p>Prestan servicio de transporte de personas o bienes por vía aérea, terrestre, fluvial o marítima. Pueden ser de propietarios o de trabajadores.</p></div>
+            <div class="card"><h4>Consumo <span class="bl">Art. 38</span></h4><p>Adquieren o venden bienes de uso y consumo a sus afiliados y a la comunidad para satisfacer necesidades personales o familiares.</p></div>
+            <div class="card"><h4>Profesionales <span class="bl">Art. 40</span></h4><p>Personas que ejercen profesiones independientes: consultoría, asesoría, asistencia técnica.</p></div>
+            <div class="card"><h4>Salud <span class="bl">Art. 41</span></h4><p>Organizadas para el mantenimiento óptimo de la salud. Pueden operar laboratorios, farmacias y clínicas.</p></div>
+            <div class="card"><h4>Educación <span class="bl">Art. 42</span></h4><p>Servicios orientados al desarrollo cultural y académico de sus afiliados y la comunidad.</p></div>
+            <div class="card"><h4>Vivienda <span class="bl">Art. 46</span></h4><p>Organizadas por personas naturales para proveerse de un hogar propio. Pueden adquirir bienes raíces, materiales y equipos de construcción.</p></div>
+            <div class="card"><h4>Comercialización <span class="bl">Art. 43</span></h4><p>Adquieren productos de sus afiliados para venderlos en el mercado nacional o internacional.</p></div>
+            <div class="card"><h4>Escolares y Juveniles <span class="bl">Arts. 44–45</span></h4><p>Objetivos formativos específicos. Tienen reglas particulares de administración.</p></div>
+            <div class="card"><h4>Otras <span class="bl">Art. 29j</span></h4><p>Otras clases que autorice el CONSUCOOP.</p></div>
+          </div>
+
+          <div class="caja-azul" style="margin-top:14px;">
+            <strong>📌 Reglas particulares — Cooperativas Escolares y Juveniles</strong>
+            Deben ser <strong>administradas por los mismos afiliados jóvenes o alumnos</strong>, bajo orientación y responsabilidad de sus educadores y directores. El acta constitutiva es autorizada por el director del centro educativo, sin necesidad de autenticación notarial. El representante legal es el director o subdirector del establecimiento. <span class="bl">Arts. 9 y 44–45 Reg.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">Cooperativas Mixtas <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <p><span class="bl">Art. 51 LCH</span> Son mixtas las cooperativas cuando en sus Estatutos establezcan <strong>actividades múltiples como su objetivo principal</strong>.</p>
+          <div class="caja-amarilla" style="margin-top:10px;">
+            <strong>⚠️ Restricción importante</strong>
+            <p>No se puede constituir una cooperativa como mixta si su actividad principal será el <strong>Ahorro y Crédito y de membresía abierta</strong>. Esta restricción no puede ser superada por acuerdo de Asamblea General. <span class="bl">Art. 51 LCH</span></p>
+          </div>
+          <p style="margin-top:10px;"><span class="bl">Art. 47 Reg.</span> Las cooperativas que decidan dedicarse a nuevas actividades autorizadas desde su reconocimiento oficial pueden hacerlo, <strong>notificando anticipadamente al CONSUCOOP</strong> con el plan de operaciones y la fecha de inicio.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXCEDENTES -->
+    <div class="seccion">
+      <div class="sec-titulo">Distribución de Excedentes según Tipo</div>
+      <p class="cuerpo"><span class="bl">Art. 43 LCH</span> Se consideran excedentes los saldos que a favor de una cooperativa resulten de sus operaciones al final de cada ejercicio social. No son utilidades ni ganancias: son sobrantes que se devuelven a quienes los produjeron.</p>
+      <p class="cuerpo">El criterio de distribución varía según la <strong>clase de cooperativa</strong> y el <strong>patrocinio</strong> —uso efectivo de los servicios— de cada afiliado. <span class="bl">Art. 123 Reg.</span></p>
+
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Tipo de cooperativa</th>
+            <th>Criterio de distribución</th>
+            <th>Base legal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Consumo</strong></td><td>Valor de las mercaderías que el afiliado <strong>compre</strong> en la cooperativa</td><td><span class="bl">Art. 123a Reg.</span></td></tr>
+          <tr><td><strong>Ahorro y Crédito</strong></td><td>Puede capitalizarse o distribuirse en relación al <strong>monto de intereses pagados</strong> por créditos recibidos</td><td><span class="bl">Art. 123b Reg.</span></td></tr>
+          <tr><td><strong>Producción</strong></td><td>Trabajo no remunerado o <strong>patrocinio</strong> realizado por cada afiliado</td><td><span class="bl">Art. 123c Reg.</span></td></tr>
+          <tr><td><strong>Mixtas</strong></td><td>Por <strong>actividad realizada y uso del servicio</strong></td><td><span class="bl">Art. 123d Reg.</span></td></tr>
+          <tr><td><strong>Otros tipos</strong></td><td>De acuerdo al <strong>patrocinio</strong></td><td><span class="bl">Art. 123e Reg.</span></td></tr>
+          <tr><td><strong>Operaciones con NO afiliados</strong></td><td>Se destinan a <strong>programas de desarrollo cooperativista</strong>. No se distribuyen entre afiliados.</td><td><span class="bl">Art. 45 LCH / Art. 127 Reg.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- OBJETO SOCIAL -->
+    <div class="seccion">
+      <div class="sec-titulo">El Objeto Social: la Cooperativa Opera según su Documento Constitutivo</div>
+      <div class="caja-amarilla">
+        <strong>⚖️ Principio fundamental</strong>
+        <p>Una cooperativa <strong>solo puede realizar las actividades que su documento constitutivo y estatuto autorizan</strong>. Operar fuera de ese marco es actuar sin respaldo legal y puede comprometer su personalidad jurídica.</p>
+      </div>
+      <p class="cuerpo">El estatuto debe regular el <strong>objetivo social</strong> de la cooperativa. <span class="bl">Art. 11b Reg.</span> La personalidad jurídica nace desde la inscripción del documento constitutivo en el Registro Nacional de Cooperativas del CONSUCOOP. <span class="bl">Art. 11 LCH</span></p>
+
+      <div class="acord">
+        <button class="acord-btn" onclick="abrirAcord(this)">¿Puede una cooperativa ampliar su objeto social? <span class="ch">▾</span></button>
+        <div class="acord-body">
+          <ul class="lista">
+            <li>Si las nuevas actividades están autorizadas desde su reconocimiento oficial: solo debe <strong>notificar anticipadamente al CONSUCOOP</strong> con el plan de operaciones y la fecha de inicio. <span class="bl">Art. 47 Reg.</span></li>
+            <li>Si las nuevas actividades no están contempladas: debe modificar los estatutos mediante <strong>Asamblea General Extraordinaria</strong>.</li>
+          </ul>
+          <div class="caja-roja" style="margin-top:12px;">
+            <strong>Ejemplo:</strong> Una cooperativa agrícola que comienza a otorgar préstamos en efectivo está actuando fuera de su objeto social. La solución correcta: afiliarse a un organismo que ofrezca ese servicio o constituir una cooperativa de ahorro y crédito separada.
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTADÍSTICAS -->
+      <p class="cuerpo" style="margin-top:16px; font-family:'Courier New',monospace; font-size:12px; color:var(--verde); text-transform:uppercase; letter-spacing:1px;">▸ Datos estadísticos — CHC 2024</p>
+      <div class="stats">
+        <div class="stat"><span class="stat-n">1,103</span><div class="stat-l">Cooperativas totales</div></div>
+        <div class="stat"><span class="stat-n">2M+</span><div class="stat-l">Personas afiliadas</div></div>
+        <div class="stat"><span class="stat-n">11</span><div class="stat-l">Organismos de 2° grado</div></div>
+        <div class="stat"><span class="stat-n">249</span><div class="stat-l">Producción agropecuaria</div></div>
+        <div class="stat"><span class="stat-n">214</span><div class="stat-l">Ahorro y Crédito</div></div>
+        <div class="stat"><span class="stat-n">181</span><div class="stat-l">Cafetaleras</div></div>
+        <div class="stat"><span class="stat-n">136</span><div class="stat-l">Agroforestales</div></div>
+        <div class="stat"><span class="stat-n">97</span><div class="stat-l">Mixtas</div></div>
+        <div class="stat"><span class="stat-n">76</span><div class="stat-l">Transporte</div></div>
+        <div class="stat"><span class="stat-n">66</span><div class="stat-l">Vivienda</div></div>
+        <div class="stat"><span class="stat-n">33</span><div class="stat-l">Escolares</div></div>
+        <div class="stat"><span class="stat-n">11</span><div class="stat-l">Pesca</div></div>
+      </div>
+    </div>
+
+  </div><!-- /tab aprendizaje -->
+
+  <!-- ══════════════════════════════════
+       TAB 2: ACTIVIDADES
+  ══════════════════════════════════ -->
+  <div id="tab-actividades" class="tab-panel">
+
+    <div class="act-box">
+      <span class="act-tipo">Caso práctico</span>
+      <h3>La cooperativa desorientada</h3>
+      <p style="font-size:14px; color:var(--texto-sec); margin-bottom:10px;">Equipos de 3–5 personas · 25–30 minutos</p>
+      <div class="caso-texto">
+        La Cooperativa Artesanal "Manos Unidas" fue fundada para producir y comercializar artesanías textiles. Con el tiempo, la Junta Directiva tomó estas decisiones:
+        <br><br>
+        <strong>Decisión 1.</strong> Comenzaron a otorgar pequeños préstamos en efectivo a afiliados que lo solicitaban, usando el fondo de reserva.
+        <br><br>
+        <strong>Decisión 2.</strong> Alquilaron un vehículo propiedad de un directivo para transportar artesanías hacia la capital, cobrando tarifa por viaje.
+        <br><br>
+        <strong>Decisión 3.</strong> Organizaron talleres de tejido para personas de la comunidad no afiliadas, cobrando una cuota de participación.
+        <br><br>
+        <strong>Decisión 4.</strong> Vendieron productos en una feria internacional y obtuvieron excedentes por transacciones con compradores extranjeros no afiliados.
+      </div>
+      <p style="font-size:14px; font-weight:600; color:var(--texto); margin: 10px 0 6px;">Analicen y determinen, con base legal:</p>
+      <ol class="instrucciones">
+        <li>¿Cuál decisión está claramente dentro del objeto social? Justifiquen.</li>
+        <li>¿Cuáles implican actuar fuera del objeto social? ¿Qué riesgo representa cada una?</li>
+        <li>Para las decisiones cuestionables: ¿qué debería hacer correctamente la Junta Directiva?</li>
+        <li>¿Cómo deben distribuirse los excedentes de la Decisión 4? ¿Pueden repartirse entre afiliados? Citen el artículo legal.</li>
+        <li>Redacten una recomendación de una sola página dirigida a la Junta Directiva de "Manos Unidas."</li>
+      </ol>
+    </div>
+
+    <div class="act-box" style="border-top-color: #2563eb;">
+      <span class="act-tipo" style="background:#2563eb;">Análisis normativo</span>
+      <h3>¿A qué tipo y clase corresponde?</h3>
+      <p style="font-size:14px; color:var(--texto-sec); margin-bottom:10px;">Individual o en parejas · 10 minutos</p>
+      <p style="font-size:14px; color:var(--texto-sec); margin-bottom:10px;">Para cada caso, identifiquen el <strong>tipo</strong> (producción / servicio / mixta) y la <strong>clase</strong> según el Reglamento. Citen el artículo correspondiente.</p>
+      <ol class="instrucciones">
+        <li>Una organización que reúne a 25 cooperativas cafetaleras para representarlas ante organismos internacionales.</li>
+        <li>Una cooperativa cuyos afiliados crían tilapia en estanques y la procesan para venta.</li>
+        <li>Una cooperativa que brinda consultas médicas y despacha medicamentos a sus afiliados.</li>
+        <li>Una cooperativa donde sus afiliados son propietarios individuales de taxis y comparten rutas.</li>
+        <li>Una cooperativa formada por 18 estudiantes de secundaria con supervisión de su directora.</li>
+      </ol>
+    </div>
+
+    <div class="act-box" style="border-top-color: #7c3aed;">
+      <span class="act-tipo" style="background:#7c3aed;">Toma de decisión</span>
+      <h3>El caso de los excedentes con terceros</h3>
+      <p style="font-size:14px; color:var(--texto-sec); margin-bottom:10px;">Grupos · 15 minutos</p>
+      <div class="caso-texto">
+        La Cooperativa de Comercialización "Valle Verde" vendió el 35% de su producción a empresas internacionales no afiliadas y generó HNL 180,000 en excedentes de esas operaciones. Cuatro afiliados presentaron una moción en la Asamblea para que ese monto se distribuya entre todos, argumentando: "nosotros lo producimos, nos corresponde."
+      </div>
+      <ol class="instrucciones">
+        <li>¿Tiene sustento legal la moción de los cuatro afiliados? ¿Por qué sí o por qué no?</li>
+        <li>¿Qué debe hacer la Asamblea con esos HNL 180,000? ¿A qué pueden destinarse?</li>
+        <li>¿Existe alguna forma en que ese destino beneficie indirectamente a los afiliados? Expliquen con base en el Art. 128 del Reglamento.</li>
+      </ol>
+    </div>
+
+  </div><!-- /tab actividades -->
+
+  <!-- ══════════════════════════════════
+       TAB 3: ANÁLISIS CRÍTICO
+  ══════════════════════════════════ -->
+  <div id="tab-analisis" class="tab-panel">
+    <p style="font-size:14px; color:var(--texto-sec); margin-bottom:20px;">Preguntas abiertas para aplicar el marco legal al contexto cooperativo real. No hay una respuesta única. Se busca análisis, decisión y justificación.</p>
+
+    <div class="pregunta-ac">
+      <h4>1. Objeto social y necesidades de los afiliados</h4>
+      <p>Una cooperativa agropecuaria tiene afiliados con graves problemas de acceso a crédito. La Junta Directiva considera que otorgar préstamos "es parte de servir a los afiliados." ¿Tienen razón? ¿Qué debería hacer correctamente la cooperativa para atender esa necesidad sin vulnerar su marco legal?</p>
+      <button class="btn-pistas" onclick="abrirPistas(this)">▸ Ver pistas de análisis</button>
+      <div class="pistas">
+        <ul>
+          <li>¿Qué establece el Art. 47 del Reglamento sobre nuevas actividades?</li>
+          <li>¿Cuándo se requiere modificación de estatutos vs. simple notificación al CONSUCOOP?</li>
+          <li>¿Existe algún organismo de segundo grado que ya preste ese servicio a sus afiliadas?</li>
+          <li>¿Qué dice el principio de integración cooperativa al respecto?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pregunta-ac">
+      <h4>2. Permisos de transporte y propiedad colectiva</h4>
+      <p>En las cooperativas de transporte, los permisos de operación deben otorgarse a favor de la cooperativa, no de los afiliados individualmente. Algunos afiliados consideran esto injusto. ¿Por qué establece la ley este requisito? ¿Qué problemas prácticos evita?</p>
+      <button class="btn-pistas" onclick="abrirPistas(this)">▸ Ver pistas de análisis</button>
+      <div class="pistas">
+        <ul>
+          <li>¿Qué principio cooperativo se fortalece cuando el permiso es de la cooperativa?</li>
+          <li>¿Qué pasaría si cada afiliado tuviera su permiso y decidiera retirarse o venderlo?</li>
+          <li>Revise el Art. 36 del Reglamento sobre transferencia de permisos.</li>
+          <li>¿Cómo afecta esto a la continuidad del servicio a la comunidad?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pregunta-ac">
+      <h4>3. Excedentes con no afiliados</h4>
+      <p>Una cooperativa de comercialización vende el 40% de su producción a empresas internacionales no afiliadas. Algunos afiliados argumentan que esos excedentes "son el resultado de su trabajo" y deben distribuirse entre ellos. ¿Tienen razón jurídicamente? ¿Cuál es la lógica detrás del Art. 45 de la LCH?</p>
+      <button class="btn-pistas" onclick="abrirPistas(this)">▸ Ver pistas de análisis</button>
+      <div class="pistas">
+        <ul>
+          <li>¿Cuál es la diferencia legal entre excedente con afiliados y con no afiliados?</li>
+          <li>¿Qué programas reconoce el Art. 128 del Reglamento como "desarrollo cooperativo"?</li>
+          <li>¿Benefician indirectamente a los afiliados esos programas?</li>
+          <li>¿Qué valor cooperativo refuerza esta regla?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pregunta-ac">
+      <h4>4. Honduras: 1,103 cooperativas, 11 organismos de segundo grado</h4>
+      <p>Honduras tiene 1,103 cooperativas pero solo 11 organismos de segundo grado. ¿Considera que esa proporción es adecuada? ¿Qué ventajas concretas pierde una cooperativa de primer grado que no está afiliada a ningún organismo de segundo grado?</p>
+      <button class="btn-pistas" onclick="abrirPistas(this)">▸ Ver pistas de análisis</button>
+      <div class="pistas">
+        <ul>
+          <li>Revise las funciones de los organismos de segundo grado en el Art. 151 del Reglamento.</li>
+          <li>¿Qué dice el Art. 160 del Reglamento sobre pertenencia a organismos de integración?</li>
+          <li>¿Qué obliga el Art. 10l del Reglamento (documento constitutivo) respecto a integrarse?</li>
+          <li>¿Qué servicios específicos se pierden al no estar integrada?</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /tab analisis -->
+
+  <!-- ══════════════════════════════════
+       TAB 4: VERIFICAR COMPRENSIÓN
+  ══════════════════════════════════ -->
+  <div id="tab-verificacion" class="tab-panel">
+    <p style="font-size:14px; color:var(--texto-sec); margin-bottom:20px;">Seleccione la respuesta correcta. Recibirá retroalimentación inmediata con explicación y fundamento legal.</p>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">1. ¿Cuántas cooperativas de primer grado se necesitan como mínimo para constituir un organismo de segundo grado?</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r1')">A) 12 cooperativas</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r1')">B) 15 cooperativas</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r1')">C) 20 cooperativas</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r1')">D) 50 cooperativas</button></li>
+      </ul>
+      <div id="fb-r1" class="retro">
+        ✔ Correcto. Los organismos de segundo grado se deben constituir con veinte (20) o más cooperativas, debiendo afiliarse a la CHC.
+        <div class="ref">📌 Art. 161 Reglamento de la LCH</div>
+      </div>
+    </div>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">2. En una cooperativa de producción, los excedentes se distribuyen en proporción a:</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r2')">A) El monto de aportaciones de cada afiliado</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r2')">B) El trabajo no remunerado o el patrocinio realizado por cada afiliado</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r2')">C) El valor de las mercaderías compradas en la cooperativa</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r2')">D) Los intereses pagados por créditos recibidos</button></li>
+      </ul>
+      <div id="fb-r2" class="retro">
+        ✔ Correcto. En las cooperativas de producción, el criterio es el trabajo colectivo y el patrocinio: el uso que el afiliado hace de la cooperativa.
+        <div class="ref">📌 Art. 123c del Reglamento de la LCH</div>
+      </div>
+    </div>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">3. Las Cooperativas de Vivienda están contempladas en:</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r3')">A) La Ley de Cooperativas de Honduras, en la sección de tipos</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r3')">B) El Reglamento de la LCH, dentro de las cooperativas de servicio</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r3')">C) Solo en los estatutos de la FECOVISOH</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r3')">D) No están reguladas formalmente</button></li>
+      </ul>
+      <div id="fb-r3" class="retro">
+        ✔ Correcto. La LCH clasifica los tipos generales (producción, servicio, consumo, mixtas). El Reglamento desarrolla las clases específicas, y es ahí donde se define y regula la Cooperativa de Vivienda.
+        <div class="ref">📌 Art. 29g y Art. 46 del Reglamento de la LCH</div>
+      </div>
+    </div>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">4. Los excedentes generados por operaciones con personas que no son afiliadas de la cooperativa deben destinarse a:</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r4')">A) Distribuirse entre todos los afiliados por igual</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r4')">B) Ser retenidos por la Junta Directiva para gastos operativos</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r4')">C) Programas de desarrollo cooperativista</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r4')">D) La reserva legal obligatoria del 10%</button></li>
+      </ul>
+      <div id="fb-r4" class="retro">
+        ✔ Correcto. Los excedentes por operaciones con no afiliados tienen un destino especial: se orientan preferentemente a programas de desarrollo cooperativo. No se reparten entre afiliados.
+        <div class="ref">📌 Art. 45 LCH / Art. 127 Reglamento</div>
+      </div>
+    </div>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">5. Verdadero o Falso: Una cooperativa mixta cuya actividad principal sea el ahorro y crédito puede tener membresía abierta si así lo aprueba su Asamblea General.</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r5')">Verdadero</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r5')">Falso</button></li>
+      </ul>
+      <div id="fb-r5" class="retro">
+        ✔ Falso es correcto. La LCH establece expresamente esta restricción. Ninguna Asamblea General puede superarla porque es una limitación de la propia Ley.
+        <div class="ref">📌 Art. 51 LCH</div>
+      </div>
+    </div>
+
+    <div class="preg-bloque">
+      <div class="preg-texto">6. ¿Cuál de los siguientes es un organismo de segundo grado afiliado a la CHC?</div>
+      <ul class="opciones">
+        <li><button class="op-btn" onclick="verificar(this,false,'r6')">A) CONSUCOOP</button></li>
+        <li><button class="op-btn" onclick="verificar(this,true,'r6')">B) FACACH</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r6')">C) CHC</button></li>
+        <li><button class="op-btn" onclick="verificar(this,false,'r6')">D) IHDECOOP</button></li>
+      </ul>
+      <div id="fb-r6" class="retro">
+        ✔ Correcto. FACACH (Federación de Cooperativas de Ahorro y Crédito de Honduras) es uno de los 11 organismos de segundo grado. CONSUCOOP es el regulador estatal. La CHC es el tercer grado. El IHDECOOP ya no existe.
+        <div class="ref">📌 Art. 88 LCH / Art. 149 Reg. / CHC 2024</div>
+      </div>
+    </div>
+
+  </div><!-- /tab verificacion -->
+
+  <!-- ══════════════════════════════════
+       TAB 5: MAPA LEGAL
+  ══════════════════════════════════ -->
+  <div id="tab-mapa" class="tab-panel">
+    <p style="font-size:14px; color:var(--texto-sec); margin-bottom:18px;">Listado de artículos aplicables a este subtema. Haga clic en "Ver artículo completo" para leer el texto literal de la norma.</p>
+
+    <!-- LEY -->
+    <p style="font-size:12px; font-family:'Courier New',monospace; text-transform:uppercase; letter-spacing:1.5px; color:var(--verde); margin-bottom:8px; margin-top:4px;">Ley de Cooperativas de Honduras — Decreto 65-87</p>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 9 LCH</span>
+        <span class="art-desc">Constitución de cooperativas. Excepción para cooperativas escolares.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"La constitución de las cooperativas se hará en documentos privado, legalmente autenticado. En las cooperativas de centros educativos, las Actas de Constitución serán autorizadas por el director del centro educativo respectivo, sin necesidad de auténtica."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 9</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 10 LCH</span>
+        <span class="art-desc">Número mínimo de cooperativistas. Número mínimo para segundo grado.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Ninguna cooperativa podrá constituirse con un número menor de (12) cooperativistas, sin perjuicio de lo que establezcan el reglamento de esta ley, en cuanto a un número mayor para sub-sectores especiales. Y las de segundo Grado se constituirán con un número no menor de 20 cooperativas."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 10 (Reformado según Decreto 146-2019)</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 43 LCH</span>
+        <span class="art-desc">Definición de excedentes.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Se consideran excedentes los saldos que a favor de una cooperativa resulten de sus operaciones al final de cada ejercicio social."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 43</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 44 LCH</span>
+        <span class="art-desc">Distribución de excedentes. Reserva legal, fondos especiales y distribución entre afiliados.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Los excedentes se distribuirán en la forma siguiente: a) Por lo menos un 10% para formar un fondo de reserva legal acumulable anualmente, no repartible y que servirá para cubrir pérdidas de acuerdo con la liquidez de la cooperativa en los porcentajes que establezca el reglamento de esta Ley, el fondo de reserva se invertirá en bonos u otros títulos de fácil convertibilidad, emitidos por federaciones de cooperativas, instituciones bancarias o del estado; b) La formación de fondos especiales: requerimiento de capital y patrimonio, reservas para activos de riesgo y otros que establezca la Junta Directiva; c) Distribuciones entre los cooperativistas de acuerdo al patrocinio efectuado con la cooperativa, después de constituir la reserva legal, las requeridas por el Organismo Supervisor del Sector Cooperativo y reservas especiales aprobadas por la Asamblea General; ch) La Asamblea General podrá acordar la capitalización total o parcial de los excedentes distribuidos y no pagados, siempre que la cooperativa cuente con los recursos que le garantice su sostenibilidad; y, d) Treinta (30) días hábiles antes de la celebración de la Asamblea General Ordinaria, la Junta Directiva debe poner en conocimiento del Organismo Supervisor del Sector Cooperativo el proyecto de distribución de excedentes, quien puede objetar la misma si determina que la cooperativa presenta una situación financiera inestable."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 44</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 45 LCH</span>
+        <span class="art-desc">Excedentes por operaciones con no afiliados. Destino especial.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Los excedentes netos generados por operaciones con no afiliados, se destinarán por la cooperativa, preferentemente a programas de desarrollo cooperativista."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 45</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 47 LCH</span>
+        <span class="art-desc">Clasificación general de cooperativas: producción, servicio, consumo, mixtas.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las cooperativas serán de producción, de servicios, de consumo o mixtas."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Art. 47</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Arts. 48–51 LCH</span>
+        <span class="art-desc">Definición de cada tipo de cooperativa.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Artículo 48. La cooperativa será de producción, cuando esté constituida por personas que se asocian para trabajar, producir, transformar y vender en común los productos que elaboran.<br><br>Artículo 49. La cooperativa será de servicio, cuando esté formada por personas que se asocien para la prestación de servicios al público y así mismas.<br><br>Artículo 50. La cooperativa será de consumo, cuando esté formada por personas que se asocian para obtener en común, bienes o servicios para ellas, sus hogares o sus actividades económicas y sociales.<br><br>Artículo 51. Son mixtas las cooperativas, cuando en sus Estatutos establezcan actividades múltiples como su objetivo principal."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Arts. 48–51</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Arts. 88–89 LCH</span>
+        <span class="art-desc">Cooperativas de segundo y tercer grado. Denominaciones y funciones.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Artículo 88. Las cooperativas podrán integrarse en organismos de segundo grado mediante la asociación entre sí, los cuales se denominarán: 1. De Segundo Grado: cuando esté constituida por Cooperativas de primer grado de igual o diferentes clases e iniciará su denominación social con las frases 'Alianza de Cooperativas', 'Asociación de Cooperativas', 'Unión de Cooperativas', 'Central de Cooperativas' o 'Federación de Cooperativas'; [...] 3. De Tercer Grado: Cuando esté constituida por cooperativas de Segundo Grado, iniciará su denominación social con la palabra 'Confederación'; y sólo habrá una en el país.<br><br>Artículo 89. Las cooperativas de Segundo y Tercer Grado, dentro de los principios del cooperativismo establecidos en la presente Ley, podrán realizar cualquiera actividad de carácter técnico, económico, comercial, administrativo, financiero y social en favor de las cooperativas que formen parte de ellas y de cooperativas no afiliadas."</blockquote>
+        <div class="art-fuente">Ley de Cooperativas de Honduras · Arts. 88–89</div>
+      </div>
+    </div>
+
+    <!-- REGLAMENTO -->
+    <p style="font-size:12px; font-family:'Courier New',monospace; text-transform:uppercase; letter-spacing:1.5px; color:var(--verde); margin-bottom:8px; margin-top:20px;">Reglamento de la LCH — Acuerdo 041-2014</p>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 21 Reg.</span>
+        <span class="art-desc">Clases de Cooperativas de Producción.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las Cooperativas de Producción, entre otras, pueden ser de las clases siguientes: a) Producción Agrícola; b) Producción Pecuaria; c) Producción Acuícola; d) Producción Agropecuaria; e) Producción Artesanal; f) Producción Industrial, Agro-industrial o Agroforestal; y, g) Otras que autorice el CONSUCOOP."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 21</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 29 Reg.</span>
+        <span class="art-desc">Clases de Cooperativas de Servicios.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las Cooperativas de Servicio, entre otras, pueden ser de las clases siguientes: a) Ahorro y Crédito; b) Transporte; c) Consumo; d) Profesionales; e) Salud; f) Educación; g) Vivienda; h) Comercialización; i) Escolares y Juveniles; y, j) Otras que autorice el CONSUCOOP."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 29</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 46 Reg.</span>
+        <span class="art-desc">De las Cooperativas de Vivienda. Definición, adquisición de bienes y adjudicación.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Por Cooperativas de Viviendas se entiende aquellas organizadas por personas naturales para proveerse de un hogar propio. Las Cooperativas de Vivienda pueden adquirir bienes raíces y otros tales como materiales y equipos de construcción para el uso individual y/o Colectiva de sus Afiliados(as). Todo Afiliado(a) de una Cooperativa de Vivienda está obligado a vivir en la casa adquirida, si la propiedad es individual puede transferir el título de propiedad, con el acuerdo previo de la Junta Directiva. Cuando la Cooperativa de Vivienda sea de propiedad horizontal, la adjudicación de los departamentos se debe realizar por sorteo y las vacantes a nuevos Afiliados(as) es función de la Junta Directiva. A tal fin el Estatuto de cada Cooperativa debe establecer las normas y reglas pertinentes. En caso de fallecimiento del Afiliado(a), los herederos pueden optar por continuar en el uso y goce de la vivienda, en cuyo caso subrogarán al causante en todos sus derechos y obligaciones, debiendo designar a uno de ellos como Afiliado(a) beneficiario(a)."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 46</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 47 Reg.</span>
+        <span class="art-desc">Cooperativas de Actividades Mixtas. Procedimiento para nuevas actividades.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las Cooperativas que decidan dedicarse a nuevas actividades en adición a las que realizan, si están autorizadas para ello desde su reconocimiento oficial pueden hacerlo, limitándose únicamente a notificar tal decisión anticipadamente al CONSUCOOP, con su plan de operaciones y la fecha de inicio de las mismas."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 47</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 123 Reg.</span>
+        <span class="art-desc">Restricciones y distribución de excedentes según clase de cooperativa.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las reservas y fondos que se establezcan no pueden ser mayores del cincuenta por ciento (50%) del total de excedentes que arroje el resultado del ejercicio social, salvo disposición de la Asamblea General Ordinaria o del CONSUCOOP. Los excedentes restantes podrán distribuir entre los Cooperativistas de acuerdo a su clase y lo que su Asamblea General ordinaria acuerde, en la forma siguiente: a) En una Cooperativa de Consumo, de acuerdo al valor de las mercaderías que sus Afiliados(as) compren; b) En las Cooperativas de Ahorro y Crédito, podrá capitalizarse o distribuirse en relación al monto de intereses pagados por los créditos recibidos; c) En las Cooperativas de Producción de acuerdo con el trabajo no remunerado o el patrocinio, realizado por cada Afiliado(a); d) En las Cooperativas Mixtas por actividad realizada y uso de servicio; y, e) En otros tipos de Cooperativas de acuerdo al patrocinio."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 123</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 127 Reg.</span>
+        <span class="art-desc">Destino de los excedentes por operaciones con no afiliados.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Para los efectos del Artículo 45 de la Ley, se consideran operaciones con no Afiliados(as) las que realice la Cooperativa con personas que no tengan la calidad de Cooperativista en la propia Cooperativa y los excedentes provenientes de dichas operaciones, se deben destinar a la formación de Programa de Desarrollo Cooperativo."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 127</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 149 Reg.</span>
+        <span class="art-desc">Clasificación de cooperativas por grado de integración.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Las Cooperativas de primer grado son asociaciones de personas naturales; las alianzas, asociaciones, uniones, centrales y federaciones, son asociaciones de Cooperativas de segundo grado; y la confederación es una asociación de Cooperativas de tercer grado."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 149</div>
+      </div>
+    </div>
+
+    <div class="art-item">
+      <div class="art-header">
+        <span class="art-ref">Art. 161 Reg.</span>
+        <span class="art-desc">Constitución de los organismos de segundo grado. Número mínimo y afiliación a la CHC.</span>
+        <button class="art-btn-ver" onclick="verArt(this)">Ver artículo completo</button>
+      </div>
+      <div class="art-contenido">
+        <blockquote>"Los organismos de segundo grado, se deben constituir por medio de sesión de la Asamblea General celebrada para tal fin y por los delegados de las Cooperativas interesadas. A tal Asamblea de Constitución, deben concurrir un delegado propietario y un suplente por cada Cooperativa, nombrados por la Junta Directiva con derecho a un voto por Cooperativa. Los organismos de segundo grado, se deben constituir con veinte (20) o más Cooperativas, debiendo afiliarse a la CHC de conformidad a los requisitos que el Estatuto de la misma exija."</blockquote>
+        <div class="art-fuente">Reglamento de la LCH · Art. 161</div>
+      </div>
+    </div>
+
+  </div><!-- /tab mapa -->
+
+</div><!-- /tabs-wrap -->
+
+<script>
+  function abrirTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function abrirAcord(btn) {
+    const body = btn.nextElementSibling;
+    const estaAbierto = btn.classList.contains('open');
+    btn.closest('.tab-panel').querySelectorAll('.acord-btn').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!estaAbierto) {
+      btn.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+
+  function verificar(btn, esCorrecta, id) {
+    const bloque = btn.closest('.preg-bloque');
+    bloque.querySelectorAll('.op-btn').forEach(b => {
+      b.disabled = true;
+      b.classList.remove('ok', 'mal');
+    });
+    btn.classList.add(esCorrecta ? 'ok' : 'mal');
+    if (!esCorrecta) {
+      bloque.querySelectorAll('.op-btn').forEach(b => {
+        const fn = b.getAttribute('onclick') || '';
+        if (fn.includes('true')) b.classList.add('ok');
+      });
+    }
+    const fb = document.getElementById('fb-' + id);
+    if (fb) fb.classList.add('show');
+  }
+
+  function verArt(btn) {
+    const contenido = btn.closest('.art-item').querySelector('.art-contenido');
+    const abierto = contenido.classList.toggle('show');
+    btn.textContent = abierto ? 'Ocultar artículo' : 'Ver artículo completo';
+  }
+
+  function abrirPistas(btn) {
+    const pistas = btn.nextElementSibling;
+    const abierto = pistas.classList.toggle('show');
+    btn.textContent = abierto ? '▾ Ocultar pistas' : '▸ Ver pistas de análisis';
+  }
+</script>
+</body>
+</html>

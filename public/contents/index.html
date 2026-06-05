@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cooperativismo Notebook | Oliver Ayala</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#f8fafc;
+    --surface:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --primary:#0f766e;
+    --primary-light:#ccfbf1;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:0 24px;
+}
+
+.hero{
+    padding:100px 0 70px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:clamp(3rem,6vw,5rem);
+    font-weight:800;
+    margin-bottom:16px;
+}
+
+.author{
+    color:var(--primary);
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    font-size:1.2rem;
+    color:var(--muted);
+    max-width:850px;
+    margin:auto;
+}
+
+.section{
+    padding:40px 0 80px;
+}
+
+.section-title{
+    font-size:2rem;
+    margin-bottom:30px;
+    text-align:center;
+}
+
+.card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:32px;
+    transition:.25s;
+    max-width:800px;
+    margin:auto;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+
+.card h3{
+    font-size:1.6rem;
+    margin-bottom:12px;
+}
+
+.card p{
+    color:var(--muted);
+}
+
+.status{
+    display:inline-block;
+    margin-top:16px;
+    background:var(--primary-light);
+    color:var(--primary);
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:.85rem;
+    font-weight:600;
+}
+
+.about{
+    max-width:850px;
+    margin:auto;
+    text-align:center;
+    color:var(--muted);
+    font-size:1.05rem;
+}
+
+footer{
+    border-top:1px solid var(--border);
+    padding:40px 0;
+    text-align:center;
+    color:var(--muted);
+}
+
+@media(max-width:768px){
+
+    .hero{
+        padding:70px 0 50px;
+    }
+
+    .container{
+        padding:0 18px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<section class="hero">
+
+```
+<div class="container">
+
+    <h1>Cooperativismo Notebook</h1>
+
+    <div class="author">
+        Oliver Ayala · Facilitador CHC
+    </div>
+
+    <p class="subtitle">
+        Biblioteca modular de aprendizaje cooperativo diseñada para explorar,
+        comprender y aplicar conocimientos sobre gobernabilidad, legislación,
+        liderazgo, incidencia política y gestión democrática.
+    </p>
+
+</div>
+```
+
+</section>
+
+<section class="section">
+
+```
+<div class="container">
+
+    <h2 class="section-title">
+        Dominio Disponible
+    </h2>
+
+    <a class="card" href="./incidencia-politica/index.html">
+
+        <h3>Incidencia Política</h3>
+
+        <p>
+            Estrategias, herramientas y marcos conceptuales para comprender
+            cómo las cooperativas pueden influir en procesos de toma de
+            decisiones, políticas públicas y transformaciones sociales.
+        </p>
+
+        <span class="status">
+            Disponible
+        </span>
+
+    </a>
+
+</div>
+```
+
+</section>
+
+<section class="section">
+
+```
+<div class="container">
+
+    <h2 class="section-title">
+        Filosofía
+    </h2>
+
+    <div class="about">
+
+        Este notebook organiza contenidos sobre cooperativismo,
+        gobernabilidad y liderazgo desde una perspectiva práctica,
+        modular y orientada al aprendizaje continuo.
+
+        <br><br>
+
+        Los contenidos están diseñados para facilitar la consulta,
+        la formación y la aplicación en contextos reales de las
+        cooperativas, combinando andamiaje conceptual, casos,
+        práctica y herramientas interactivas.
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<footer>
+
+```
+<div class="container">
+
+    <strong>Cooperativismo Notebook</strong>
+    <br>
+    Oliver Ayala · Facilitador CHC
+
+</div>
+```
+
+</footer>
+
+</body>
+</html>

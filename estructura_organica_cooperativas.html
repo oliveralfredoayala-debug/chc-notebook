@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estructura Orgánica de las Cooperativas · CHC</title>
+<style>
+:root {
+  --verde:#1c6b4a; --verde-d:#145236; --verde-bg:#f0f7f4; --verde-b:#c5dfd5;
+  --azul:#1c4a6b;  --azul-bg:#f0f4f7;  --azul-b:#c5d5df;
+  --gris:#2d2d2d;  --gris2:#555;       --gris3:#f5f5f5; --borde:#ddd;
+  --warn-bg:#fff8f0; --warn-b:#e8c99a; --warn-c:#7a3800;
+  --ok-bg:#f0fff4;   --ok-b:#a8d8b5;   --ok-c:#145236;
+  --err-bg:#fff0f0;  --err-b:#f5a8a8;  --err-c:#8b0000;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;background:#fff;color:var(--gris);font-size:16px;line-height:1.7}
+
+/* HEADER */
+.ph{border-bottom:3px solid var(--verde);padding:26px 32px 20px}
+.ph h1{font-size:1.5rem;font-weight:700;color:var(--verde)}
+.ph p{font-size:.93rem;color:var(--gris2);margin-top:5px;font-style:italic}
+.badge{display:inline-block;background:var(--verde-bg);border:1px solid var(--verde-b);color:var(--verde);font-size:.76rem;padding:3px 10px;border-radius:3px;margin-top:9px;font-family:'Courier New',monospace}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 60px}
+
+/* BLOQUE EN ESTE TEMA */
+.ent-box{margin-top:28px;border:1px solid var(--verde-b);border-radius:6px;overflow:hidden}
+.ent-head{background:var(--verde);color:#fff;padding:12px 18px;font-weight:700;font-size:.95rem;letter-spacing:.3px}
+.ent-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.ent-col{padding:16px 18px}
+.ent-col:first-child{border-right:1px solid var(--verde-b)}
+.ent-col h3{font-size:.88rem;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.ent-col ul{padding-left:18px;font-size:.88rem;color:var(--gris2)}
+.ent-col li{margin-bottom:5px}
+.ent-col .pill{display:inline-block;background:var(--azul-bg);border:1px solid var(--azul-b);color:var(--azul);font-size:.75rem;padding:2px 8px;border-radius:3px;font-family:'Courier New',monospace;margin:2px 2px 0 0}
+@media(max-width:600px){.ent-body{grid-template-columns:1fr}.ent-col:first-child{border-right:none;border-bottom:1px solid var(--verde-b)}}
+
+/* TABS PRINCIPALES */
+.main-tabs{margin-top:28px}
+.mt-btns{display:flex;gap:3px;flex-wrap:wrap;border-bottom:2px solid var(--verde-b)}
+.mt-btn{background:var(--gris3);border:1px solid var(--borde);border-bottom:none;padding:9px 14px;cursor:pointer;font-size:.84rem;font-family:inherit;color:var(--gris2);border-radius:4px 4px 0 0;min-height:44px;transition:all .15s}
+.mt-btn:hover{background:var(--verde-bg);color:var(--verde)}
+.mt-btn.on{background:#fff;color:var(--verde);font-weight:700;border-color:var(--verde-b);border-bottom:2px solid #fff;margin-bottom:-2px}
+.mt-panel{display:none;padding:22px 18px;border:1px solid var(--verde-b);border-top:none;border-radius:0 0 5px 5px}
+.mt-panel.on{display:block}
+
+/* SUBTÍTULOS DENTRO DE PANEL */
+.sh{font-size:1.05rem;font-weight:700;color:var(--verde);border-left:4px solid var(--verde);padding-left:10px;margin:0 0 14px}
+.sh2{font-size:.95rem;font-weight:700;color:var(--gris);margin:18px 0 8px}
+p.tx{font-size:.92rem;color:var(--gris2);line-height:1.7;margin-bottom:10px}
+
+/* ===== ORGANIGRAMA ===== */
+.leyenda{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:13px;font-size:.83rem}
+.leyenda span{display:flex;align-items:center;gap:6px}
+.ldot{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.org-scroll{overflow-x:auto;padding-bottom:6px}
+.org-wrap{position:relative;min-width:620px}
+.obox{border-radius:5px;padding:9px 13px;text-align:center;cursor:pointer;transition:filter .15s,box-shadow .15s;user-select:none}
+.obox:hover{filter:brightness(.92)}
+.obox.sel{outline:3px solid #f4c030;outline-offset:2px}
+.obox .bn{font-weight:700;font-size:.82rem;line-height:1.3}
+.obox .br{font-size:.69rem;font-family:'Courier New',monospace;margin-top:2px;opacity:.85}
+.b-ag {background:#1c4a6b;color:#fff}
+.b-jd {background:#2d6a9f;color:#fff}
+.b-jv {background:#3d7ab5;color:#fff}
+.b-com{background:#dce8f5;color:#1c3a55;border:1px solid #9dbdd9}
+.b-gg {background:#1c6b4a;color:#fff}
+.b-area{background:#d4ece1;color:#0d3d26;border:1px solid #8fc4ad}
+.b-aud{background:#e5f3eb;color:#0d3d26;border:1px dashed #8fc4ad;font-style:italic}
+.utag{font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:6px}
+.ut-p{background:#1c4a6b;color:#fff}
+.ut-e{background:#1c6b4a;color:#fff}
+.org-row{display:flex;justify-content:center;align-items:flex-start}
+.det-panel{display:none;margin-top:14px;border:1px solid var(--verde-b);border-left:4px solid var(--verde);border-radius:4px;padding:14px 16px;background:var(--verde-bg);font-size:.89rem;line-height:1.7;position:relative}
+.det-panel.az{border-color:var(--azul-b);border-left-color:var(--azul);background:var(--azul-bg)}
+.det-panel.on{display:block}
+.det-panel h3{font-size:.95rem;color:var(--verde);margin-bottom:7px}
+.det-panel.az h3{color:var(--azul)}
+.det-panel ul{padding-left:18px;margin-top:5px}
+.det-panel li{margin-bottom:4px}
+.det-panel .tags{margin-top:8px}
+.rt{display:inline-block;background:var(--verde-bg);border:1px solid var(--verde-b);color:var(--verde);font-size:.72rem;padding:1px 7px;border-radius:3px;font-family:'Courier New',monospace;margin:2px 2px 0 0}
+.rt.az{background:var(--azul-bg);border-color:var(--azul-b);color:var(--azul)}
+.clsbtn{position:absolute;top:9px;right:11px;background:none;border:none;font-size:1rem;cursor:pointer;color:#888}
+.nota-esp{background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:4px;padding:10px 14px;font-size:.83rem;color:var(--warn-c);margin-top:12px}
+
+/* ===== ACORDEÓN ===== */
+.acc{border:1px solid var(--borde);border-radius:5px;overflow:hidden;margin-top:10px}
+.aci{border-bottom:1px solid var(--borde)}
+.aci:last-child{border-bottom:none}
+.atr{width:100%;background:var(--gris3);border:none;padding:13px 16px;text-align:left;cursor:pointer;font-size:.91rem;font-family:inherit;color:var(--gris);display:flex;justify-content:space-between;align-items:center;min-height:44px;transition:background .15s}
+.atr:hover,.atr.on{background:var(--verde-bg);color:var(--verde);font-weight:600}
+.atr .ai{font-size:.9rem;transition:transform .2s;flex-shrink:0;margin-left:10px}
+.atr.on .ai{transform:rotate(45deg)}
+.abd{display:none;padding:14px 16px;font-size:.89rem;border-top:1px solid var(--verde-b);background:#fff;line-height:1.7}
+.abd.on{display:block}
+.abd ul{padding-left:18px;margin-top:5px}
+.abd li{margin-bottom:4px}
+
+/* ===== QUIZ ===== */
+.quiz{margin-top:12px}
+.qitem{border:1px solid var(--borde);border-radius:5px;padding:14px 16px;margin-bottom:12px;background:var(--gris3)}
+.qitem .qp{font-size:.92rem;font-weight:600;margin-bottom:10px}
+.qitem .opts label{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;cursor:pointer;font-size:.89rem;min-height:44px;padding:4px 0}
+.qitem .opts input{margin-top:4px;flex-shrink:0;accent-color:var(--verde)}
+.qitem .qbtn{background:var(--verde);color:#fff;border:none;padding:8px 18px;border-radius:4px;cursor:pointer;font-size:.87rem;font-family:inherit;min-height:44px;margin-top:6px}
+.qitem .qbtn:hover{background:var(--verde-d)}
+.qitem .feedback{display:none;margin-top:10px;padding:10px 13px;border-radius:4px;font-size:.86rem;line-height:1.6}
+.feedback.ok{background:var(--ok-bg);border:1px solid var(--ok-b);color:var(--ok-c)}
+.feedback.err{background:var(--err-bg);border:1px solid var(--err-b);color:var(--err-c)}
+.feedback .bl{font-size:.78rem;font-family:'Courier New',monospace;margin-top:6px;opacity:.85}
+
+/* ===== ACTIVIDADES ===== */
+.act-card{border:1px solid var(--verde-b);border-radius:5px;padding:16px 18px;margin-bottom:14px;background:var(--verde-bg)}
+.act-card .act-head{font-weight:700;font-size:.93rem;color:var(--verde);margin-bottom:8px}
+.act-card ul{padding-left:18px;font-size:.89rem;color:var(--gris2)}
+.act-card li{margin-bottom:5px}
+.act-card .rol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:8px}
+.rol-pill{background:#fff;border:1px solid var(--verde-b);border-radius:4px;padding:7px 10px;font-size:.83rem;text-align:center;font-weight:600;color:var(--verde)}
+
+/* ===== ANÁLISIS CRÍTICO ===== */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:10px}
+.pcard{border:1px solid var(--borde);border-radius:5px;padding:14px 16px;background:var(--gris3);cursor:pointer;transition:border-color .15s,background .15s}
+.pcard:hover,.pcard.on{border-color:var(--verde);background:var(--verde-bg)}
+.pcard .pn{font-size:1rem;font-weight:700;color:var(--verde);margin-bottom:4px}
+.pcard .pp{font-size:.91rem;font-weight:600;margin-bottom:6px}
+.pcard .pr{font-size:.84rem;color:var(--gris2);display:none;border-top:1px solid var(--verde-b);padding-top:7px;line-height:1.6}
+.pcard.on .pr{display:block}
+.pcard .ph{font-size:.76rem;color:#999}
+.pcard.on .ph{display:none}
+
+/* ===== RECURSOS ===== */
+.rec-item{border:1px solid var(--borde);border-radius:5px;overflow:hidden;margin-bottom:10px}
+.rec-trigger{width:100%;background:var(--gris3);border:none;padding:12px 16px;text-align:left;cursor:pointer;font-size:.9rem;font-family:inherit;color:var(--gris);display:flex;justify-content:space-between;align-items:center;min-height:44px}
+.rec-trigger:hover,.rec-trigger.on{background:var(--verde-bg);color:var(--verde);font-weight:600}
+.rec-trigger .ri{font-size:.9rem;transition:transform .2s;flex-shrink:0;margin-left:10px}
+.rec-trigger.on .ri{transform:rotate(45deg)}
+.rec-body{display:none;padding:13px 16px;font-size:.87rem;border-top:1px solid var(--verde-b);background:#fff;line-height:1.7}
+.rec-body.on{display:block}
+.rec-body ul{padding-left:18px;margin-top:5px}
+.rec-body li{margin-bottom:4px}
+.rec-body .arts{margin-top:8px}
+.art-link{display:inline-block;background:var(--verde-bg);border:1px solid var(--verde-b);color:var(--verde);font-size:.73rem;padding:2px 8px;border-radius:3px;font-family:'Courier New',monospace;margin:2px 2px 0 0}
+.art-link.az{background:var(--azul-bg);border-color:var(--azul-b);color:var(--azul)}
+
+/* INTEGRANTES GRID */
+.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:9px;margin-top:9px}
+.ic{border:1px solid var(--borde);border-radius:4px;padding:10px 12px;background:var(--gris3)}
+.ic .cargo{font-weight:700;font-size:.85rem;color:var(--verde);margin-bottom:3px}
+.ic .desc{font-size:.8rem;color:var(--gris2);line-height:1.5}
+
+footer{margin-top:50px;border-top:2px solid var(--verde-b);padding:16px 20px;font-size:.79rem;color:#888;text-align:center}
+
+@media(max-width:600px){
+  .ph{padding:18px 14px}
+  .ph h1{font-size:1.25rem}
+  .wrap{padding:0 12px 40px}
+  .mt-btn{font-size:.8rem;padding:8px 10px}
+  .pgrid{grid-template-columns:1fr}
+  .ig{grid-template-columns:1fr}
+  .act-card .rol-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header class="ph">
+  <h1>📘 Estructura Orgánica de las Cooperativas</h1>
+  <p>Módulo: Funciones de los Cuerpos Directivos · Subtema: Estructura orgánica y separación de universos</p>
+  <span class="badge">Ley de Cooperativas de Honduras (LCH) · Reglamento (RLCH)</span>
+</header>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════
+     📌 EN ESTE TEMA
+══════════════════════════════════════════ -->
+<div class="ent-box">
+  <div class="ent-head">📌 En este tema</div>
+  <div class="ent-body">
+    <div class="ent-col">
+      <h3>Puntos que se abordan</h3>
+      <ul>
+        <li>El organigrama completo de la cooperativa</li>
+        <li>Distinción entre universo político y universo empresarial</li>
+        <li>Quiénes integran cada órgano y su base legal</li>
+        <li>La posición especial de la Gerencia General</li>
+        <li>Principio de no invasión de competencias</li>
+        <li>Responsabilidad solidaria de los cuerpos directivos</li>
+      </ul>
+    </div>
+    <div class="ent-col">
+      <h3>Andamiaje — Conceptos clave</h3>
+      <ul>
+        <li><strong>Universo político:</strong> órganos de gobierno democrático electos por la Asamblea.</li>
+        <li><strong>Universo empresarial:</strong> estructura ejecutiva nombrada por la Junta Directiva.</li>
+        <li><strong>Competencia jurídica:</strong> cada órgano solo puede actuar dentro de sus atribuciones de ley.</li>
+        <li><strong>Responsabilidad solidaria:</strong> los directivos responden conjuntamente por sus actos colectivos.</li>
+      </ul>
+      <div style="margin-top:10px">
+        <span class="pill">Art. 20 LCH</span>
+        <span class="pill">Art. 26 LCH</span>
+        <span class="pill">Art. 32 LCH</span>
+        <span class="pill">Art. 85 RLCH</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SISTEMA DE TABS
+══════════════════════════════════════════ -->
+<div class="main-tabs">
+  <div class="mt-btns">
+    <button class="mt-btn on"  onclick="mTab(event,'tap-apr')">🧠 Aprendizaje</button>
+    <button class="mt-btn"     onclick="mTab(event,'tap-act')">🧩 Actividades</button>
+    <button class="mt-btn"     onclick="mTab(event,'tap-ver')">✅ Verificar comprensión</button>
+    <button class="mt-btn"     onclick="mTab(event,'tap-eva')">📝 Evaluación</button>
+    <button class="mt-btn"     onclick="mTab(event,'tap-rec')">📚 Recursos adicionales</button>
+    <button class="mt-btn"     onclick="mTab(event,'tap-ana')">🔍 Análisis crítico</button>
+  </div>
+
+<!-- ══════════════════════ TAB 1: APRENDIZAJE ══════════════════════ -->
+<div class="mt-panel on" id="tap-apr">
+
+  <h2 class="sh">El organigrama de la cooperativa</h2>
+  <p class="tx">Las cooperativas deben organizar su gobierno con una estructura definida que garantice la participación democrática de sus afiliados y la clara separación entre quien decide la política institucional y quien la ejecuta. (Art. 20 LCH)</p>
+
+  <!-- LEYENDA -->
+  <div class="leyenda">
+    <span><div class="ldot" style="background:#1c4a6b"></div><b style="color:#1c4a6b">Universo Político</b></span>
+    <span><div class="ldot" style="background:#1c6b4a"></div><b style="color:#1c6b4a">Universo Empresarial</b></span>
+    <span style="color:#888;font-size:.78rem">── autoridad jerárquica &nbsp;|&nbsp; ╌╌ relación funcional</span>
+  </div>
+
+  <!-- ORGANIGRAMA -->
+  <div class="org-scroll">
+    <div class="org-wrap" id="ow">
+      <svg id="osvg" style="position:absolute;top:0;left:0;pointer-events:none;overflow:visible"></svg>
+
+      <!-- FILA 0 -->
+      <div class="org-row" style="padding-top:10px">
+        <div style="text-align:center">
+          <span class="utag ut-p">Universo Político</span><br>
+          <div class="obox b-ag" id="b-ag" onclick="sd('ag')" style="min-width:148px;display:inline-block">
+            <div class="bn">Asamblea General</div>
+            <div class="br">Art. 22 LCH</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:34px"></div>
+
+      <!-- FILA 1 -->
+      <div class="org-row" style="gap:52px">
+        <div class="obox b-jd" id="b-jd" onclick="sd('jd')" style="min-width:145px">
+          <div class="bn">Junta Directiva</div>
+          <div class="br">Art. 26 LCH · Art. 68 RLCH</div>
+        </div>
+        <div class="obox b-jv" id="b-jv" onclick="sd('jv')" style="min-width:145px">
+          <div class="bn">Junta de Vigilancia</div>
+          <div class="br">Art. 32 LCH · Art. 76 RLCH</div>
+        </div>
+      </div>
+
+      <div style="height:34px"></div>
+
+      <!-- FILA 2 -->
+      <div class="org-row" style="gap:28px;align-items:flex-start">
+        <!-- Comités -->
+        <div style="display:flex;flex-direction:column;gap:9px;align-items:center">
+          <div class="obox b-com" id="b-ce" onclick="sd('ce')" style="min-width:135px">
+            <div class="bn">Comité de Educación</div><div class="br">Art. 72 RLCH</div>
+          </div>
+          <div class="obox b-com" id="b-cg" onclick="sd('cg')" style="min-width:135px">
+            <div class="bn">Comité de Género</div><div class="br">Art. 72 RLCH</div>
+          </div>
+          <div class="obox b-com" id="b-cj" onclick="sd('cj')" style="min-width:135px">
+            <div class="bn">Comité de Juventud</div><div class="br">Art. 72 RLCH</div>
+          </div>
+        </div>
+        <!-- Gerencia -->
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <span class="utag ut-e">Universo Empresarial</span>
+          <div class="obox b-gg" id="b-gg" onclick="sd('gg')" style="min-width:152px">
+            <div class="bn">Gerencia General</div>
+            <div class="br">Art. 31 LCH · Art. 85 RLCH</div>
+          </div>
+          <div style="height:26px"></div>
+          <div style="display:flex;flex-direction:column;gap:9px;align-items:center">
+            <div class="obox b-area" id="b-ga" onclick="sd('ga')" style="min-width:152px">
+              <div class="bn">Gerencias de Área / Depts.</div><div class="br">Art. 85 RLCH</div>
+            </div>
+            <div class="obox b-aud" id="b-ai" onclick="sd('ai')" style="min-width:152px">
+              <div class="bn">Auditoría Interna</div><div class="br">Art. 79 RLCH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+    </div>
+  </div>
+
+  <div class="nota-esp">
+    <strong>⚠ Punto clave — posición de la Gerencia:</strong> En el organigrama, la Gerencia General aparece a la misma altura que los comités porque ambos reportan a la Junta Directiva. Sin embargo, la Gerencia pertenece al <strong>universo empresarial</strong>: su trabajo es ejecutivo (no político), posee atribuciones propias de ley (Art. 85 RLCH) y encabeza toda la estructura administrativa.
+  </div>
+
+  <div class="det-panel" id="detPanel">
+    <button class="clsbtn" onclick="cd()">✕</button>
+    <div id="detCont"></div>
+  </div>
+
+  <!-- ACORDEONES: desarrollo temático -->
+  <h2 class="sh" style="margin-top:26px">Universo Político: órganos y sus integrantes</h2>
+
+  <div class="acc">
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>⚖️ Asamblea General — máxima autoridad</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>La <strong>Asamblea General</strong> es la máxima autoridad de la cooperativa (Art. 22 LCH). Está integrada por <strong>la totalidad de los afiliados activos</strong>, cada uno con derecho a un voto sin importar el monto de sus aportaciones.</p>
+        <ul>
+          <li>Puede ser <em>Ordinaria</em> (anual obligatoria) o <em>Extraordinaria</em> (según convocatoria).</li>
+          <li>Elige directamente a la Junta Directiva y a la Junta de Vigilancia (Art. 24-b LCH).</li>
+          <li>Aprueba estados financieros, distribución de excedentes y reformas estatutarias.</li>
+          <li>Sus decisiones obligan a todos los órganos de la cooperativa.</li>
+        </ul>
+        <div class="tags"><span class="rt az">Art. 22 LCH</span><span class="rt az">Art. 24 LCH</span><span class="rt az">Art. 25 LCH</span></div>
+      </div>
+    </div>
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>⚖️ Junta Directiva — dirección y estrategia</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>Electa por la Asamblea General. Es el órgano de <strong>dirección política y administrativa</strong> de la cooperativa. Su trabajo es de naturaleza política: establece la estrategia institucional y nombra al ejecutivo.</p>
+        <div class="ig" style="margin-top:10px">
+          <div class="ic"><div class="cargo">Presidencia</div><div class="desc">Representa a la cooperativa. Preside asambleas y reuniones de JD.</div></div>
+          <div class="ic"><div class="cargo">Vicepresidencia</div><div class="desc">Suple a la presidencia. Preside el Comité de Educación.</div></div>
+          <div class="ic"><div class="cargo">Secretaría</div><div class="desc">Dador(a) de fe. Certifica acuerdos y actas.</div></div>
+          <div class="ic"><div class="cargo">Tesorería</div><div class="desc">Vela por la gestión económica y administrativa.</div></div>
+          <div class="ic"><div class="cargo">Vocalías</div><div class="desc">Sustituyen en su orden a los directivos ausentes.</div></div>
+          <div class="ic"><div class="cargo">Suplencias</div><div class="desc">Suplen a los miembros de menor jerarquía.</div></div>
+        </div>
+        <p style="margin-top:10px;font-size:.84rem;color:var(--gris2)">Responsabilidad solidaria (Art. 29 LCH). Salvedad de voto (Art. 30 LCH). Requisitos (Art. 28 LCH). Dimitencia (Art. 84 RLCH).</p>
+        <div class="tags"><span class="rt az">Art. 26 LCH</span><span class="rt az">Art. 29-A LCH</span><span class="rt az">Art. 68 RLCH</span><span class="rt az">Art. 70-71 RLCH</span></div>
+      </div>
+    </div>
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>⚖️ Junta de Vigilancia — fiscalización independiente</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>Electa por la Asamblea General. Órgano fiscalizador <strong>independiente de la Junta Directiva</strong>. Número impar, mínimo 3 y máximo 7 integrantes, más un suplente.</p>
+        <div class="ig" style="margin-top:8px">
+          <div class="ic"><div class="cargo">Presidencia</div><div class="desc">Convoca y preside las reuniones de la JV.</div></div>
+          <div class="ic"><div class="cargo">Secretaría</div><div class="desc">Certifica acuerdos. Dador(a) de fe del órgano.</div></div>
+          <div class="ic"><div class="cargo">Vocalías</div><div class="desc">Sustituyen en su orden a los miembros ausentes.</div></div>
+          <div class="ic"><div class="cargo">Suplencia</div><div class="desc">Suple a los miembros de menor jerarquía.</div></div>
+        </div>
+        <p style="margin-top:10px;font-size:.84rem;color:var(--gris2)">Tiene presupuesto propio (Art. 34 LCH; Art. 81 RLCH). Debe presentar Plan Operativo Anual (Art. 79 RLCH) e Informe de Resultados (Art. 80 RLCH). Responsabilidad solidaria ante omisión o negligencia (Art. 32 LCH).</p>
+        <div class="tags"><span class="rt az">Art. 32 LCH</span><span class="rt az">Art. 33 LCH</span><span class="rt az">Art. 76 RLCH</span><span class="rt az">Art. 79-81 RLCH</span></div>
+      </div>
+    </div>
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>⚖️ Comités obligatorios — auxiliares de la Junta Directiva</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>Integrados por <strong>afiliados, servidores o empleados</strong> nombrados por la Junta Directiva. Contribuyen voluntariamente en áreas específicas. Son auxiliares del gobierno político, no unidades operativas.</p>
+        <ul>
+          <li><strong>Comité de Educación:</strong> presidido por la Vicepresidencia de la JD. Administra el Fondo de Educación Cooperativa (Art. 125 LCH).</li>
+          <li><strong>Comité de Género:</strong> promueve la participación equitativa de afiliadas en los órganos directivos.</li>
+          <li><strong>Comité de Juventud:</strong> fomenta la integración y participación de afiliados jóvenes.</li>
+        </ul>
+        <p style="margin-top:8px;font-size:.84rem;color:var(--gris2)">Rinden informe periódico a la JD (Art. 73 RLCH). Los estatutos pueden crear comités adicionales.</p>
+        <div class="tags"><span class="rt az">Art. 72 RLCH</span><span class="rt az">Art. 73 RLCH</span><span class="rt az">Art. 125 LCH</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sh" style="margin-top:24px">Universo Empresarial: órganos y sus integrantes</h2>
+
+  <div class="acc">
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>🏢 Gerencia General — cabeza del universo ejecutivo</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>El Gerente General es <strong>nombrado y removido por la Junta Directiva</strong> (Art. 31 LCH). No es elegido por la Asamblea. Su trabajo es de naturaleza <strong>ejecutiva</strong>: ejecuta los acuerdos de la JD y tiene atribuciones propias de ley.</p>
+        <ul>
+          <li>Puede ser afiliado o no afiliado de la cooperativa, según el estatuto.</li>
+          <li>Debe prestar caución antes de tomar posesión (Art. 86–87 RLCH).</li>
+          <li>Vela por la custodia de libros y registros legales (Art. 36–37 LCH; Art. 90 RLCH).</li>
+          <li>Al cesar, entrega formalmente sellos y libros de actas (Art. 111 RLCH).</li>
+        </ul>
+        <div class="tags"><span class="rt">Art. 31 LCH</span><span class="rt">Art. 85 RLCH</span><span class="rt">Art. 86–87 RLCH</span><span class="rt">Art. 111 RLCH</span></div>
+      </div>
+    </div>
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>🏢 Gerencias de área, departamentos y personal</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>Toda la estructura bajo la Gerencia General pertenece al universo empresarial. Reciben instrucciones de la Gerencia General, no directamente de la JD.</p>
+        <ul>
+          <li>Pueden incluir: Gerencia Financiera, Crédito, Operaciones, RRHH, Tecnología, etc.</li>
+          <li>Su estructura la define cada cooperativa según su estatuto y tamaño.</li>
+          <li>El personal empleado tiene una relación laboral, no política, con la cooperativa.</li>
+        </ul>
+        <p style="margin-top:8px;font-size:.84rem;color:var(--gris2)">La Auditoría Interna es un caso especial: opera en el universo empresarial pero reporta funcionalmente a la JV (Art. 79 RLCH), ilustrando la articulación entre universos.</p>
+        <div class="tags"><span class="rt">Art. 85 RLCH</span><span class="rt">Art. 79 RLCH</span></div>
+      </div>
+    </div>
+    <div class="aci">
+      <button class="atr" onclick="ta(this)"><span>🔑 Principio de no invasión de competencias</span><span class="ai">+</span></button>
+      <div class="abd">
+        <p>Cada órgano tiene competencias propias definidas por ley. La invasión de funciones entre órganos es una <strong>patología grave de gobernabilidad</strong>.</p>
+        <ul>
+          <li>La JD no debe dar instrucciones operativas directas al personal empleado.</li>
+          <li>La Gerencia no puede arrogarse decisiones que pertenecen a la JD o la Asamblea.</li>
+          <li>La JV fiscaliza, pero no administra ni dirige.</li>
+          <li>Los comités recomiendan a la JD; no instruyen a la Gerencia.</li>
+        </ul>
+        <p style="margin-top:8px;font-size:.84rem;color:var(--gris2)">Los órganos de administración son permanentes; las personas son transitorias (Art. 110–112 RLCH).</p>
+        <div class="tags"><span class="rt az">Art. 20 LCH</span><span class="rt az">Art. 26 LCH</span><span class="rt az">Art. 32 LCH</span><span class="rt">Art. 85 RLCH</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin tap-apr -->
+
+<!-- ══════════════════════ TAB 2: ACTIVIDADES ══════════════════════ -->
+<div class="mt-panel" id="tap-act">
+
+  <h2 class="sh">Actividades de aprendizaje</h2>
+
+  <div class="act-card">
+    <div class="act-head">🧩 Actividad 1 — En equipo: "Diagnóstico orgánico"</div>
+    <p style="font-size:.9rem;color:var(--gris2);margin-bottom:10px">Duración estimada: 25 minutos · Grupos de 3–4 personas</p>
+    <p style="font-size:.9rem;margin-bottom:8px"><strong>Escenario:</strong> A su equipo se le entrega el organigrama de una cooperativa ficticia donde se observan las siguientes situaciones:</p>
+    <ul>
+      <li>La Junta Directiva llama directamente a los empleados de crédito para pedirles informes sin pasar por la Gerencia.</li>
+      <li>El Comité de Educación aprueba gastos y firma contratos con proveedores externos.</li>
+      <li>La Junta de Vigilancia no presentó su informe anual porque "no hubo irregularidades que reportar".</li>
+      <li>El Gerente General asiste a todas las sesiones de la JD y vota en las decisiones de política institucional.</li>
+    </ul>
+    <p style="font-size:.9rem;margin-top:10px"><strong>Tarea:</strong></p>
+    <ul>
+      <li>Identifiquen qué norma se está violando en cada situación.</li>
+      <li>Señalen a qué universo pertenece cada órgano involucrado.</li>
+      <li>Propongan cómo debería corregirse cada situación con base en la ley.</li>
+    </ul>
+    <div style="margin-top:10px;font-size:.82rem;color:var(--gris2)">
+      <strong>Base legal sugerida:</strong>
+      <span class="art-link az">Art. 29 LCH</span><span class="art-link az">Art. 31 LCH</span><span class="art-link az">Art. 32 LCH</span><span class="art-link az">Art. 33 LCH</span><span class="art-link">Art. 72 RLCH</span><span class="art-link">Art. 73 RLCH</span><span class="art-link">Art. 79 RLCH</span><span class="art-link">Art. 85 RLCH</span>
+    </div>
+  </div>
+
+  <div class="act-card">
+    <div class="act-head">🧩 Actividad 2 — Individual: "Mapa de competencias"</div>
+    <p style="font-size:.9rem;color:var(--gris2);margin-bottom:10px">Duración estimada: 15 minutos</p>
+    <p style="font-size:.9rem;margin-bottom:8px">Complete el cuadro siguiente asignando cada acción al órgano que corresponde según la ley. Luego compare con un compañero.</p>
+    <ul>
+      <li>Nombrar al Gerente General → ¿quién lo hace?</li>
+      <li>Elegir a la Junta Directiva → ¿quién lo hace?</li>
+      <li>Fiscalizar el cumplimiento del estatuto → ¿quién lo hace?</li>
+      <li>Aprobar el presupuesto anual → ¿quién lo hace?</li>
+      <li>Administrar el Fondo de Educación → ¿quién lo hace?</li>
+      <li>Custodiar los libros legales de la cooperativa → ¿quién lo hace?</li>
+      <li>Destituir a un empleado de la cooperativa → ¿quién lo hace?</li>
+    </ul>
+    <div style="margin-top:10px;font-size:.82rem;color:var(--gris2)">
+      <strong>Base legal:</strong>
+      <span class="art-link az">Art. 22 LCH</span><span class="art-link az">Art. 26 LCH</span><span class="art-link az">Art. 29-A LCH</span><span class="art-link az">Art. 31 LCH</span><span class="art-link">Art. 85 RLCH</span><span class="art-link">Art. 125 LCH</span>
+    </div>
+  </div>
+
+  <div class="act-card">
+    <div class="act-head">🧩 Actividad 3 — Discusión grupal: "Los dos universos en la práctica"</div>
+    <p style="font-size:.9rem;color:var(--gris2);margin-bottom:10px">Duración estimada: 20 minutos</p>
+    <p style="font-size:.9rem;margin-bottom:8px">Reflexionen como grupo sobre las siguientes preguntas y registren sus conclusiones:</p>
+    <ul>
+      <li>En su cooperativa o en una que conozcan, ¿se respeta en la práctica la separación entre universo político y empresarial?</li>
+      <li>¿Qué ventajas trae mantener esa separación? ¿Qué riesgos genera cuando se borra?</li>
+      <li>¿Cómo debería articularse la Gerencia con la JD sin que la JD invada funciones ejecutivas?</li>
+    </ul>
+  </div>
+
+</div><!-- fin tap-act -->
+
+<!-- ══════════════════════ TAB 3: VERIFICAR COMPRENSIÓN ══════════════════════ -->
+<div class="mt-panel" id="tap-ver">
+
+  <h2 class="sh">Verificación de comprensión</h2>
+  <p class="tx">Seleccione la respuesta correcta y presione "Verificar" para ver la explicación y la base legal.</p>
+
+  <div class="quiz">
+
+    <!-- P1 -->
+    <div class="qitem" id="q1">
+      <div class="qp">1. ¿Cuál es la máxima autoridad dentro de una cooperativa?</div>
+      <div class="opts">
+        <label><input type="radio" name="q1" value="a"> La Junta Directiva</label>
+        <label><input type="radio" name="q1" value="b"> La Gerencia General</label>
+        <label><input type="radio" name="q1" value="c"> La Asamblea General</label>
+        <label><input type="radio" name="q1" value="d"> La Junta de Vigilancia</label>
+      </div>
+      <button class="qbtn" onclick="chk('q1','c','La Asamblea General es la máxima autoridad de la cooperativa. Sus decisiones obligan a todos los demás órganos, incluyendo la JD y la JV, que son electas por ella.','Art. 22 LCH')">Verificar</button>
+      <div class="feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- P2 -->
+    <div class="qitem" id="q2">
+      <div class="qp">2. ¿Quién nombra al Gerente General de una cooperativa?</div>
+      <div class="opts">
+        <label><input type="radio" name="q2" value="a"> La Asamblea General de afiliados</label>
+        <label><input type="radio" name="q2" value="b"> La Junta Directiva</label>
+        <label><input type="radio" name="q2" value="c"> La Junta de Vigilancia</label>
+        <label><input type="radio" name="q2" value="d"> El Comité de Educación</label>
+      </div>
+      <button class="qbtn" onclick="chk('q2','b','Es atribución expresa de la Junta Directiva nombrar y remover al Gerente General. Esto refuerza la relación jerárquica entre el universo político (JD) y el universo empresarial (Gerencia).','Art. 31 LCH · Art. 29-A LCH')">Verificar</button>
+      <div class="feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- P3 -->
+    <div class="qitem" id="q3">
+      <div class="qp">3. Verdadero o Falso: La Junta de Vigilancia depende jerárquicamente de la Junta Directiva.</div>
+      <div class="opts">
+        <label><input type="radio" name="q3" value="a"> Verdadero</label>
+        <label><input type="radio" name="q3" value="b"> Falso</label>
+      </div>
+      <button class="qbtn" onclick="chk('q3','b','FALSO. La Junta de Vigilancia es electa directamente por la Asamblea General y tiene presupuesto propio aprobado por la Asamblea. Su independencia funcional respecto a la JD es un requisito para garantizar una fiscalización efectiva.','Art. 32 LCH · Art. 34 LCH · Art. 81 RLCH')">Verificar</button>
+      <div class="feedback" id="q3-fb"></div>
+    </div>
+
+    <!-- P4 -->
+    <div class="qitem" id="q4">
+      <div class="qp">4. ¿Qué artículo del Reglamento regula las atribuciones propias de la Gerencia General?</div>
+      <div class="opts">
+        <label><input type="radio" name="q4" value="a"> Art. 68 RLCH</label>
+        <label><input type="radio" name="q4" value="b"> Art. 72 RLCH</label>
+        <label><input type="radio" name="q4" value="c"> Art. 85 RLCH</label>
+        <label><input type="radio" name="q4" value="d"> Art. 79 RLCH</label>
+      </div>
+      <button class="qbtn" onclick="chk('q4','c','El Art. 85 RLCH regula las funciones y atribuciones propias de la Gerencia General. Nótese que la Gerencia no solo ejecuta acuerdos de la JD, sino que tiene atribuciones propias definidas en la ley.','Art. 85 RLCH')">Verificar</button>
+      <div class="feedback" id="q4-fb"></div>
+    </div>
+
+    <!-- P5 -->
+    <div class="qitem" id="q5">
+      <div class="qp">5. Verdadero o Falso: Un directivo puede eximirse de responsabilidad solidaria mediante una salvedad de voto registrada en acta.</div>
+      <div class="opts">
+        <label><input type="radio" name="q5" value="a"> Verdadero</label>
+        <label><input type="radio" name="q5" value="b"> Falso</label>
+      </div>
+      <button class="qbtn" onclick="chk('q5','a','VERDADERO. El Art. 30 LCH establece el mecanismo de salvedad de voto: un directivo que esté en desacuerdo con una decisión puede registrar expresamente su oposición en el acta, quedando exento de la responsabilidad solidaria que genera esa decisión.','Art. 29 LCH · Art. 30 LCH')">Verificar</button>
+      <div class="feedback" id="q5-fb"></div>
+    </div>
+
+  </div>
+</div><!-- fin tap-ver -->
+
+<!-- ══════════════════════ TAB 4: EVALUACIÓN ══════════════════════ -->
+<div class="mt-panel" id="tap-eva">
+
+  <h2 class="sh">Evaluación — Casos aplicados</h2>
+  <p class="tx">Lea cada caso o pregunta con detenimiento. Presione "Ver respuesta" para ver la justificación completa con base legal.</p>
+
+  <div class="quiz">
+
+    <!-- CASO 1 -->
+    <div class="qitem" id="e1">
+      <div class="qp">Caso 1. La presidenta de la Junta Directiva llama directamente a la jefa de crédito para pedirle que apruebe un préstamo urgente a un afiliado, sin pasar por la Gerencia General. ¿Esta acción es correcta? ¿Por qué?</div>
+      <div class="opts">
+        <label><input type="radio" name="e1" value="a"> Sí, porque la JD tiene autoridad sobre toda la cooperativa.</label>
+        <label><input type="radio" name="e1" value="b"> No, porque la JD invade las competencias del universo empresarial.</label>
+        <label><input type="radio" name="e1" value="c"> Sí, si el caso es urgente la JD puede actuar directamente.</label>
+        <label><input type="radio" name="e1" value="d"> No aplica, depende del estatuto de cada cooperativa.</label>
+      </div>
+      <button class="qbtn" onclick="chk('e1','b','INCORRECTO. La JD ejerce su autoridad sobre el universo empresarial a través de la Gerencia General, no directamente sobre el personal. Al saltarse a la Gerencia, la JD: (1) viola el principio de cadena de mando, (2) debilita la autoridad del Gerente, (3) asume responsabilidades operativas que no le corresponden. Las decisiones de crédito individuales son atribuciones ejecutivas. La JD define políticas; la Gerencia las ejecuta.','Art. 29-A LCH · Art. 31 LCH · Art. 85 RLCH')">Ver respuesta</button>
+      <div class="feedback" id="e1-fb"></div>
+    </div>
+
+    <!-- CASO 2 -->
+    <div class="qitem" id="e2">
+      <div class="qp">Caso 2. La Junta de Vigilancia descubre que la Gerencia ocultó resultados de una auditoría interna. La JV decide no reportarlo a la Asamblea General para "no crear conflictos". ¿Qué consecuencias legales tiene esta omisión?</div>
+      <div class="opts">
+        <label><input type="radio" name="e2" value="a"> Ninguna, si la JV decide no actuar es su prerrogativa.</label>
+        <label><input type="radio" name="e2" value="b"> La JV incurre en responsabilidad solidaria con la Junta Directiva.</label>
+        <label><input type="radio" name="e2" value="c"> Solo el Gerente es responsable, no la JV.</label>
+        <label><input type="radio" name="e2" value="d"> La JV puede ser multada pero no destituida.</label>
+      </div>
+      <button class="qbtn" onclick="chk('e2','b','La omisión de la JV tiene consecuencias legales directas. El Art. 32 LCH establece que la Junta de Vigilancia será solidariamente responsable con la Junta Directiva cuando hubiere omisión o negligencia en el cumplimiento de sus funciones. Al no reportar las irregularidades, la JV traiciona su mandato fiscalizador y responde jurídicamente junto a la JD. Además, el Art. 79 RLCH obliga a la JV a presentar un Plan Operativo Anual y el Art. 80 RLCH exige un Informe de Resultados.','Art. 32 LCH · Art. 79 RLCH · Art. 80 RLCH')">Ver respuesta</button>
+      <div class="feedback" id="e2-fb"></div>
+    </div>
+
+    <!-- CASO 3 -->
+    <div class="qitem" id="e3">
+      <div class="qp">Caso 3. Un afiliado es electo como miembro de la Junta Directiva. Simultáneamente es empleado del departamento de crédito de la misma cooperativa. ¿Es esto problemático desde el punto de vista de la gobernabilidad?</div>
+      <div class="opts">
+        <label><input type="radio" name="e3" value="a"> No, cualquier afiliado puede ser directivo, incluyendo empleados.</label>
+        <label><input type="radio" name="e3" value="b"> Sí, genera un conflicto de interés estructural entre universos.</label>
+        <label><input type="radio" name="e3" value="c"> Solo es problema si él mismo vota en asuntos que le afectan.</label>
+        <label><input type="radio" name="e3" value="d"> No aplica, cada cooperativa decide según su estatuto.</label>
+      </div>
+      <button class="qbtn" onclick="chk('e3','b','Sí es problemático. Esta situación genera un conflicto de interés estructural: como empleado, la persona está subordinada a la Gerencia General (universo empresarial); como directivo, participa en decisiones de política institucional incluyendo las que afectan su cargo de empleado (universo político). El Art. 74 RLCH regula el conflicto de interés. La mayoría de estatutos cooperativos y buenas prácticas de gobernabilidad prohíben o limitan estrictamente esta doble condición.','Art. 74-75 RLCH · Art. 28 LCH')">Ver respuesta</button>
+      <div class="feedback" id="e3-fb"></div>
+    </div>
+
+  </div>
+</div><!-- fin tap-eva -->
+
+<!-- ══════════════════════ TAB 5: RECURSOS ADICIONALES ══════════════════════ -->
+<div class="mt-panel" id="tap-rec">
+
+  <h2 class="sh">Recursos adicionales</h2>
+  <p class="tx">Materiales de consulta y normativa relevante para profundizar en el tema.</p>
+
+  <div class="rec-item">
+    <button class="rec-trigger" onclick="tRec(this)"><span>⚖️ Artículos clave — Ley de Cooperativas de Honduras (LCH)</span><span class="ri">+</span></button>
+    <div class="rec-body">
+      <ul>
+        <li><strong>Art. 20:</strong> Organización y gobierno cooperativo.</li>
+        <li><strong>Art. 22–25:</strong> Asamblea General: autoridad, atribuciones, quórum.</li>
+        <li><strong>Art. 26:</strong> Integración de la Junta Directiva.</li>
+        <li><strong>Art. 28:</strong> Requisitos para ser cuerpo directivo.</li>
+        <li><strong>Art. 29–30:</strong> Responsabilidad solidaria y salvedad de voto.</li>
+        <li><strong>Art. 29-A:</strong> Atribuciones de la Junta Directiva.</li>
+        <li><strong>Art. 31:</strong> Nombramiento del Gerente General.</li>
+        <li><strong>Art. 32–34:</strong> Junta de Vigilancia: constitución, atribuciones, presupuesto.</li>
+        <li><strong>Art. 36–37:</strong> Libros legales obligatorios.</li>
+        <li><strong>Art. 80:</strong> Pérdida de calidad de afiliado.</li>
+      </ul>
+      <div class="arts">
+        <span class="art-link az">LCH Título II, Cap. I, Sección Tercera</span>
+        <span class="art-link az">Administración y Vigilancia (pag. 8)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <button class="rec-trigger" onclick="tRec(this)"><span>⚖️ Artículos clave — Reglamento de la LCH (RLCH)</span><span class="ri">+</span></button>
+    <div class="rec-body">
+      <ul>
+        <li><strong>Art. 67–68:</strong> Dirección de las cooperativas e integración de la JD.</li>
+        <li><strong>Art. 70–71:</strong> Sesiones y delegación en la JD.</li>
+        <li><strong>Art. 72–73:</strong> Comités obligatorios e informes.</li>
+        <li><strong>Art. 74–75:</strong> Conflicto de interés e impugnación.</li>
+        <li><strong>Art. 76–81:</strong> Junta de Vigilancia: integración, POA, informe.</li>
+        <li><strong>Art. 82:</strong> Compensación de directivos.</li>
+        <li><strong>Art. 83–84:</strong> Responsabilidad solidaria y dimitencia.</li>
+        <li><strong>Art. 85–90:</strong> Gerencia General: funciones, cauciones, libros.</li>
+        <li><strong>Art. 110–112:</strong> Vacación del cargo, traspaso de funciones, administración provisional.</li>
+      </ul>
+      <div class="arts">
+        <span class="art-link">RLCH con reformas Acuerdo 015-2021 · La Gaceta No. 35,563</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <button class="rec-trigger" onclick="tRec(this)"><span>📘 Documentos institucionales CHC recomendados</span><span class="ri">+</span></button>
+    <div class="rec-body">
+      <ul>
+        <li><em>Funciones de los Cuerpos Directivos 2.0</em> — CHC. Detalla la integración y atribuciones de JD, JV y Gerencia.</li>
+        <li><em>Gobernabilidad en las Cooperativas</em> — CHC. Marco conceptual sobre jerarquía, contrapesos y patologías de gobernabilidad.</li>
+        <li><em>Manual de Gobernabilidad Cooperativa ELGA</em> — Roles del equipo gerencial y su relación con los cuerpos directivos.</li>
+        <li><em>Manual de Cooperativismo Básico</em> — Miriam Mejía / ELGA. Base conceptual de la estructura orgánica.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rec-item">
+    <button class="rec-trigger" onclick="tRec(this)"><span>🧠 Conceptos relacionados para estudio posterior</span><span class="ri">+</span></button>
+    <div class="rec-body">
+      <ul>
+        <li><strong>Gobernabilidad cooperativa:</strong> articulación efectiva entre los órganos para tomar decisiones legítimas y ejecutarlas.</li>
+        <li><strong>Conflicto de interés:</strong> situación en que los intereses personales de un directivo o funcionario colisionan con los institucionales (Art. 74–75 RLCH).</li>
+        <li><strong>Responsabilidad fiduciaria:</strong> obligación de actuar en interés de los afiliados, no en beneficio propio.</li>
+        <li><strong>Dimitencia:</strong> destitución de un cuerpo directivo por causas establecidas en la ley (Art. 84 RLCH).</li>
+        <li><strong>Caución:</strong> garantía patrimonial que debe prestar el Gerente General antes de asumir funciones (Art. 86–87 RLCH).</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- fin tap-rec -->
+
+<!-- ══════════════════════ TAB 6: ANÁLISIS CRÍTICO ══════════════════════ -->
+<div class="mt-panel" id="tap-ana">
+
+  <h2 class="sh">Análisis crítico</h2>
+  <p class="tx">Preguntas abiertas para la reflexión y toma de decisiones en contexto cooperativo. Haga clic en cada tarjeta para revelar la orientación de análisis.</p>
+
+  <div class="pgrid">
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">01</div>
+      <div class="pp">¿Puede la Junta Directiva dar instrucciones operativas directamente al personal empleado, saltándose a la Gerencia?</div>
+      <div class="pr">No debería. La línea de mando del universo empresarial pasa por la Gerencia. Al saltarse ese nivel, la JD: debilita la autoridad gerencial, genera confusión en la cadena de mando y asume responsabilidades operativas que no le corresponden. La JD dirige <em>a través del Gerente</em>, no sobre él ni sobre su personal.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">02</div>
+      <div class="pp">¿Qué ocurre institucionalmente cuando la Junta de Vigilancia descubre irregularidades pero no reporta para "no crear conflictos"?</div>
+      <div class="pr">Incurre en omisión con consecuencias legales. El Art. 32 LCH establece responsabilidad solidaria para la JV ante omisión o negligencia. Su silencio daña directamente a los afiliados y al sistema de contrapesos. La paz institucional no puede mantenerse a costa de la legalidad.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">03</div>
+      <div class="pp">¿Por qué la ley obliga al Gerente a prestar caución antes de asumir? ¿Qué dice esto sobre la naturaleza de su cargo?</div>
+      <div class="pr">La caución (Arts. 86–87 RLCH) revela que la Gerencia administra recursos de los afiliados, no propios. Es una garantía patrimonial previa a la toma de posesión. Refleja el principio de <em>responsabilidad fiduciaria</em>: el Gerente actúa en interés de la cooperativa y sus afiliados, y responde patrimonialmente si falla en ese deber.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">04</div>
+      <div class="pp">¿Qué implicaciones prácticas tiene que los comités pertenezcan al universo político y no al empresarial?</div>
+      <div class="pr">Los comités son órganos de participación democrática: sus integrantes no son empleados, contribuyen voluntariamente, y sus recomendaciones van a la JD —no a la Gerencia. Si un comité comenzara a instruir al personal o a aprobar contratos, estaría invadiendo el universo empresarial y generando una patología grave de gobernabilidad.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">05</div>
+      <div class="pp">En la cooperativa que usted conoce, ¿existe claridad real sobre dónde termina el universo político y dónde comienza el empresarial?</div>
+      <div class="pr">Indicadores de problema: directivos que participan en decisiones de crédito individuales, gerentes que votan en sesiones de JD, comités que emiten instrucciones al personal, JV que valida decisiones en lugar de fiscalizarlas. La claridad en esta frontera es un indicador concreto de madurez institucional y de gobernabilidad efectiva.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+    <div class="pcard" onclick="this.classList.toggle('on')">
+      <div class="pn">06</div>
+      <div class="pp">¿Qué riesgos institucionales se generan cuando los cuerpos directivos no conocen con precisión sus propias atribuciones?</div>
+      <div class="pr">El desconocimiento genera tres riesgos principales: (1) invasión de competencias entre órganos; (2) vacíos de autoridad donde nadie actúa porque nadie sabe a quién le corresponde; (3) responsabilidades legales asumidas sin saberlo. La ley no exime de responsabilidad por desconocimiento. De ahí la importancia de la formación continua en gobernabilidad.</div>
+      <div class="ph">↓ Clic para ver orientación</div>
+    </div>
+
+  </div>
+</div><!-- fin tap-ana -->
+
+</div><!-- fin main-tabs -->
+</div><!-- fin wrap -->
+
+<footer>
+  <strong style="color:var(--verde)">Confederación Hondureña de Cooperativas · CHC</strong> &nbsp;|&nbsp; Módulo educativo basado en la Ley de Cooperativas de Honduras y su Reglamento &nbsp;|&nbsp; Uso formativo
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ---- TABS PRINCIPALES ---- */
+function mTab(e, id) {
+  document.querySelectorAll('.mt-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.mt-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  e.currentTarget.classList.add('on');
+  setTimeout(drawLines, 80);
+}
+
+/* ---- ACORDEÓN APRENDIZAJE ---- */
+function ta(trigger) {
+  const body = trigger.nextElementSibling;
+  const isOpen = trigger.classList.contains('on');
+  document.querySelectorAll('.atr').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.abd').forEach(b=>b.classList.remove('on'));
+  if (!isOpen) { trigger.classList.add('on'); body.classList.add('on'); }
+}
+
+/* ---- RECURSOS ---- */
+function tRec(trigger) {
+  const body = trigger.nextElementSibling;
+  const isOpen = trigger.classList.contains('on');
+  document.querySelectorAll('.rec-trigger').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.rec-body').forEach(b=>b.classList.remove('on'));
+  if (!isOpen) { trigger.classList.add('on'); body.classList.add('on'); }
+}
+
+/* ---- QUIZ ---- */
+function chk(id, correct, explanation, base) {
+  const item = document.getElementById(id);
+  const sel = item.querySelector('input[name="'+id+'"]:checked');
+  const fb = document.getElementById(id+'-fb');
+  if (!sel) { fb.style.display='block'; fb.className='feedback'; fb.innerHTML='<strong>Seleccione una opción antes de verificar.</strong>'; return; }
+  const ok = sel.value === correct;
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (ok ? 'ok' : 'err');
+  fb.innerHTML = (ok ? '<strong>✔ Correcto.</strong> ' : '<strong>✗ Incorrecto.</strong> ') + explanation + '<div class="bl">📌 Base legal: ' + base + '</div>';
+  item.querySelectorAll('input').forEach(i=>i.disabled=true);
+  item.querySelector('.qbtn').disabled=true;
+}
+
+/* ---- DATOS PANEL ORGANIGRAMA ---- */
+const DD = {
+  ag:{ t:'Asamblea General', az:true, c:`<strong>Máxima autoridad de la cooperativa.</strong><ul><li>Integrada por todos los afiliados activos con derecho a voz y voto.</li><li>Elige a la Junta Directiva y a la Junta de Vigilancia.</li><li>Aprueba estados financieros, distribución de excedentes y reformas estatutarias.</li><li>Sus decisiones obligan a todos los órganos.</li></ul><div class="tags"><span class="rt az">Art. 22 LCH</span><span class="rt az">Art. 24 LCH</span><span class="rt az">Art. 25 LCH</span></div>`},
+  jd:{ t:'Junta Directiva', az:true, c:`<strong>Órgano de dirección política y administrativa.</strong><ul><li>Electa por la Asamblea General (Art. 26 LCH).</li><li>Integrada por: Presidencia, Vicepresidencia, Secretaría, Tesorería, Vocalías y Suplencias.</li><li>Nombra y remueve al Gerente General (Art. 31 LCH).</li><li>Crea y supervisa los comités obligatorios (Art. 72 RLCH).</li><li>Responde solidariamente por sus actos colectivos (Art. 29 LCH).</li></ul><div class="tags"><span class="rt az">Art. 26 LCH</span><span class="rt az">Art. 29-A LCH</span><span class="rt az">Art. 68 RLCH</span><span class="rt az">Art. 71 RLCH</span></div>`},
+  jv:{ t:'Junta de Vigilancia', az:true, c:`<strong>Órgano fiscalizador, independiente de la JD.</strong><ul><li>Electa por la Asamblea General (Art. 32 LCH).</li><li>Número impar, mínimo 3, máximo 7, más un suplente.</li><li>Puestos: Presidencia, Secretaría, Vocalías y Suplencia.</li><li>Tiene presupuesto propio aprobado por la Asamblea (Art. 34 LCH).</li><li>Responsabilidad solidaria con la JD ante omisión o negligencia (Art. 32 LCH).</li></ul><div class="tags"><span class="rt az">Art. 32 LCH</span><span class="rt az">Art. 33 LCH</span><span class="rt az">Art. 76 RLCH</span><span class="rt az">Art. 79–81 RLCH</span></div>`},
+  ce:{ t:'Comité de Educación', az:true, c:`<strong>Comité obligatorio. Auxiliar de la Junta Directiva.</strong><ul><li>Presidido por la Vicepresidencia de la JD.</li><li>Administra el Fondo de Educación Cooperativa.</li><li>Integrado por afiliados nombrados por la JD.</li><li>Rinde informe periódico a la JD (Art. 73 RLCH).</li></ul><div class="tags"><span class="rt az">Art. 72 RLCH</span><span class="rt az">Art. 73 RLCH</span><span class="rt az">Art. 125 LCH</span></div>`},
+  cg:{ t:'Comité de Género', az:true, c:`<strong>Comité obligatorio. Auxiliar de la Junta Directiva.</strong><ul><li>Promueve la participación equitativa de afiliadas en todos los órganos.</li><li>Integrado por afiliadas y afiliados nombrados por la JD.</li><li>Rinde informe periódico a la JD (Art. 73 RLCH).</li></ul><div class="tags"><span class="rt az">Art. 72 RLCH</span><span class="rt az">Art. 73 RLCH</span></div>`},
+  cj:{ t:'Comité de Juventud', az:true, c:`<strong>Comité obligatorio. Auxiliar de la Junta Directiva.</strong><ul><li>Fomenta la integración y participación de afiliados jóvenes.</li><li>Integrado por afiliados jóvenes nombrados por la JD.</li><li>Rinde informe periódico a la JD (Art. 73 RLCH).</li></ul><div class="tags"><span class="rt az">Art. 72 RLCH</span><span class="rt az">Art. 73 RLCH</span></div>`},
+  gg:{ t:'Gerencia General', az:false, c:`<strong>Cabeza del universo empresarial. Nombrada por la JD.</strong><ul><li>Ejecuta los acuerdos y resoluciones de la JD.</li><li>Tiene atribuciones propias de ley, no solo funciones delegadas (Art. 85 RLCH).</li><li>Vela por la custodia de libros y registros legales (Art. 36–37 LCH).</li><li>Debe prestar caución antes de asumir funciones (Art. 86–87 RLCH).</li><li>Al cesar, entrega formalmente sellos y libros de actas (Art. 111 RLCH).</li></ul><div class="tags"><span class="rt">Art. 31 LCH</span><span class="rt">Art. 85 RLCH</span><span class="rt">Art. 86–87 RLCH</span><span class="rt">Art. 111 RLCH</span></div>`},
+  ga:{ t:'Gerencias de Área / Departamentos', az:false, c:`<strong>Estructura administrativa bajo la Gerencia General.</strong><ul><li>Puede incluir: Financiera, Crédito, Operaciones, RRHH, Tecnología, etc.</li><li>Su estructura la define cada cooperativa en su estatuto.</li><li>Reciben instrucciones de la Gerencia, no directamente de la JD.</li><li>Todo el personal empleado pertenece al universo empresarial.</li></ul><div class="tags"><span class="rt">Art. 85 RLCH</span></div>`},
+  ai:{ t:'Auditoría Interna', az:false, c:`<strong>Caso especial: articulación entre universos.</strong><ul><li>Operativamente pertenece al universo empresarial.</li><li>Reporta funcionalmente a la Junta de Vigilancia (universo político).</li><li>Ilustra la necesaria articulación entre ambos universos para garantizar el control interno.</li></ul><div class="tags"><span class="rt">Art. 79 RLCH</span></div>`}
+};
+
+let curBox = null;
+function sd(id) {
+  const panel = document.getElementById('detPanel');
+  const cont = document.getElementById('detCont');
+  const box = document.getElementById('b-'+id);
+  const d = DD[id];
+  if (curBox === box && panel.classList.contains('on')) { cd(); return; }
+  if (curBox) curBox.classList.remove('sel');
+  curBox = box; box.classList.add('sel');
+  panel.className = 'det-panel on' + (d.az ? ' az' : '');
+  cont.innerHTML = '<h3>'+d.t+'</h3>'+d.c;
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function cd() {
+  document.getElementById('detPanel').classList.remove('on');
+  if (curBox) { curBox.classList.remove('sel'); curBox = null; }
+}
+
+/* ---- LÍNEAS SVG ---- */
+function drawLines() {
+  const ow = document.getElementById('ow');
+  if (!ow) return;
+  const svg = document.getElementById('osvg');
+  svg.setAttribute('width', ow.offsetWidth);
+  svg.setAttribute('height', ow.offsetHeight);
+  svg.innerHTML = '';
+
+  function cx(id) {
+    const el = document.getElementById('b-'+id);
+    if (!el) return null;
+    const er = el.getBoundingClientRect();
+    const or = ow.getBoundingClientRect();
+    return { x: er.left-or.left+er.width/2, y0: er.top-or.top, y1: er.top-or.top+er.height, x0: er.left-or.left, x1: er.left-or.left+er.width };
+  }
+  function L(x1,y1,x2,y2,dash,col) {
+    const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1);
+    l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    l.setAttribute('stroke',col||'#888'); l.setAttribute('stroke-width','2');
+    if(dash) l.setAttribute('stroke-dasharray','6,4');
+    svg.appendChild(l);
+  }
+  function P(d,dash,col) {
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',d); p.setAttribute('stroke',col||'#888');
+    p.setAttribute('stroke-width','2'); p.setAttribute('fill','none');
+    if(dash) p.setAttribute('stroke-dasharray','6,4');
+    svg.appendChild(p);
+  }
+
+  const ag=cx('ag'), jd=cx('jd'), jv=cx('jv');
+  const ce=cx('ce'), cg=cx('cg'), cj=cx('cj');
+  const gg=cx('gg'), ga=cx('ga'), ai=cx('ai');
+  if (!ag||!jd||!jv||!ce||!cg||!cj||!gg||!ga||!ai) return;
+
+  const m1 = (ag.y1+jd.y0)/2;
+  L(ag.x,ag.y1,ag.x,m1,false,'#1c4a6b');
+  P('M'+ag.x+' '+m1+' H'+jd.x+' V'+jd.y0,false,'#1c4a6b');
+  P('M'+ag.x+' '+m1+' H'+jv.x+' V'+jv.y0,false,'#1c4a6b');
+
+  const m2 = (jd.y1+ce.y0)/2;
+  L(jd.x,jd.y1,jd.x,m2,false,'#1c4a6b');
+  P('M'+jd.x+' '+m2+' H'+ce.x+' V'+ce.y0,false,'#1c4a6b');
+  P('M'+jd.x+' '+m2+' H'+gg.x+' V'+gg.y0,false,'#1c4a6b');
+  L(ce.x,ce.y1,ce.x,cg.y0,false,'#1c4a6b');
+  L(ce.x,cg.y1,ce.x,cj.y0,false,'#1c4a6b');
+
+  L(gg.x,gg.y1,gg.x,ga.y0,false,'#1c6b4a');
+  L(ga.x,ga.y1,ga.x,ai.y0,false,'#1c6b4a');
+
+  const fx = jv.x1+22;
+  const ay = ai.y0+(ai.y1-ai.y0)/2;
+  P('M'+jv.x+' '+jv.y1+' V'+(jv.y1+12)+' H'+fx+' V'+ay+' H'+ai.x1,true,'#3d7ab5');
+}
+
+window.addEventListener('load',  ()=>{ setTimeout(drawLines,120); });
+window.addEventListener('resize', drawLines);
+</script>
+</body>
+</html>

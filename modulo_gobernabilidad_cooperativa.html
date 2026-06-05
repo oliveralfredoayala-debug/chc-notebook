@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gobernabilidad Cooperativa — Módulo CHC</title>
+<style>
+  :root {
+    --verde: #1c6b4a;
+    --verde-claro: #e8f2ed;
+    --verde-borde: #b5d5c5;
+    --texto: #1a1a1a;
+    --texto-suave: #4a4a4a;
+    --borde: #d8d8d8;
+    --fondo: #ffffff;
+    --amarillo-legal: #fffbea;
+    --amarillo-borde: #e2c84b;
+    --rojo-alerta: #c0392b;
+    --gris-fondo: #f7f7f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    color: var(--texto);
+    background: var(--fondo);
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 3px solid var(--verde);
+    padding: 20px 24px 16px;
+    background: #fff;
+  }
+  .header-meta {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--verde);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--texto);
+    line-height: 1.3;
+  }
+  .header-sub {
+    font-size: 14px;
+    color: var(--texto-suave);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* BLOQUE INICIAL */
+  .bloque-inicial {
+    background: var(--verde-claro);
+    border-left: 4px solid var(--verde);
+    padding: 20px 24px;
+    margin: 0;
+  }
+  .bloque-inicial h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--verde);
+    margin-bottom: 14px;
+    font-family: 'Courier New', monospace;
+  }
+  .bloque-inicial ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 18px;
+  }
+  .bloque-inicial ul li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 15px;
+    border-bottom: 1px solid var(--verde-borde);
+  }
+  .bloque-inicial ul li:last-child { border-bottom: none; }
+  .bloque-inicial ul li::before {
+    content: "▸";
+    color: var(--verde);
+    position: absolute;
+    left: 0;
+  }
+  .andamiaje {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .andamiaje-bloque {
+    background: #fff;
+    border: 1px solid var(--verde-borde);
+    padding: 14px 16px;
+  }
+  .andamiaje-bloque h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--verde);
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+  }
+  .andamiaje-bloque p, .andamiaje-bloque li {
+    font-size: 14px;
+    color: var(--texto-suave);
+    line-height: 1.6;
+  }
+  .andamiaje-bloque ul { list-style: none; padding: 0; }
+  .andamiaje-bloque ul li { padding: 3px 0 3px 14px; position: relative; }
+  .andamiaje-bloque ul li::before { content: "●"; color: var(--verde); position: absolute; left: 0; font-size: 8px; top: 8px; }
+
+  /* TABS */
+  .tabs-nav {
+    display: flex;
+    border-bottom: 2px solid var(--borde);
+    background: var(--gris-fondo);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 8px;
+  }
+  .tab-btn {
+    padding: 13px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    color: var(--texto-suave);
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    min-height: 44px;
+  }
+  .tab-btn:hover { color: var(--verde); }
+  .tab-btn.active {
+    color: var(--verde);
+    border-bottom-color: var(--verde);
+    font-weight: bold;
+  }
+
+  .tab-panel { display: none; padding: 24px; }
+  .tab-panel.active { display: block; }
+
+  /* SECCIONES GENERALES */
+  .seccion {
+    margin-bottom: 8px;
+    border: 1px solid var(--borde);
+  }
+  .seccion-titulo {
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gris-fondo);
+    user-select: none;
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 44px;
+  }
+  .seccion-titulo:hover { background: var(--verde-claro); }
+  .seccion-titulo .arrow {
+    font-size: 12px;
+    color: var(--verde);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .seccion-titulo.open .arrow { transform: rotate(180deg); }
+  .seccion-cuerpo {
+    padding: 18px 20px;
+    display: none;
+    border-top: 1px solid var(--borde);
+  }
+  .seccion-cuerpo.open { display: block; }
+
+  /* LEGAL BOX */
+  .legal {
+    background: var(--amarillo-legal);
+    border-left: 3px solid var(--amarillo-borde);
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+  .legal strong { color: #7a6200; }
+
+  /* TABLA COMPARATIVA */
+  .tabla-comparativa {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+  .tabla-comparativa th {
+    background: var(--verde);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+  }
+  .tabla-comparativa td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: top;
+  }
+  .tabla-comparativa tr:nth-child(even) td { background: var(--gris-fondo); }
+
+  /* TARJETAS TRILOGÍA */
+  .trilogia {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .tarjeta-concepto {
+    border: 1px solid var(--borde);
+    overflow: hidden;
+  }
+  .tarjeta-concepto .tc-header {
+    background: var(--verde);
+    color: #fff;
+    padding: 12px 14px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .tarjeta-concepto .tc-body {
+    padding: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .tarjeta-concepto .tc-analogia {
+    background: var(--verde-claro);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--verde);
+    border-top: 1px solid var(--verde-borde);
+  }
+
+  /* DIMENSIONES */
+  .dimensiones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .dim-card {
+    border: 2px solid var(--borde);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    overflow: hidden;
+  }
+  .dim-card.selected { border-color: var(--verde); }
+  .dim-card .dim-header {
+    background: var(--gris-fondo);
+    padding: 14px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+  }
+  .dim-card.selected .dim-header { background: var(--verde); color: #fff; }
+  .dim-card .dim-num {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--verde);
+    text-align: center;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .dim-card.selected .dim-num { color: #aed6bc; }
+  .dim-detalle {
+    display: none;
+    padding: 16px 18px;
+    font-size: 14px;
+    border-top: 1px solid var(--borde);
+    line-height: 1.7;
+    grid-column: 1 / -1;
+  }
+  .dim-detalle.visible { display: block; }
+
+  /* INDICADORES */
+  .indicadores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .ind-item {
+    padding: 12px 14px;
+    background: var(--verde-claro);
+    border: 1px solid var(--verde-borde);
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--verde);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROBLEMAS */
+  .problema-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borde);
+    font-size: 14px;
+    align-items: flex-start;
+  }
+  .problema-item:last-child { border-bottom: none; }
+  .problema-item .pi-num {
+    background: var(--rojo-alerta);
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* QUIZ */
+  .quiz-pregunta {
+    background: var(--gris-fondo);
+    border: 1px solid var(--borde);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .quiz-pregunta .qp-texto {
+    font-size: 15px;
+    margin-bottom: 14px;
+    font-weight: bold;
+  }
+  .quiz-opcion {
+    display: block;
+    padding: 10px 14px;
+    margin: 6px 0;
+    background: #fff;
+    border: 1px solid var(--borde);
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+    min-height: 44px;
+    transition: background 0.15s;
+  }
+  .quiz-opcion:hover { background: var(--verde-claro); }
+  .quiz-opcion.correcta { background: #d4edda; border-color: #28a745; font-weight: bold; }
+  .quiz-opcion.incorrecta { background: #f8d7da; border-color: #dc3545; }
+  .quiz-opcion.bloqueada { pointer-events: none; }
+  .quiz-feedback {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    border-left: 3px solid var(--verde);
+    background: var(--verde-claro);
+    line-height: 1.6;
+  }
+  .quiz-feedback.visible { display: block; }
+  .quiz-reset {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: var(--verde);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    min-height: 44px;
+  }
+  .quiz-reset:hover { background: #155738; }
+
+  /* VF */
+  .vf-opciones { display: flex; gap: 10px; margin: 10px 0; }
+  .vf-btn {
+    padding: 9px 20px;
+    border: 1px solid var(--borde);
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    min-height: 44px;
+    min-width: 80px;
+    transition: all 0.15s;
+  }
+  .vf-btn:hover { background: var(--verde-claro); }
+  .vf-btn.vf-correcto { background: #d4edda; border-color: #28a745; font-weight: bold; }
+  .vf-btn.vf-incorrecto { background: #f8d7da; border-color: #dc3545; }
+
+  /* ACTIVIDAD */
+  .actividad-card {
+    border: 1px solid var(--verde-borde);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .actividad-card .ac-header {
+    background: var(--verde);
+    color: #fff;
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .actividad-card .ac-body {
+    padding: 16px 20px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .situacion-card {
+    border: 1px solid var(--borde);
+    margin: 10px 0;
+    padding: 14px 16px;
+    background: #fff;
+  }
+  .situacion-card .sit-label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--verde);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .situacion-toggle {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--verde);
+    background: none;
+    color: var(--verde);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    min-height: 44px;
+  }
+  .situacion-toggle:hover { background: var(--verde-claro); }
+  .situacion-respuesta {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--verde-claro);
+    border-left: 3px solid var(--verde);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .situacion-respuesta.visible { display: block; }
+
+  /* RECURSOS */
+  .recurso-item {
+    border: 1px solid var(--borde);
+    margin-bottom: 8px;
+  }
+  .recurso-header {
+    padding: 13px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    background: var(--gris-fondo);
+    min-height: 44px;
+  }
+  .recurso-header:hover { background: var(--verde-claro); }
+  .recurso-body {
+    display: none;
+    padding: 14px 16px;
+    font-size: 14px;
+    border-top: 1px solid var(--borde);
+    line-height: 1.7;
+  }
+  .recurso-body.open { display: block; }
+
+  /* ANÁLISIS CRÍTICO */
+  .ac-pregunta {
+    border: 1px solid var(--borde);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .ac-pregunta .acp-num {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--verde);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .ac-pregunta p { font-size: 15px; font-weight: bold; margin-bottom: 12px; }
+  .ac-orientacion-btn {
+    padding: 8px 14px;
+    border: 1px solid var(--verde);
+    background: none;
+    color: var(--verde);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    min-height: 44px;
+  }
+  .ac-orientacion-btn:hover { background: var(--verde-claro); }
+  .ac-orientacion {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--amarillo-legal);
+    border-left: 3px solid var(--amarillo-borde);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .ac-orientacion.visible { display: block; }
+
+  /* EVALUACIÓN */
+  .eval-pregunta {
+    background: #fff;
+    border: 1px solid var(--borde);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .eval-pregunta .eq-caso {
+    background: var(--gris-fondo);
+    border-left: 3px solid var(--verde);
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  /* KELSEN */
+  .kelsen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .kelsen-nivel {
+    width: 100%;
+    text-align: center;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: bold;
+    border-bottom: 2px solid #fff;
+  }
+  .kelsen-nivel:nth-child(1) { background: #0d3d28; }
+  .kelsen-nivel:nth-child(2) { background: #1c6b4a; }
+  .kelsen-nivel:nth-child(3) { background: #2d9e6e; }
+  .kelsen-nivel:nth-child(4) { background: #4dc792; color: #0d3d28; }
+
+  /* PUNTAJE */
+  .puntaje-display {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--verde);
+    margin-bottom: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .trilogia { grid-template-columns: 1fr; }
+    .dimensiones { grid-template-columns: 1fr; }
+    .andamiaje { grid-template-columns: 1fr; }
+    body { font-size: 15px; }
+    .tab-btn { font-size: 12px; padding: 11px 12px; }
+    .tabla-comparativa { font-size: 12px; }
+    .tabla-comparativa th, .tabla-comparativa td { padding: 7px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-meta">📘 Módulo · Gobernabilidad Cooperativa</div>
+  <h1>Conceptos Fundamentales: Gobierno, Gobernabilidad y Gobernanza</h1>
+  <div class="header-sub">Módulo independiente · CHC · Nivel básico–intermedio</div>
+</div>
+
+<!-- BLOQUE INICIAL -->
+<div class="bloque-inicial">
+  <h2>📌 En este tema</h2>
+  <ul>
+    <li>La trilogía conceptual: Gobierno, Gobernabilidad y Gobernanza — sus diferencias y relaciones</li>
+    <li>La analogía del carro como herramienta para distinguir los tres conceptos</li>
+    <li>Las tres dimensiones del sistema de gobernabilidad cooperativa</li>
+    <li>Propiedades fundamentales y factores estructurales del buen gobierno</li>
+    <li>Indicadores que permiten evaluar si hay buena gobernanza</li>
+    <li>Problemas reales de gobernabilidad en cooperativas</li>
+  </ul>
+
+  <div class="andamiaje">
+    <div class="andamiaje-bloque">
+      <h3>🧠 Conceptos clave</h3>
+      <ul>
+        <li>Gobierno cooperativo</li>
+        <li>Gobernabilidad</li>
+        <li>Gobernanza</li>
+        <li>Dimensión jurídica, institucional y organizacional</li>
+        <li>Humanismo, propiedad conjunta, democracia</li>
+        <li>Rendición de cuentas</li>
+      </ul>
+    </div>
+    <div class="andamiaje-bloque">
+      <h3>▪ Elementos a considerar</h3>
+      <ul>
+        <li>¿Puede existir gobierno sin gobernabilidad?</li>
+        <li>¿Qué hace a una cooperativa "gobernable"?</li>
+        <li>¿Quién gobierna, qué se gobierna, cómo se gobierna?</li>
+        <li>Diferencia entre estructura y capacidad real</li>
+        <li>Sustento legal: Ley de Cooperativas de Honduras</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TABS NAV -->
+<div class="tabs-nav" id="tabs-nav">
+  <button class="tab-btn active" onclick="showTab('aprendizaje')">🧠 Aprendizaje</button>
+  <button class="tab-btn" onclick="showTab('actividades')">🧩 Actividades</button>
+  <button class="tab-btn" onclick="showTab('verificar')">✅ Verificar comprensión</button>
+  <button class="tab-btn" onclick="showTab('evaluacion')">📝 Evaluación</button>
+  <button class="tab-btn" onclick="showTab('recursos')">📚 Recursos</button>
+  <button class="tab-btn" onclick="showTab('analisis')">🔍 Análisis crítico</button>
+</div>
+
+<!-- ===== TAB: APRENDIZAJE ===== -->
+<div class="tab-panel active" id="tab-aprendizaje">
+
+  <!-- BLOQUE A -->
+  <div class="seccion">
+    <div class="seccion-titulo" onclick="toggleSeccion(this)">
+      <span>Bloque A — La trilogía conceptual: Gobierno, Gobernabilidad y Gobernanza</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="seccion-cuerpo open">
+      <p style="margin-bottom:14px; font-size:14px; color:var(--texto-suave);">Tres términos que parecen similares pero tienen significados distintos. Confundirlos lleva a errores en la práctica directiva.</p>
+
+      <div class="trilogia">
+        <div class="tarjeta-concepto">
+          <div class="tc-header">● Gobierno Cooperativo</div>
+          <div class="tc-body">El <strong>conjunto de órganos formales</strong> con competencias y responsabilidades para dirigir la cooperativa: la Asamblea General, la Junta Directiva, la Junta de Vigilancia y la Gerencia General.<br><br>Es algo <em>concreto</em>: personas e instituciones con poder asignado por ley.</div>
+          <div class="tc-analogia">👉 Pregunta clave: ¿Quiénes tienen el poder formal?</div>
+        </div>
+        <div class="tarjeta-concepto">
+          <div class="tc-header">● Gobernabilidad</div>
+          <div class="tc-body">La <strong>capacidad real</strong> de la cooperativa de ser dirigida y controlada de forma efectiva, legítima y sostenible.<br><br>No es la estructura — es si esa estructura <em>funciona</em>. Una cooperativa puede tener todos los órganos y aun así ser ingobernable.</div>
+          <div class="tc-analogia">👉 Pregunta clave: ¿Se puede gobernar bien esa cooperativa?</div>
+        </div>
+        <div class="tarjeta-concepto">
+          <div class="tc-header">● Gobernanza</div>
+          <div class="tc-body">El <strong>sistema de procesos, normas y relaciones</strong> mediante los cuales se ejerce el poder y se toman decisiones. Incluye participación democrática, transparencia y rendición de cuentas.<br><br>No solo son reglas — es la interacción de todos los actores.</div>
+          <div class="tc-analogia">👉 Pregunta clave: ¿Cómo se toman las decisiones y quiénes participan?</div>
+        </div>
+      </div>
+
+      <div class="legal">
+        <strong>⚖️ Base legal:</strong> Art. 1 LCH — el cooperativismo es declarado de necesidad nacional; Art. 20 LCH — establece los órganos de dirección; Art. 22 LCH — la Asamblea General expresa la voluntad colectiva de la cooperativa.
+      </div>
+
+      <div style="overflow-x:auto; margin-top:10px;">
+        <table class="tabla-comparativa">
+          <thead>
+            <tr>
+              <th>Término</th>
+              <th>Tipo</th>
+              <th>Pregunta que responde</th>
+              <th>Ejemplo en la cooperativa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Gobierno</strong></td>
+              <td>Sustantivo (estructura)</td>
+              <td>¿Quién tiene el poder?</td>
+              <td>Junta Directiva elegida en Asamblea</td>
+            </tr>
+            <tr>
+              <td><strong>Gobernar</strong></td>
+              <td>Verbo (acción)</td>
+              <td>¿Qué hacen quienes gobiernan?</td>
+              <td>Tomar decisiones, rendir cuentas</td>
+            </tr>
+            <tr>
+              <td><strong>Gobernabilidad</strong></td>
+              <td>Capacidad (cualidad)</td>
+              <td>¿Se puede gobernar bien?</td>
+              <td>Que las decisiones se ejecuten y sean legítimas</td>
+            </tr>
+            <tr>
+              <td><strong>Gobernanza</strong></td>
+              <td>Sistema (proceso)</td>
+              <td>¿Cómo y con quiénes?</td>
+              <td>Participación de afiliados + transparencia + control</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUE B -->
+  <div class="seccion">
+    <div class="seccion-titulo" onclick="toggleSeccion(this)">
+      <span>Bloque B — La analogía del carro</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="seccion-cuerpo">
+      <p style="font-size:14px; margin-bottom:16px; color:var(--texto-suave);">Una herramienta pedagógica para comprender los tres conceptos desde una situación cotidiana.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="tabla-comparativa">
+          <thead>
+            <tr>
+              <th>Pregunta</th>
+              <th>Concepto</th>
+              <th>En el carro</th>
+              <th>En la cooperativa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>¿Quién gobierna?</td>
+              <td><strong>Gobierno</strong></td>
+              <td>El conductor (tiene el control del vehículo)</td>
+              <td>Afiliados a través de la Asamblea, Junta Directiva y Gerencia</td>
+            </tr>
+            <tr>
+              <td>¿Qué se gobierna?</td>
+              <td><strong>Gobernabilidad</strong></td>
+              <td>El vehículo debe estar en buen estado: frenos, dirección, motor</td>
+              <td>La organización: recursos, procesos, personas, finanzas</td>
+            </tr>
+            <tr>
+              <td>¿Cómo se gobierna?</td>
+              <td><strong>Gobernanza</strong></td>
+              <td>El sistema vial: normas de tránsito, señales, otros conductores, derechos de paso</td>
+              <td>Participación democrática, transparencia, rendición de cuentas, coordinación entre órganos</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:16px; padding:14px 16px; background:var(--gris-fondo); border:1px solid var(--borde); font-size:14px; line-height:1.7;">
+        <strong>● El cooperativismo en la analogía:</strong><br>
+        El vehículo pertenece a <em>todos</em> los afiliados — es propiedad colectiva. El conductor es elegido democráticamente. Todos participan en las decisiones sobre el destino. Esto refleja el principio fundamental: <strong>propiedad colectiva + control democrático</strong>.<br><br>
+        <strong>▪ Límite de la analogía:</strong> En un carro, el conductor decide solo. En la cooperativa, las decisiones más importantes son <em>colegiadas</em>. La analogía es útil para entender los conceptos, no para copiar el modelo de un solo conductor.
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUE C -->
+  <div class="seccion">
+    <div class="seccion-titulo" onclick="toggleSeccion(this)">
+      <span>Bloque C — Las tres dimensiones del sistema de gobernabilidad</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="seccion-cuerpo">
+      <p style="font-size:14px; margin-bottom:16px; color:var(--texto-suave);">La gobernabilidad cooperativa es un sistema integral con tres dimensiones interdependientes. La debilidad en una compromete todo el sistema. Seleccioná cada dimensión para ver su contenido.</p>
+
+      <div class="dimensiones" id="dimensiones-container">
+        <div class="dim-card" onclick="selectDimension(0)" id="dim-0">
+          <div class="dim-header">
+            <span class="dim-num">DIMENSIÓN 01</span>
+            Gobernabilidad Jurídica
+          </div>
+        </div>
+        <div class="dim-card" onclick="selectDimension(1)" id="dim-1">
+          <div class="dim-header">
+            <span class="dim-num">DIMENSIÓN 02</span>
+            Gobernabilidad Institucional
+          </div>
+        </div>
+        <div class="dim-card" onclick="selectDimension(2)" id="dim-2">
+          <div class="dim-header">
+            <span class="dim-num">DIMENSIÓN 03</span>
+            Gobernabilidad Organizacional
+          </div>
+        </div>
+      </div>
+
+      <div class="dim-detalle" id="dim-detalle-0">
+        <strong>¿Bajo qué normas, con qué competencias y con qué responsabilidades?</strong><br><br>
+        Esta dimensión se refiere al <strong>marco normativo</strong> que regula la cooperativa: la Ley de Cooperativas de Honduras, su Reglamento, los estatutos y los reglamentos internos. Una cooperativa con gobernabilidad jurídica sólida conoce y aplica correctamente su base legal.<br><br>
+        <strong>Jerarquía normativa (Pirámide de Kelsen aplicada):</strong>
+        <div class="kelsen">
+          <div class="kelsen-nivel">Nivel 1 — Constitución de la República (Art. 338)</div>
+          <div class="kelsen-nivel">Nivel 2 — Ley de Cooperativas de Honduras (Decreto 65-87 y reformas)</div>
+          <div class="kelsen-nivel">Nivel 3 — Estatutos de la cooperativa</div>
+          <div class="kelsen-nivel">Nivel 4 — Reglamentos internos y decisiones de Asamblea</div>
+        </div>
+        <div class="legal"><strong>⚖️ Principio clave:</strong> Las normas de nivel inferior no pueden contradecir a las superiores. Un estatuto que contradiga la LCH es nulo de pleno derecho.</div>
+      </div>
+
+      <div class="dim-detalle" id="dim-detalle-1">
+        <strong>¿Quién gobierna, con qué legitimidad y mediante qué mecanismos de control?</strong><br><br>
+        Esta dimensión analiza los <strong>órganos de gobierno</strong>, su diseño y sus relaciones. Incluye la Asamblea General como autoridad suprema, la Junta Directiva como órgano de dirección, la Junta de Vigilancia como órgano de fiscalización y la Gerencia General como brazo ejecutivo.<br><br>
+        <strong>Sistema de contrapesos:</strong> Cada órgano tiene competencias propias definidas por ley. Ninguno puede invadir las funciones del otro.
+        <div style="overflow-x:auto; margin-top:12px;">
+          <table class="tabla-comparativa">
+            <thead><tr><th>Órgano</th><th>Función principal</th><th>Base legal</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Asamblea General</strong></td><td>Autoridad suprema — expresa la voluntad colectiva</td><td>Art. 22 LCH</td></tr>
+              <tr><td><strong>Junta Directiva</strong></td><td>Dirección y estrategia institucional</td><td>Art. 26 LCH</td></tr>
+              <tr><td><strong>Junta de Vigilancia</strong></td><td>Supervisión y garantía de legalidad</td><td>Art. 32 LCH</td></tr>
+              <tr><td><strong>Gerencia General</strong></td><td>Universo empresarial y ejecución</td><td>Art. 85 Rgto.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="legal"><strong>⚖️ Art. 20 LCH:</strong> La dirección, administración, vigilancia y fiscalización interna de las cooperativas se guiarán bajo los principios del buen Gobierno Cooperativo.</div>
+      </div>
+
+      <div class="dim-detalle" id="dim-detalle-2">
+        <strong>¿Puede la organización ejecutar sus decisiones con eficiencia y cultura cooperativa?</strong><br><br>
+        Esta dimensión evalúa la <strong>capacidad operativa real</strong> de la cooperativa para ejecutar lo que se decide. Incluye la calidad de la información, la coordinación interna, la formación de los directivos y el mantenimiento de la cultura cooperativa en la práctica cotidiana.<br><br>
+        <strong>Cuatro aspectos interconectados según el modelo de buen gobierno:</strong>
+        <ul style="font-size:14px; padding-left:20px; margin-top:10px; line-height:1.9;">
+          <li><strong>A. Toma de decisiones, supervisión y control</strong> — Cómo se administra la Gerencia, cómo funciona el Consejo de Administración</li>
+          <li><strong>B. Roles, responsabilidades y composición del directorio</strong> — Claridad sobre qué puede y qué no puede hacer cada órgano</li>
+          <li><strong>C. Arquitectura informativa</strong> — Calidad del flujo de información, transparencia y estructura</li>
+          <li><strong>D. Administración de conflictos y situaciones difíciles</strong> — Mecanismos para resolver tensiones internas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUE D -->
+  <div class="seccion">
+    <div class="seccion-titulo" onclick="toggleSeccion(this)">
+      <span>Bloque D — Propiedades fundamentales y factores del buen gobierno</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="seccion-cuerpo">
+
+      <p style="font-size:14px; margin-bottom:14px; color:var(--texto-suave);">El buen gobierno cooperativo tiene propiedades que lo distinguen de otras formas de gobierno. No son opcionales — son constitutivas de la naturaleza cooperativa.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin-bottom:18px;">
+        <div style="border:1px solid var(--verde-borde); padding:16px;">
+          <div style="font-weight:bold; color:var(--verde); margin-bottom:8px; font-size:14px;">HUMANISMO</div>
+          <div style="font-size:13px; line-height:1.6;">Las cooperativas necesitan sistemas de gobernanza que induzcan a la <strong>responsabilidad</strong> y a la <strong>participación</strong> de las múltiples partes interesadas. El centro es la persona, no el capital.</div>
+        </div>
+        <div style="border:1px solid var(--verde-borde); padding:16px;">
+          <div style="font-weight:bold; color:var(--verde); margin-bottom:8px; font-size:14px;">PROPIEDAD CONJUNTA</div>
+          <div style="font-size:13px; line-height:1.6;">Una arquitectura de gobernanza que permita a los <strong>afiliados</strong> ejercer su derecho de control sobre todas las funciones de la entidad constituye el núcleo de la gobernanza cooperativa.</div>
+        </div>
+        <div style="border:1px solid var(--verde-borde); padding:16px;">
+          <div style="font-weight:bold; color:var(--verde); margin-bottom:8px; font-size:14px;">DEMOCRACIA</div>
+          <div style="font-size:13px; line-height:1.6;">El <strong>autogobierno</strong> es el motor fundamental. Las normas son definidas, revisadas regularmente y conocidas por todos los afiliados. Implica relaciones de lealtad basadas en confianza y comunicación transparente.</div>
+        </div>
+      </div>
+
+      <p style="font-size:14px; margin-bottom:12px; font-weight:bold;">Cuatro factores estructurales de la gobernanza cooperativa:</p>
+
+      <div class="seccion" style="margin-bottom:6px;">
+        <div class="seccion-titulo" onclick="toggleSeccion(this)" style="font-weight:normal; font-size:14px;">
+          <span>▸ 1. Participación</span><span class="arrow">▾</span>
+        </div>
+        <div class="seccion-cuerpo">
+          <p style="font-size:14px; line-height:1.7;">Estimular, promover y asegurar la participación de los afiliados es un gran reto. El afiliado debe tomar conciencia de que elegir a los administradores y gestores le garantiza tranquilidad respecto a quienes administrarán sus aportes. Es necesario trascender la participación voluntaria hacia formas que aseguren presencia activa en las decisiones trascendentales.</p>
+        </div>
+      </div>
+
+      <div class="seccion" style="margin-bottom:6px;">
+        <div class="seccion-titulo" onclick="toggleSeccion(this)" style="font-weight:normal; font-size:14px;">
+          <span>▸ 2. Representación</span><span class="arrow">▾</span>
+        </div>
+        <div class="seccion-cuerpo">
+          <p style="font-size:14px; line-height:1.7;">Los órganos directivos deben representar auténticamente los intereses de los afiliados, no los de grupos particulares. Las elecciones deben ser libres, transparentes y verificables. La Asamblea General es el mecanismo central de representación democrática.</p>
+          <div class="legal"><strong>⚖️ Art. 24 LCH:</strong> La Asamblea General Ordinaria debe realizarse al menos una vez al año para elegir directivos, conocer estados financieros, aprobar el Plan Operativo Anual y conocer el balance social.</div>
+        </div>
+      </div>
+
+      <div class="seccion" style="margin-bottom:6px;">
+        <div class="seccion-titulo" onclick="toggleSeccion(this)" style="font-weight:normal; font-size:14px;">
+          <span>▸ 3. Transparencia y rendición de cuentas</span><span class="arrow">▾</span>
+        </div>
+        <div class="seccion-cuerpo">
+          <p style="font-size:14px; line-height:1.7;">La información sobre las decisiones, los recursos y los resultados debe fluir hacia los afiliados con claridad. La rendición de cuentas no es opcional — es una obligación legal y ética. Incluye la presentación de estados financieros auditados, el balance social y los informes de gestión.</p>
+          <div class="legal"><strong>⚖️ Art. 24 LCH:</strong> La Asamblea debe conocer los estados financieros auditados y el balance social presentados por la Junta Directiva, previo informe de la Junta de Vigilancia.</div>
+        </div>
+      </div>
+
+      <div class="seccion" style="margin-bottom:6px;">
+        <div class="seccion-titulo" onclick="toggleSeccion(this)" style="font-weight:normal; font-size:14px;">
+          <span>▸ 4. Eficacia y resultados ascendentes</span><span class="arrow">▾</span>
+        </div>
+        <div class="seccion-cuerpo">
+          <p style="font-size:14px; line-height:1.7;">El buen gobierno no es solo cumplir procedimientos — debe producir resultados que mejoren la calidad de vida de los afiliados. Antes de evaluar el sistema de gobernabilidad, debe verificarse si existe una <strong>visión estratégica compartida y controlada</strong> entre todos los órganos.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOQUE E -->
+  <div class="seccion">
+    <div class="seccion-titulo" onclick="toggleSeccion(this)">
+      <span>Bloque E — Problemas reales de gobernabilidad</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="seccion-cuerpo">
+      <p style="font-size:14px; margin-bottom:16px; color:var(--texto-suave);">Los siguientes son problemas documentados en cooperativas del sector. Identificarlos es el primer paso para resolverlos.</p>
+
+      <div class="problema-item">
+        <div class="pi-num">1</div>
+        <div><strong>Marcos legales desactualizados</strong> — Estatutos que no han sido adecuados a la Ley de Cooperativas de Honduras reformada (Decretos 174-2013, 168-2016, 146-2019), lo que genera contradicciones entre la norma interna y la ley.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">2</div>
+        <div><strong>Débil cohesión entre los miembros de los cuerpos directivos</strong> — Pobre trabajo en equipo entre las instancias que gobiernan, lo que genera decisiones contradictorias.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">3</div>
+        <div><strong>Pérdida de valores esenciales</strong> — Acciones que van en contra de los valores y principios cooperativistas, comprometiendo la identidad de la organización.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">4</div>
+        <div><strong>Insuficiente control de la Junta Directiva</strong> — Falta de estructuras operativas y pobre dinámica de trabajo entre instancias directivas para controlar las acciones.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">5</div>
+        <div><strong>Inadecuada delimitación de responsabilidades</strong> — Poco conocimiento sobre las atribuciones y limitaciones de la Junta Directiva, Junta de Vigilancia y Gerencia General.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">6</div>
+        <div><strong>Baja participación en Asambleas Generales</strong> — No hay una participación suficientemente representativa, lo que afecta la legitimidad de las decisiones.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">7</div>
+        <div><strong>Ausencia de procesos parlamentarios</strong> — No están establecidos los procedimientos para el correcto desarrollo de las reuniones de cuerpos directivos y las Asambleas Generales.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">8</div>
+        <div><strong>Directivos inexpertos o con capacidad limitada</strong> — Cuerpos directivos que deben pronunciarse sobre temas que no comprenden adecuadamente.</div>
+      </div>
+      <div class="problema-item">
+        <div class="pi-num">9</div>
+        <div><strong>Excesivo empoderamiento del Gerente General</strong> — Dado a la escasa capacidad de los directivos, el Gerente acumula poder que no le corresponde, invirtiendo la jerarquía legal establecida en el Art. 20 LCH.</div>
+      </div>
+
+      <div class="legal" style="margin-top:16px;">
+        <strong>⚖️ Nota institucional:</strong> Estos problemas han sido documentados por CHC a través de sus programas de capacitación. No son hipotéticos — son situaciones observadas en el sector cooperativo hondureño que la formación busca prevenir y corregir.
+      </div>
+
+      <p style="font-size:14px; margin-top:16px; padding:14px; background:var(--gris-fondo); border:1px solid var(--borde); line-height:1.7;"><strong>Indicadores de buena gobernanza</strong> — una cooperativa con buena gobernanza muestra:</p>
+
+      <div class="indicadores-grid">
+        <div class="ind-item">Participación democrática</div>
+        <div class="ind-item">Respeto al estado de derecho</div>
+        <div class="ind-item">Resultados ascendentes</div>
+        <div class="ind-item">Equidad e igualdad</div>
+        <div class="ind-item">Eficacia</div>
+        <div class="ind-item">Transparencia</div>
+        <div class="ind-item">Rendición de cuentas</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin tab aprendizaje -->
+
+<!-- ===== TAB: ACTIVIDADES ===== -->
+<div class="tab-panel" id="tab-actividades">
+
+  <div class="actividad-card">
+    <div class="ac-header">🧩 Actividad en equipo — Diagnóstico rápido de gobernabilidad</div>
+    <div class="ac-body">
+      <p style="margin-bottom:14px;"><strong>Instrucción:</strong> Lean la situación asignada. En equipo, respondan las cuatro preguntas guía. Al finalizar, comparen sus respuestas con la orientación disponible.</p>
+      <ul style="font-size:14px; padding-left:20px; margin-bottom:18px; line-height:1.9;">
+        <li>¿Qué dimensión de gobernabilidad está fallando? (Jurídica / Institucional / Organizacional)</li>
+        <li>¿Cuál es el problema específico según la lista documentada?</li>
+        <li>¿Qué artículo de la LCH o Reglamento se relaciona con la solución?</li>
+        <li>¿Qué indicador de buena gobernanza está ausente?</li>
+      </ul>
+
+      <div class="situacion-card">
+        <div class="sit-label">Situación A</div>
+        <p style="font-size:14px; line-height:1.7;">La Gerente General de la Cooperativa "La Esperanza" lleva tres años tomando decisiones de inversión por montos superiores a L. 500,000 sin llevarlos a la Junta Directiva. Los directivos saben que esto ocurre, pero argumentan que "ella sabe más que nosotros de finanzas" y no han actuado.</p>
+        <button class="situacion-toggle" onclick="toggleSituacion(this)">Ver orientación ▾</button>
+        <div class="situacion-respuesta">
+          <strong>Dimensión afectada:</strong> Gobernabilidad Institucional y Organizacional.<br>
+          <strong>Problema documentado:</strong> Excesivo empoderamiento del Gerente General dado a la escasa capacidad de los directivos (Problema #9). Insuficiente control de la Junta Directiva (Problema #4).<br>
+          <strong>Base legal:</strong> Art. 20 LCH — la Junta Directiva tiene la responsabilidad de dirección. Art. 26 LCH — las funciones de la Junta Directiva no son delegables al Gerente.<br>
+          <strong>Indicador ausente:</strong> Rendición de cuentas y respeto al estado de derecho.
+        </div>
+      </div>
+
+      <div class="situacion-card">
+        <div class="sit-label">Situación B</div>
+        <p style="font-size:14px; line-height:1.7;">La Cooperativa "Progreso" convocó su Asamblea General Ordinaria anual. Solo asistieron 18 de los 120 afiliados activos. La directiva decidió proceder igual y tomó acuerdos sobre distribución de excedentes y elección de nuevos directivos. Un afiliado que no asistió ahora impugna los acuerdos.</p>
+        <button class="situacion-toggle" onclick="toggleSituacion(this)">Ver orientación ▾</button>
+        <div class="situacion-respuesta">
+          <strong>Dimensión afectada:</strong> Gobernabilidad Jurídica e Institucional.<br>
+          <strong>Problema documentado:</strong> No hay participación suficientemente representativa en las Asambleas (Problema #6). Marcos legales posiblemente mal aplicados (Problema #1).<br>
+          <strong>Base legal:</strong> El Reglamento LCH establece los quórums requeridos para la validez de las sesiones. Los acuerdos tomados sin quórum legal son impugnables.<br>
+          <strong>Indicador ausente:</strong> Participación democrática y respeto al estado de derecho.
+        </div>
+      </div>
+
+      <div class="situacion-card">
+        <div class="sit-label">Situación C</div>
+        <p style="font-size:14px; line-height:1.7;">La Junta Directiva de la Cooperativa "Solidaridad" terminó su período de gestión. Al llegar la nueva directiva, descubrieron que no existe un informe de gestión, los estados financieros del último ejercicio no han sido auditados y la Junta de Vigilancia no presentó su informe en la última Asamblea.</p>
+        <button class="situacion-toggle" onclick="toggleSituacion(this)">Ver orientación ▾</button>
+        <div class="situacion-respuesta">
+          <strong>Dimensión afectada:</strong> Las tres dimensiones — principalmente Institucional y Organizacional.<br>
+          <strong>Problema documentado:</strong> Insuficiente control de la Junta Directiva (Problema #4). Inadecuada delimitación de responsabilidades de la Junta de Vigilancia (Problema #5).<br>
+          <strong>Base legal:</strong> Art. 21 LCH — las cooperativas deben efectuar al menos una auditoría anual. Art. 24 LCH — la Asamblea debe conocer los estados financieros auditados y el informe de la Junta de Vigilancia.<br>
+          <strong>Indicador ausente:</strong> Transparencia, rendición de cuentas y eficacia.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actividad-card">
+    <div class="ac-header">▪ Aplicación práctica — ¿Dónde falla nuestra cooperativa?</div>
+    <div class="ac-body">
+      <p style="font-size:14px; margin-bottom:14px;">De manera individual y luego en equipo, revisen la lista de 9 problemas documentados. Para cada uno:</p>
+      <ol style="font-size:14px; padding-left:20px; line-height:2;">
+        <li>Marquen si ese problema <strong>existe</strong>, <strong>podría existir</strong> o <strong>no existe</strong> en su cooperativa.</li>
+        <li>Para los que existen o podrían existir: identifiquen una acción concreta que el directivo podría tomar en su rol actual.</li>
+        <li>Presenten al grupo el problema que consideran más urgente en su cooperativa y la acción propuesta.</li>
+      </ol>
+      <div class="legal" style="margin-top:14px;">
+        <strong>📌 Enfoque:</strong> No se trata de señalar culpables, sino de identificar qué aspectos del sistema de gobernabilidad necesitan atención. El objetivo es proponer mejoras, no generar conflicto.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: VERIFICAR COMPRENSIÓN ===== -->
+<div class="tab-panel" id="tab-verificar">
+  <div class="puntaje-display" id="verif-puntaje">Respuestas correctas: 0 / 6</div>
+
+  <!-- VF 1 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">1. Verdadero o falso: La gobernabilidad y el gobierno cooperativo son el mismo concepto.</div>
+    <div class="vf-opciones">
+      <button class="vf-btn" onclick="responderVF(this, false, 'vf1-fb', 'verif-puntaje', 6)">Verdadero</button>
+      <button class="vf-btn" onclick="responderVF(this, true, 'vf1-fb', 'verif-puntaje', 6)">Falso ✓</button>
+    </div>
+    <div class="quiz-feedback" id="vf1-fb"><strong>Correcto — Son conceptos diferentes.</strong> El <em>gobierno cooperativo</em> es la estructura formal de órganos (Asamblea, Junta Directiva, etc.). La <em>gobernabilidad</em> es la capacidad real de que esa estructura funcione de forma efectiva y legítima. Una cooperativa puede tener todos los órganos y aun así ser ingobernable si los directivos no tienen capacidad, si los afiliados no participan o si hay conflictos irresolubles.</div>
+  </div>
+
+  <!-- VF 2 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">2. Verdadero o falso: Según el Art. 22 de la LCH, la Junta Directiva es la autoridad suprema de la cooperativa.</div>
+    <div class="vf-opciones">
+      <button class="vf-btn" onclick="responderVF(this, false, 'vf2-fb', 'verif-puntaje', 6)">Verdadero</button>
+      <button class="vf-btn" onclick="responderVF(this, true, 'vf2-fb', 'verif-puntaje', 6)">Falso ✓</button>
+    </div>
+    <div class="quiz-feedback" id="vf2-fb"><strong>Correcto — Falso.</strong> Según el Art. 22 de la LCH, la <strong>Asamblea General</strong> legalmente convocada y reunida es la autoridad suprema de la cooperativa y expresa la voluntad colectiva. La Junta Directiva es el órgano de dirección y estrategia, pero está subordinada a la Asamblea General.</div>
+  </div>
+
+  <!-- SM 1 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">3. En la analogía del carro, ¿qué representa el "sistema vial con todas sus normas de tránsito"?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm1-fb', 'verif-puntaje', 6)">a) El gobierno cooperativo</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm1-fb', 'verif-puntaje', 6)">b) La gobernabilidad</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'sm1-fb', 'verif-puntaje', 6)">c) La gobernanza ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm1-fb', 'verif-puntaje', 6)">d) El reglamento interno</button>
+    <div class="quiz-feedback" id="sm1-fb"><strong>Correcto — La gobernanza.</strong> El sistema vial representa la gobernanza porque incluye normas, otros actores y la interacción del sistema completo. En la cooperativa, la gobernanza es el conjunto de procesos, normas y relaciones a través de los cuales se ejerce el poder — va más allá de las reglas formales e incluye cómo participan los afiliados, cómo se toman las decisiones y cómo se rinden cuentas.</div>
+  </div>
+
+  <!-- SM 2 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">4. El Art. 20 LCH establece que la dirección y administración de las cooperativas estará a cargo de cuatro instancias. ¿Cuál de las siguientes NO es una de ellas?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm2-fb', 'verif-puntaje', 6)">a) La Asamblea General</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm2-fb', 'verif-puntaje', 6)">b) La Junta Directiva</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'sm2-fb', 'verif-puntaje', 6)">c) El Comité de Crédito ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm2-fb', 'verif-puntaje', 6)">d) La Gerencia General</button>
+    <div class="quiz-feedback" id="sm2-fb"><strong>Correcto — El Comité de Crédito no está en el Art. 20 LCH.</strong> El artículo establece cuatro instancias: Asamblea General, Junta Directiva, Junta de Vigilancia y Gerencia General. Los comités (crédito, educación, juventud, género) son órganos de apoyo pero no forman parte de la estructura de gobierno principal del Art. 20.</div>
+  </div>
+
+  <!-- VF 3 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">5. Verdadero o falso: Un estatuto de cooperativa puede establecer reglas que contradigan la Ley de Cooperativas de Honduras, si la Asamblea General lo aprueba por mayoría calificada.</div>
+    <div class="vf-opciones">
+      <button class="vf-btn" onclick="responderVF(this, false, 'vf3-fb', 'verif-puntaje', 6)">Verdadero</button>
+      <button class="vf-btn" onclick="responderVF(this, true, 'vf3-fb', 'verif-puntaje', 6)">Falso ✓</button>
+    </div>
+    <div class="quiz-feedback" id="vf3-fb"><strong>Correcto — Falso.</strong> Según el principio de jerarquía normativa (Pirámide de Kelsen aplicada), los estatutos son normas de nivel inferior a la Ley de Cooperativas. Las normas inferiores no pueden contradecir a las superiores — aunque la Asamblea lo apruebe por unanimidad, una disposición estatutaria que contradiga la LCH es nula de pleno derecho.</div>
+  </div>
+
+  <!-- SM 3 -->
+  <div class="quiz-pregunta">
+    <div class="qp-texto">6. ¿Cuál es la propiedad fundamental de la gobernanza cooperativa que establece que los afiliados deben ejercer control sobre todas las funciones de la entidad?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm3-fb', 'verif-puntaje', 6)">a) Humanismo</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'sm3-fb', 'verif-puntaje', 6)">b) Propiedad conjunta ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm3-fb', 'verif-puntaje', 6)">c) Democracia</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'sm3-fb', 'verif-puntaje', 6)">d) Eficacia</button>
+    <div class="quiz-feedback" id="sm3-fb"><strong>Correcto — Propiedad conjunta.</strong> Esta propiedad establece que una arquitectura de gobernanza que permita a los <em>afiliados</em> ejercer su derecho de control sobre todas las funciones de la entidad constituye el núcleo de la gobernanza cooperativa. El Humanismo pone a la persona en el centro; la Democracia garantiza el autogobierno; pero es la Propiedad Conjunta la que articula el control colectivo como derecho.</div>
+  </div>
+
+  <button class="quiz-reset" onclick="resetVerif()">↺ Reiniciar verificación</button>
+</div>
+
+<!-- ===== TAB: EVALUACIÓN ===== -->
+<div class="tab-panel" id="tab-evaluacion">
+  <div class="puntaje-display" id="eval-puntaje">Respuestas correctas: 0 / 4</div>
+
+  <!-- EVAL 1 -->
+  <div class="eval-pregunta">
+    <div class="eq-caso">La Cooperativa "San Marcos" tiene sus estatutos vigentes desde 1995. En 2024, un afiliado solicita a la Junta Directiva aplicar el procedimiento estatutario de expulsión contra otro afiliado. Cuando revisan los estatutos, descubren que el procedimiento contradice lo establecido en el Art. 24 literal h) de la LCH reformada en 2013.</div>
+    <div class="qp-texto">¿Cuál es la posición jurídicamente correcta que debe adoptar la Junta Directiva?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev1-fb', 'eval-puntaje', 4)">a) Aplicar el estatuto porque fue aprobado por la Asamblea General en su momento.</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev1-fb', 'eval-puntaje', 4)">b) Suspender el proceso hasta que se convoque una Asamblea Extraordinaria para modificar el estatuto.</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'ev1-fb', 'eval-puntaje', 4)">c) Aplicar el procedimiento de la LCH vigente, ya que la ley prevalece sobre el estatuto. ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev1-fb', 'eval-puntaje', 4)">d) Rechazar la solicitud porque el estatuto no contempla ese procedimiento correctamente.</button>
+    <div class="quiz-feedback" id="ev1-fb"><strong>Correcto — Opción C.</strong><br><br>Este caso ilustra la <strong>Gobernabilidad Jurídica</strong> y el principio de jerarquía normativa. La LCH prevalece sobre los estatutos en todo momento. La Junta Directiva debe aplicar el Art. 24 literal h) de la LCH, que establece que la Asamblea General aprueba o imprueba la expulsión de afiliados, luego de conocido el informe presentado por la Junta Directiva y ejercido el derecho de defensa, certificado por la Junta de Vigilancia.<br><br>La situación también es un llamado urgente a actualizar los estatutos — un estatuto desactualizado es precisamente el Problema #1 de gobernabilidad documentado por CHC. Lo correcto es aplicar la ley e iniciar el proceso de reforma estatutaria.</div>
+  </div>
+
+  <!-- EVAL 2 -->
+  <div class="eval-pregunta">
+    <div class="eq-caso">En una cooperativa, el presidente de la Junta Directiva argumenta que la gobernanza solo existe si hay reglas escritas formales. Un afiliado le responde que la gobernanza es mucho más que eso.</div>
+    <div class="qp-texto">¿Quién tiene razón y por qué?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev2-fb', 'eval-puntaje', 4)">a) El presidente de la Junta Directiva, porque sin normas escritas no hay gobernanza.</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'ev2-fb', 'eval-puntaje', 4)">b) El afiliado, porque la gobernanza incluye procesos, relaciones y participación que van más allá de las normas formales. ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev2-fb', 'eval-puntaje', 4)">c) Ambos tienen razón parcialmente: las normas son parte de la gobernanza pero no la única parte.</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev2-fb', 'eval-puntaje', 4)">d) Ninguno, porque la gobernanza es solo responsabilidad de la Gerencia General.</button>
+    <div class="quiz-feedback" id="ev2-fb"><strong>La opción B es la más precisa.</strong><br><br>La gobernanza es el <strong>conjunto de procesos, normas y relaciones</strong> a través de los cuales se ejerce el poder. Incluye las normas escritas, pero también: cómo participan los afiliados en la práctica, si realmente hay transparencia o solo en el papel, si la rendición de cuentas es genuina, cómo se resuelven los conflictos, y la calidad de las relaciones entre los órganos.<br><br>La opción C podría parecer razonable, pero no es suficientemente precisa: decir "ambos tienen razón parcialmente" no comunica claramente que la gobernanza es <em>sistémica</em> y no simplemente una suma de normas + otras cosas. La definición completa requiere entender que las relaciones y la participación son centrales, no opcionales.</div>
+  </div>
+
+  <!-- EVAL 3 -->
+  <div class="eval-pregunta">
+    <div class="qp-texto">Una cooperativa tiene una Junta Directiva competente, estados financieros auditados al día y una Asamblea General con buena asistencia. Sin embargo, los afiliados no reciben información sobre las decisiones tomadas entre asambleas y hay rumores de irregularidades que nadie puede confirmar ni desmentir. ¿Cuál indicador de buena gobernanza está claramente ausente?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev3-fb', 'eval-puntaje', 4)">a) Participación democrática</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev3-fb', 'eval-puntaje', 4)">b) Eficacia</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'ev3-fb', 'eval-puntaje', 4)">c) Transparencia ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev3-fb', 'eval-puntaje', 4)">d) Respeto al estado de derecho</button>
+    <div class="quiz-feedback" id="ev3-fb"><strong>Correcto — Transparencia.</strong><br><br>La cooperativa puede cumplir con muchos requisitos formales y aun así tener un problema grave de gobernanza si la información no fluye hacia los afiliados entre asambleas. La <strong>transparencia</strong> no es solo presentar estados financieros anuales — implica que los afiliados tengan acceso oportuno a información sobre las decisiones que les afectan.<br><br>Los rumores irresolubles son síntoma directo de opacidad. Cuando no hay información, los afiliados llenan el vacío con suposiciones, lo que erosiona la confianza y amenaza la gobernabilidad de toda la organización.</div>
+  </div>
+
+  <!-- EVAL 4 -->
+  <div class="eval-pregunta">
+    <div class="eq-caso">El Gerente General de una cooperativa argumenta: "Yo soy quien realmente gobierna esta cooperativa porque tengo la información, la experiencia técnica y estoy todos los días en la oficina. Los directivos se reúnen una vez al mes y no saben de finanzas."</div>
+    <div class="qp-texto">¿Qué problema de gobernabilidad refleja esta afirmación y qué dimensión compromete principalmente?</div>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev4-fb', 'eval-puntaje', 4)">a) Ausencia de procesos parlamentarios — Dimensión Jurídica</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, true, 'ev4-fb', 'eval-puntaje', 4)">b) Excesivo empoderamiento del Gerente dado a la escasa capacidad de los directivos — Dimensión Institucional ✓</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev4-fb', 'eval-puntaje', 4)">c) Baja participación en Asambleas — Dimensión Organizacional</button>
+    <button class="quiz-opcion" onclick="responderQuiz(this, false, 'ev4-fb', 'eval-puntaje', 4)">d) Marcos legales desactualizados — Dimensión Jurídica</button>
+    <div class="quiz-feedback" id="ev4-fb"><strong>Correcto — Opción B.</strong><br><br>Este es el <strong>Problema #9</strong> de gobernabilidad documentado por CHC: excesivo empoderamiento del Gerente General dado a la escasa capacidad de los directivos. Compromete principalmente la <strong>Gobernabilidad Institucional</strong> porque invierte la jerarquía legal establecida en el Art. 20 LCH.<br><br>El Gerente General ejecuta las decisiones de la Junta Directiva — no las reemplaza. La solución no es limitar al Gerente si es competente, sino <strong>fortalecer la capacidad de los directivos</strong> para ejercer su función de supervisión. Es por eso que la formación cooperativa, como la que desarrolla CHC, es una condición de gobernabilidad, no solo un beneficio adicional.</div>
+  </div>
+
+  <button class="quiz-reset" onclick="resetEval()">↺ Reiniciar evaluación</button>
+</div>
+
+<!-- ===== TAB: RECURSOS ===== -->
+<div class="tab-panel" id="tab-recursos">
+
+  <div class="recurso-item">
+    <div class="recurso-header" onclick="toggleRecurso(this)">
+      <span>⚖️ Ley de Cooperativas de Honduras (Decreto 65-87 y reformas)</span>
+      <span>▾</span>
+    </div>
+    <div class="recurso-body">
+      <p style="margin-bottom:10px; font-size:14px;">Marco legal principal que regula la constitución, organización y funcionamiento de las cooperativas en Honduras.</p>
+      <table class="tabla-comparativa">
+        <thead><tr><th>Artículo</th><th>Contenido relevante</th></tr></thead>
+        <tbody>
+          <tr><td>Art. 1</td><td>Declaración de necesidad nacional e interés público del cooperativismo</td></tr>
+          <tr><td>Art. 6</td><td>Principios cooperativos</td></tr>
+          <tr><td>Art. 20</td><td>Órganos de dirección, administración y vigilancia</td></tr>
+          <tr><td>Art. 21</td><td>Fiscalización y vigilancia a cargo de la Junta de Vigilancia</td></tr>
+          <tr><td>Art. 22</td><td>La Asamblea General como autoridad suprema</td></tr>
+          <tr><td>Art. 23</td><td>Tipos de sesiones de Asamblea</td></tr>
+          <tr><td>Art. 24</td><td>Asuntos de la Asamblea General Ordinaria</td></tr>
+          <tr><td>Art. 26</td><td>Junta Directiva: composición y funciones</td></tr>
+          <tr><td>Art. 32</td><td>Junta de Vigilancia: funciones</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px; margin-top:10px; color:var(--texto-suave);">Reformas: Decreto 174-2013 · Decreto 168-2016 · Decreto 146-2019</p>
+    </div>
+  </div>
+
+  <div class="recurso-item">
+    <div class="recurso-header" onclick="toggleRecurso(this)">
+      <span>📘 Manual "La Gobernabilidad Cooperativa" — ELGA / CHC</span>
+      <span>▾</span>
+    </div>
+    <div class="recurso-body">
+      <p style="font-size:14px; line-height:1.7;">Elaborado por Sonia Belinda Baca con revisión de Miriam Esther Mejía Fiallos, Asesoras de Cooperativas CHC. Cubre: concepto de gobernabilidad, ámbitos de acción, propiedades fundamentales, factores estructurales, indicadores de buena gobernanza, problemas documentados y estructura de buen gobierno.</p>
+      <p style="font-size:13px; margin-top:8px; color:var(--verde);">Disponible en el LMS CHC · Material de referencia central para este módulo.</p>
+    </div>
+  </div>
+
+  <div class="recurso-item">
+    <div class="recurso-header" onclick="toggleRecurso(this)">
+      <span>📘 Reglamento de la Ley de Cooperativas (Acuerdo 041-2014)</span>
+      <span>▾</span>
+    </div>
+    <div class="recurso-body">
+      <p style="font-size:14px; line-height:1.7;">Emitido por la Secretaría de Estado en el Despacho de Desarrollo Económico. Contiene las disposiciones complementarias de la LCH. Artículos relevantes para gobernabilidad: Art. 4 (valores cooperativos), Art. 85 (Gerencia General), Art. 94 (atribuciones de la Junta Directiva), Art. 113–114 (convocatoria a Asamblea).</p>
+    </div>
+  </div>
+
+  <div class="recurso-item">
+    <div class="recurso-header" onclick="toggleRecurso(this)">
+      <span>📘 Documento de analogía: Gobierno, Gobernanza, Gobernabilidad — CHC</span>
+      <span>▾</span>
+    </div>
+    <div class="recurso-body">
+      <p style="font-size:14px; line-height:1.7;">Material pedagógico desarrollado por CHC que utiliza la analogía del vehículo y la Pirámide de Kelsen para explicar las diferencias entre Gobierno, Gobernabilidad y Gobernanza. Incluye tabla resumen y aplicación al contexto cooperativo.</p>
+    </div>
+  </div>
+
+  <div class="recurso-item">
+    <div class="recurso-header" onclick="toggleRecurso(this)">
+      <span>▪ Constitución de la República de Honduras — Art. 338</span>
+      <span>▾</span>
+    </div>
+    <div class="recurso-body">
+      <p style="font-size:14px; line-height:1.7;">Establece la obligación del Estado de promover y fomentar las organizaciones cooperativas, garantizando el libre desarrollo del cooperativismo como sector especial de la economía con personalidad propia. Es el primer nivel de la pirámide normativa para el sector cooperativo.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: ANÁLISIS CRÍTICO ===== -->
+<div class="tab-panel" id="tab-analisis">
+  <p style="font-size:14px; color:var(--texto-suave); margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--borde);">Las siguientes preguntas no tienen una única respuesta correcta. Su propósito es desarrollar capacidad de análisis aplicado al contexto cooperativo. Hay orientaciones disponibles para guiar la reflexión, no para cerrarla.</p>
+
+  <div class="ac-pregunta">
+    <div class="acp-num">Pregunta 01 — Estructura vs. capacidad</div>
+    <p>¿Puede existir una estructura de gobierno formalmente correcta pero con poca gobernabilidad real? ¿Cómo se detecta esa situación en la práctica?</p>
+    <button class="ac-orientacion-btn" onclick="toggleOrientacion(this)">Ver orientación ▾</button>
+    <div class="ac-orientacion">
+      <strong>Orientación:</strong> Sí, es posible y frecuente. Una cooperativa puede cumplir todos los requisitos formales (órganos constituidos, actas al día, asambleas realizadas) y aun así ser ingobernable si las decisiones no se ejecutan, si hay conflictos crónicos sin resolución, si los directivos no tienen capacidad real o si los afiliados no participan genuinamente.<br><br>
+      La detección se hace evaluando los <em>resultados</em>: ¿se ejecutan los acuerdos de la Asamblea? ¿Cambia algo cuando hay nueva directiva? ¿Los afiliados confían en la organización? La gobernabilidad se percibe en la capacidad de la organización de <em>moverse</em> en la dirección decidida colectivamente.
+    </div>
+  </div>
+
+  <div class="ac-pregunta">
+    <div class="acp-num">Pregunta 02 — El dilema del director técnico</div>
+    <p>Si la Asamblea General elige directivos sin capacidad técnica para supervisar al Gerente, ¿qué dimensión de la gobernabilidad se ve comprometida primero? ¿Quién tiene la responsabilidad de resolver esa situación?</p>
+    <button class="ac-orientacion-btn" onclick="toggleOrientacion(this)">Ver orientación ▾</button>
+    <div class="ac-orientacion">
+      <strong>Orientación:</strong> Se compromete primero la <em>Gobernabilidad Institucional</em> — específicamente el diseño institucional del gobierno cooperativo y los mecanismos de control. La debilidad técnica de los directivos es exactamente la condición que genera el Problema #9 documentado.<br><br>
+      La responsabilidad es compartida: la Asamblea General tiene la responsabilidad de elegir personas con perfil adecuado (Art. 28 LCH establece requisitos para directivos). La CHC y los organismos de integración tienen la responsabilidad de proveer formación. Y el propio directivo elegido tiene la responsabilidad de capacitarse — el desconocimiento no exime de responsabilidad legal.
+    </div>
+  </div>
+
+  <div class="ac-pregunta">
+    <div class="acp-num">Pregunta 03 — Democracia y eficiencia</div>
+    <p>En ocasiones, tomar decisiones democráticas en una cooperativa es más lento que en una empresa privada. Algunos directivos proponen "agilizar" el proceso reduciendo la participación de los afiliados. ¿Cuál es el riesgo real de ese enfoque?</p>
+    <button class="ac-orientacion-btn" onclick="toggleOrientacion(this)">Ver orientación ▾</button>
+    <div class="ac-orientacion">
+      <strong>Orientación:</strong> El riesgo es doble. Primero, un riesgo <em>legal</em>: las decisiones que la LCH reserva a la Asamblea General no pueden ser tomadas por ningún otro órgano — hacerlo las hace nulas e impugnables. Segundo, un riesgo <em>institucional</em>: la legitimidad de las decisiones en una cooperativa depende de la participación. Una decisión eficiente pero ilegítima genera conflictos que son mucho más costosos que el tiempo ahorrado.<br><br>
+      La respuesta correcta no es menos democracia, sino mejor democracia: asambleas bien preparadas, afiliados informados con anticipación, procesos parlamentarios claros (que es precisamente lo que aborda la formación de CHC).
+    </div>
+  </div>
+
+  <div class="ac-pregunta">
+    <div class="acp-num">Pregunta 04 — Gobernanza sin transparencia</div>
+    <p>¿Es posible tener gobernanza democrática sin transparencia real? ¿Qué pasa con una cooperativa donde los afiliados votan pero no tienen información suficiente para decidir bien?</p>
+    <button class="ac-orientacion-btn" onclick="toggleOrientacion(this)">Ver orientación ▾</button>
+    <div class="ac-orientacion">
+      <strong>Orientación:</strong> No es posible una gobernanza democrática genuina sin transparencia. El voto sin información es una formalidad vacía — los afiliados pueden elegir directivos sin saber si gestionaron bien o mal, aprobar estados financieros sin entenderlos, o ratificar decisiones que los perjudican sin saberlo.<br><br>
+      La transparencia no es solo un indicador de buena gobernanza — es una condición de posibilidad de la democracia cooperativa. Sin ella, la participación se convierte en una legitimación de decisiones ya tomadas, no en ejercicio real de control colectivo.
+    </div>
+  </div>
+
+  <div class="ac-pregunta">
+    <div class="acp-num">Pregunta 05 — Aplicación personal</div>
+    <p>De las tres dimensiones de gobernabilidad (Jurídica, Institucional, Organizacional), ¿en cuál considera que su cooperativa tiene mayor fortaleza y en cuál mayor debilidad? ¿Qué acción concreta dentro de su rol actual podría contribuir a fortalecer la dimensión más débil?</p>
+    <button class="ac-orientacion-btn" onclick="toggleOrientacion(this)">Ver orientación ▾</button>
+    <div class="ac-orientacion">
+      <strong>Orientación:</strong> Esta pregunta no tiene respuesta única — depende de la realidad de cada cooperativa. Lo importante es que la evaluación sea honesta y esté basada en evidencia, no en percepción general.<br><br>
+      Algunas preguntas diagnósticas: ¿Los estatutos están actualizados? (Jurídica) ¿Los directivos conocen claramente qué pueden y qué no pueden decidir? (Institucional) ¿Las decisiones que se toman realmente se ejecutan? (Organizacional)<br><br>
+      La respuesta sobre la acción concreta es el valor más alto de este ejercicio: no sirve solo identificar el problema, sino comprometerse con una acción específica y alcanzable desde el rol actual.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// TABS
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// SECCIONES ACORDEÓN
+function toggleSeccion(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// DIMENSIONES
+let dimActual = -1;
+function selectDimension(n) {
+  const cards = document.querySelectorAll('.dim-card');
+  const detalles = document.querySelectorAll('.dim-detalle');
+  if (dimActual === n) {
+    cards[n].classList.remove('selected');
+    detalles[n].classList.remove('visible');
+    dimActual = -1;
+    return;
+  }
+  cards.forEach((c,i) => {
+    c.classList.remove('selected');
+    detalles[i].classList.remove('visible');
+  });
+  cards[n].classList.add('selected');
+  detalles[n].classList.add('visible');
+  dimActual = n;
+}
+
+// SITUACIONES ACTIVIDAD
+function toggleSituacion(btn) {
+  const resp = btn.nextElementSibling;
+  resp.classList.toggle('visible');
+  btn.textContent = resp.classList.contains('visible') ? 'Ocultar orientación ▴' : 'Ver orientación ▾';
+}
+
+// QUIZ SELECCIÓN MÚLTIPLE
+function responderQuiz(btn, esCorrecta, fbId, puntajeId, total) {
+  const bloque = btn.parentElement;
+  if (bloque.querySelector('.bloqueada')) return;
+  const opciones = bloque.querySelectorAll('.quiz-opcion');
+  opciones.forEach(op => op.classList.add('bloqueada'));
+  if (esCorrecta) {
+    btn.classList.add('correcta');
+    sumarPunto(puntajeId, total);
+  } else {
+    btn.classList.add('incorrecta');
+    opciones.forEach(op => {
+      if (op.textContent.includes('✓')) op.classList.add('correcta');
+    });
+  }
+  document.getElementById(fbId).classList.add('visible');
+}
+
+// VF
+function responderVF(btn, esCorrecta, fbId, puntajeId, total) {
+  const bloque = btn.parentElement;
+  if (bloque.querySelector('.vf-btn.vf-correcto') || bloque.querySelector('.vf-btn.vf-incorrecto')) return;
+  const botones = bloque.querySelectorAll('.vf-btn');
+  botones.forEach(b => b.style.pointerEvents = 'none');
+  if (esCorrecta) {
+    btn.classList.add('vf-correcto');
+    sumarPunto(puntajeId, total);
+  } else {
+    btn.classList.add('vf-incorrecto');
+    botones.forEach(b => { if (b !== btn) b.classList.add('vf-correcto'); });
+  }
+  document.getElementById(fbId).classList.add('visible');
+}
+
+// PUNTAJE
+const puntajes = {};
+function sumarPunto(id, total) {
+  if (!puntajes[id]) puntajes[id] = 0;
+  puntajes[id]++;
+  document.getElementById(id).textContent = `Respuestas correctas: ${puntajes[id]} / ${total}`;
+}
+
+// RESET
+function resetVerif() {
+  puntajes['verif-puntaje'] = 0;
+  document.getElementById('verif-puntaje').textContent = 'Respuestas correctas: 0 / 6';
+  document.querySelectorAll('#tab-verificar .quiz-opcion').forEach(b => {
+    b.classList.remove('correcta','incorrecta','bloqueada');
+  });
+  document.querySelectorAll('#tab-verificar .vf-btn').forEach(b => {
+    b.classList.remove('vf-correcto','vf-incorrecto');
+    b.style.pointerEvents = '';
+  });
+  document.querySelectorAll('#tab-verificar .quiz-feedback').forEach(f => f.classList.remove('visible'));
+}
+
+function resetEval() {
+  puntajes['eval-puntaje'] = 0;
+  document.getElementById('eval-puntaje').textContent = 'Respuestas correctas: 0 / 4';
+  document.querySelectorAll('#tab-evaluacion .quiz-opcion').forEach(b => {
+    b.classList.remove('correcta','incorrecta','bloqueada');
+  });
+  document.querySelectorAll('#tab-evaluacion .quiz-feedback').forEach(f => f.classList.remove('visible'));
+}
+
+// RECURSOS
+function toggleRecurso(el) {
+  const body = el.nextElementSibling;
+  body.classList.toggle('open');
+  el.querySelector('span:last-child').textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+// ANÁLISIS CRÍTICO
+function toggleOrientacion(btn) {
+  const orientacion = btn.nextElementSibling;
+  orientacion.classList.toggle('visible');
+  btn.textContent = orientacion.classList.contains('visible') ? 'Ocultar orientación ▴' : 'Ver orientación ▾';
+}
+</script>
+</body>
+</html>
