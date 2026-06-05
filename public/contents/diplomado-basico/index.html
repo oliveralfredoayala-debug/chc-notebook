@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contenidos · Cooperativa Notebook</title>
+  <title>Diplomado Básico · Cooperativa Notebook</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -83,22 +83,23 @@
       width: 100%;
       margin: 0 auto;
       padding: 60px 32px 96px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
     /* ── PAGE HEADER ── */
-    .page-header { margin-bottom: 48px; }
+    .page-header { margin-bottom: 52px; }
 
-    .page-eyebrow {
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--verde-sec);
-      margin-bottom: 14px;
+      font-weight: 400;
+      color: var(--gris-suave);
+      margin-bottom: 20px;
     }
+    .breadcrumb a { color: var(--gris-suave); text-decoration: none; transition: color 0.18s; }
+    .breadcrumb a:hover { color: var(--verde); }
+    .breadcrumb-sep { color: var(--gris-borde); }
 
     .page-title {
       font-size: clamp(28px, 4vw, 40px);
@@ -107,97 +108,54 @@
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
+    .page-title strong { font-weight: 500; }
 
-    .gradient-word {
-      background: linear-gradient(90deg, var(--amarillo) 0%, var(--verde-sec) 55%, var(--verde) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 500;
-    }
+    /* ── DIVIDER ── */
+    .rule { height: 1px; background: var(--gris-borde); margin-bottom: 8px; }
 
-    /* ── PROGRAM GRID ── */
-    .program-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    /* ── MODULE LIST ── */
+    .module-list { display: flex; flex-direction: column; }
 
-    .program-card {
-      display: block;
+    .module-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 10px;
+      border-bottom: 1px solid var(--gris-borde);
       text-decoration: none;
-      background: var(--blanco);
-      border: 1px solid var(--gris-borde);
-      border-radius: 8px;
-      padding: 28px 24px 24px;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-      position: relative;
-      overflow: hidden;
+      color: inherit;
+      border-radius: 4px;
+      margin: 0 -10px;
+      transition: background 0.15s;
+      gap: 12px;
     }
+    .module-row:hover { background: var(--verde-claro); }
+    .module-row:hover .module-title { color: var(--verde); }
+    .module-row:hover .module-arrow { opacity: 1; transform: translateX(0); }
 
-    .program-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: linear-gradient(180deg, var(--amarillo), var(--verde-sec), var(--verde));
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .program-card:hover {
-      border-color: var(--verde-borde);
-      box-shadow: 0 4px 20px rgba(28,107,74,0.08);
-      transform: translateY(-2px);
-    }
-    .program-card:hover::before { opacity: 1; }
-    .program-card:active { transform: translateY(0); }
-
-    .card-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--verde-sec);
-      margin-bottom: 10px;
-      opacity: 0.8;
-    }
-
-    .card-title {
-      font-size: 18px;
+    .module-title {
+      font-size: 15px;
       font-weight: 400;
       color: var(--gris-texto);
-      line-height: 1.25;
-      letter-spacing: -0.01em;
+      line-height: 1.3;
+      transition: color 0.18s;
     }
 
-    .card-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--verde);
+    .module-arrow {
+      flex-shrink: 0;
       opacity: 0;
       transform: translateX(-4px);
-      transition: opacity 0.2s, transform 0.2s;
+      transition: opacity 0.18s, transform 0.18s;
     }
-    .program-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
-    .card-arrow svg {
-      width: 11px; height: 11px;
+    .module-arrow svg {
+      width: 14px; height: 14px;
       stroke: var(--verde); fill: none;
       stroke-width: 2;
       stroke-linecap: round; stroke-linejoin: round;
     }
 
     /* ── FOOTNOTE ── */
-    .footnote {
-      margin-top: 64px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .footnote { margin-top: 64px; }
     .footnote-text { font-size: 11px; font-weight: 300; color: #c8c8c0; }
 
     /* ── ANIMATIONS ── */
@@ -205,16 +163,15 @@
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .page-header   { animation: fadeUp 0.35s ease both; }
-    .program-grid  { animation: fadeUp 0.35s ease 0.08s both; }
-    .footnote      { animation: fadeUp 0.35s ease 0.15s both; }
+    .page-header  { animation: fadeUp 0.35s ease both; }
+    .module-list  { animation: fadeUp 0.35s ease 0.08s both; }
+    .footnote     { animation: fadeUp 0.35s ease 0.15s both; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .topbar { padding: 12px 20px; }
-      .canvas { padding: 36px 20px 64px; justify-content: flex-start; }
-      .program-grid { grid-template-columns: 1fr; }
-      .card-arrow { opacity: 1; transform: none; }
+      .canvas { padding: 36px 20px 64px; }
+      .module-arrow { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -251,40 +208,79 @@
       </div>
     </a>
 
-    <a href="/" class="topbar-back">
+    <a href="/contents/" class="topbar-back">
       <svg viewBox="0 0 16 16"><line x1="14" y1="8" x2="2" y2="8"/><polyline points="7 3 2 8 7 13"/></svg>
-      Inicio
+      Contenidos
     </a>
   </header>
 
   <main class="canvas">
 
     <div class="page-header">
-      <p class="page-eyebrow">Contenidos</p>
-      <h1 class="page-title">Elige un <span class="gradient-word">programa</span></h1>
+      <div class="breadcrumb">
+        <a href="/">Inicio</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="/contents/">Contenidos</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Diplomado Básico</span>
+      </div>
+      <h1 class="page-title"><strong>Diplomado</strong> Básico</h1>
     </div>
 
-    <div class="program-grid">
+    <div class="rule"></div>
 
-      <a href="/contents/diplomado-basico/" class="program-card">
-        <p class="card-label">Programa</p>
-        <h2 class="card-title">Diplomado Básico</h2>
-        <span class="card-arrow">
-          Explorar
+    <nav class="module-list">
+
+      <a href="/contents/diplomado-basico/cooperativismo-basico/" class="module-row">
+        <div class="module-title">Cooperativismo Básico</div>
+        <span class="module-arrow">
           <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
         </span>
       </a>
 
-      <a href="/contents/cooperativismo-aplicado/" class="program-card">
-        <p class="card-label">Programa</p>
-        <h2 class="card-title">Cooperativismo Aplicado</h2>
-        <span class="card-arrow">
-          Explorar
+      <a href="/contents/diplomado-basico/legislacion-cooperativa/" class="module-row">
+        <div class="module-title">Legislación Cooperativa</div>
+        <span class="module-arrow">
           <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
         </span>
       </a>
 
-    </div>
+      <a href="/contents/diplomado-basico/cuerpos-directivos/" class="module-row">
+        <div class="module-title">Cuerpos Directivos</div>
+        <span class="module-arrow">
+          <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+        </span>
+      </a>
+
+      <a href="/contents/diplomado-basico/gobernabilidad-cooperativa/" class="module-row">
+        <div class="module-title">Gobernabilidad Cooperativa</div>
+        <span class="module-arrow">
+          <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+        </span>
+      </a>
+
+      <a href="/contents/diplomado-basico/administracion-asambleas/" class="module-row">
+        <div class="module-title">Administración de Asambleas</div>
+        <span class="module-arrow">
+          <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+        </span>
+      </a>
+
+      <a href="/contents/diplomado-basico/liderazgo-perspectiva-genero/" class="module-row">
+        <div class="module-title">Liderazgo y Perspectiva de Género</div>
+        <span class="module-arrow">
+          <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+        </span>
+      </a>
+
+      <a href="/contents/diplomado-basico/incidencia-politica/" class="module-row">
+        <div class="module-title">Incidencia Política</div>
+        <span class="module-arrow">
+          <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+        </span>
+      </a>
+
+    </nav>
 
     <div class="footnote">
       <p class="footnote-text">Oliver Ayala</p>
