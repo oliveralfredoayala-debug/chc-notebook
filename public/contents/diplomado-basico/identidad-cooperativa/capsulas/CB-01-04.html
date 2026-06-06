@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CB-01-04 · Los 7 principios cooperativos</title>
+<style>
+:root {
+  --verde: #1c6b4a; --verde-sec: #2fa36b; --amarillo: #f4c20d;
+  --blanco: #ffffff; --gris-bg: #f7f7f5; --gris-borde: #e4e4e0;
+  --texto: #1a1a18; --texto-sec: #3a3a36; --texto-ter: #6a6a64;
+  --radio: 10px; --radio-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: var(--blanco); color: var(--texto); font-size: 16px; line-height: 1.65; min-height: 100vh; }
+.shell { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid var(--gris-borde); background: var(--blanco); padding: 2rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+.nb-marca { padding: 0 1.25rem 1.75rem; border-bottom: 1px solid var(--gris-borde); }
+.nb-wordmark { margin-bottom: 0.5rem; line-height: 1; }
+.nb-wm-coop { font-size: 17px; font-weight: 700; color: #1c6b4a; letter-spacing: -0.02em; }
+.nb-wm-notebook { font-size: 17px; font-weight: 400; color: #1a1a18; letter-spacing: -0.02em; }
+.nb-marca-titulo { font-size: 12px; font-weight: 500; color: var(--verde); display: block; margin-top: 2px; }
+.nb-nav { list-style: none; padding: 0 .75rem; flex: 1; margin-top: 0.5rem; }
+.nb-nav li { margin-bottom: 2px; }
+.nb-nav button { width: 100%; text-align: left; background: none; border: none; padding: .5rem .75rem; border-radius: var(--radio-sm); font-size: 13px; color: var(--texto-sec); cursor: pointer; font-family: inherit; transition: background .15s, color .15s; line-height: 1.4; }
+.nb-nav button:hover { background: var(--gris-bg); color: var(--texto); }
+.nb-nav button.activo { background: #e8f4ef; color: var(--verde); font-weight: 500; }
+.nb-nav-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #c5d5cd; margin-right: 8px; vertical-align: middle; position: relative; top: -1px; transition: background .15s; }
+.nb-nav button.activo .nb-nav-dot { background: var(--verde); }
+.nb-conceptos { padding: 1.25rem; border-top: 1px solid var(--gris-borde); margin-top: auto; }
+.nb-conceptos-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-ter); margin-bottom: .75rem; display: block; }
+.nb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.nb-tag { font-size: 11px; color: var(--verde); background: #e8f4ef; padding: 3px 8px; border-radius: 20px; }
+.main { flex: 1; max-width: 740px; padding: 3rem 3.5rem; overflow-y: auto; }
+.panel { display: none; }
+.panel.activo { display: block; }
+.capsula-titulo { font-size: 28px; font-weight: 600; color: var(--texto); line-height: 1.25; margin-bottom: .5rem; position: relative; padding-bottom: 0.6rem; }
+.capsula-titulo::after { content: ''; display: block; width: 2.5rem; height: 3px; background: var(--verde); margin-top: 0.5rem; border-radius: 2px; }
+.capsula-meta { font-size: 13px; color: var(--texto-ter); margin-bottom: 2.5rem; }
+.capsula-intro { font-size: 17px; color: var(--texto-sec); line-height: 1.7; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--gris-borde); }
+.capsula-intro strong { color: var(--texto); font-weight: 500; }
+.seccion-h { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-ter); margin: 2.5rem 0 1rem; }
+.tabla-wrap { margin: 1.5rem 0; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.tabla-comp { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla-comp thead tr { background: var(--verde); }
+.tabla-comp thead th { padding: .75rem 1rem; color: var(--blanco); font-weight: 500; text-align: left; font-size: 13px; }
+.tabla-comp tbody tr { border-bottom: 1px solid var(--gris-borde); transition: background .1s; }
+.tabla-comp tbody tr:last-child { border-bottom: none; }
+.tabla-comp tbody tr:hover { background: var(--gris-bg); }
+.tabla-comp td { padding: .7rem 1rem; vertical-align: top; line-height: 1.5; color: var(--texto-sec); font-size: 14px; }
+.tabla-comp td:first-child { font-weight: 600; color: var(--texto); width: 8%; text-align: center; }
+.insight { background: var(--gris-bg); border-left: 3px solid var(--amarillo); padding: 1rem 1.25rem; border-radius: 0 var(--radio-sm) var(--radio-sm) 0; margin: 2rem 0; font-size: 15px; color: var(--texto-sec); line-height: 1.65; }
+.insight strong { color: var(--texto); font-weight: 500; }
+.escenario-card { border: 1px solid var(--gris-borde); border-radius: var(--radio); margin-bottom: 1.25rem; overflow: hidden; }
+.escenario-header { padding: 1rem 1.25rem; background: var(--blanco); cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; transition: background .15s; }
+.escenario-header:hover { background: var(--gris-bg); }
+.escenario-num { font-size: 11px; font-weight: 600; color: var(--texto-ter); flex-shrink: 0; padding-top: 2px; }
+.escenario-pregunta { font-size: 14px; font-weight: 500; color: var(--texto); line-height: 1.45; flex: 1; }
+.escenario-chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--texto-ter); transition: transform .2s; margin-top: 2px; }
+.escenario-card.abierto .escenario-chevron { transform: rotate(180deg); }
+.escenario-body { display: none; padding: 1.25rem; font-size: 14px; color: var(--texto-sec); line-height: 1.65; border-top: 1px solid var(--gris-borde); }
+.escenario-card.abierto .escenario-body { display: block; }
+.escenario-body strong { color: var(--texto); font-weight: 500; }
+.escenario-legal { margin-top: 1rem; padding: .75rem 1rem; background: #e8f4ef; border-radius: var(--radio-sm); font-size: 12px; color: var(--verde); }
+.art-card { margin-bottom: 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.art-card-header { padding: .875rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background .15s; gap: 1rem; }
+.art-card-header:hover { background: var(--gris-bg); }
+.art-card-id { font-size: 12px; font-weight: 600; color: var(--verde); letter-spacing: .06em; flex-shrink: 0; }
+.art-card-titulo { font-size: 14px; color: var(--texto); font-weight: 500; flex: 1; }
+.art-card-body { display: none; padding: 1rem 1.25rem; font-size: 13.5px; color: var(--texto-sec); line-height: 1.7; border-top: 1px solid var(--gris-borde); background: var(--gris-bg); }
+.art-card.abierto .art-card-body { display: block; }
+.art-verbatim { font-style: italic; color: var(--texto); margin-bottom: .75rem; padding: .75rem 1rem; background: var(--blanco); border-left: 3px solid var(--verde-sec); border-radius: 0 var(--radio-sm) var(--radio-sm) 0; font-size: 13px; }
+.art-nota { font-size: 12px; color: var(--texto-ter); }
+.quiz-pregunta { margin-bottom: 2rem; }
+.quiz-enunciado { font-size: 15px; font-weight: 500; color: var(--texto); margin-bottom: 1rem; line-height: 1.5; }
+.quiz-opciones { display: flex; flex-direction: column; gap: .5rem; }
+.quiz-opcion { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio-sm); cursor: pointer; font-size: 14px; color: var(--texto-sec); line-height: 1.45; transition: border-color .15s, background .15s; background: var(--blanco); }
+.quiz-opcion:hover { border-color: #b8d9c9; background: var(--gris-bg); }
+.quiz-opcion.correcta { border-color: var(--verde-sec); background: #e8f4ef; color: var(--verde); }
+.quiz-opcion.incorrecta { border-color: #e5a0a0; background: #fdf0f0; color: #a33; }
+.quiz-opcion.desactivada { pointer-events: none; opacity: .7; }
+.quiz-letra { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--gris-borde); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; color: var(--texto-ter); transition: all .15s; }
+.quiz-opcion.correcta .quiz-letra { border-color: var(--verde); color: var(--verde); }
+.quiz-opcion.incorrecta .quiz-letra { border-color: #c44; color: #c44; }
+.quiz-feedback { margin-top: .75rem; font-size: 13px; color: var(--texto-ter); padding: .5rem .75rem; border-radius: var(--radio-sm); background: var(--gris-bg); display: none; }
+.quiz-feedback.visible { display: block; }
+.btn-retomar { background: none; border: 1.5px solid var(--verde); color: var(--verde); font-family: inherit; font-size: 13px; padding: .4rem .9rem; border-radius: var(--radio-sm); cursor: pointer; transition: background .15s, color .15s; }
+.btn-retomar:hover { background: var(--verde); color: var(--blanco); }
+@media (max-width: 700px) { .sidebar { display: none; } .main { padding: 1.5rem 1.25rem; max-width: 100%; } .capsula-titulo { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="nb-marca">
+    <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
+    <span class="nb-marca-titulo">Identidad cooperativa</span>
+  </div>
+  <ul class="nb-nav">
+    <li><button class="activo" onclick="mostrarPanel('explorar', this)"><span class="nb-nav-dot"></span>Exploración</button></li>
+    <li><button onclick="mostrarPanel('escenarios', this)"><span class="nb-nav-dot"></span>Análisis crítico</button></li>
+    <li><button onclick="mostrarPanel('legal', this)"><span class="nb-nav-dot"></span>Referencias legales</button></li>
+    <li><button onclick="mostrarPanel('verifica', this)"><span class="nb-nav-dot"></span>Verifica tu lectura</button></li>
+  </ul>
+  <div class="nb-conceptos">
+    <span class="nb-conceptos-label">Conceptos relacionados</span>
+    <div class="nb-tags">
+      <span class="nb-tag">membresía abierta</span>
+      <span class="nb-tag">control democrático</span>
+      <span class="nb-tag">autonomía</span>
+      <span class="nb-tag">educación cooperativa</span>
+      <span class="nb-tag">Art. 5 LCH</span>
+    </div>
+  </div>
+</nav>
+<main class="main">
+
+<div class="panel activo" id="panel-explorar">
+  <h1 class="capsula-titulo">Los 7 principios cooperativos</h1>
+  <div class="capsula-meta">Art. 5 LCH · Art. 7 LCH · Art. 125 LCH · Declaración ICA 1995</div>
+  <p class="capsula-intro">Los principios cooperativos son las líneas directrices que guían la forma en que las cooperativas llevan a la práctica sus valores. <strong>No son recomendaciones: son compromisos normativos</strong> reconocidos expresamente en el Art. 5 de la LCH. Ignorarlos no es solo un problema doctrinario; puede implicar incumplimiento legal.</p>
+
+  <p class="seccion-h">Los 7 principios con base legal y expresión práctica</p>
+  <div class="tabla-wrap">
+    <table class="tabla-comp">
+      <thead><tr><th>#</th><th>Principio</th><th>Expresión legal en Honduras</th><th>Implicación práctica</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Membresía abierta y voluntaria</strong></td><td>Art. 5 lit. a LCH</td><td>Nadie puede ser excluido por razones discriminatorias; la adhesión es libre aunque puede estar condicionada por capacidad de uso del servicio</td></tr>
+        <tr><td>2</td><td><strong>Control democrático de los miembros</strong></td><td>Art. 5 lit. b · Art. 119-E LCH</td><td>Un afiliado/a, un voto en asamblea; directivos/as elegidos/as por la base; rendición de cuentas obligatoria</td></tr>
+        <tr><td>3</td><td><strong>Participación económica de los miembros</strong></td><td>Art. 5 lit. c · Art. 44 LCH</td><td>Los afiliados/as contribuyen equitativamente al capital; excedentes distribuidos según patrocinio, no según capital</td></tr>
+        <tr><td>4</td><td><strong>Autonomía e independencia</strong></td><td>Art. 5 lit. d · Art. 4 LCH</td><td>Si se busca financiamiento externo o se acuerda con el Estado, la cooperativa debe mantener su control democrático</td></tr>
+        <tr><td>5</td><td><strong>Educación, entrenamiento e información</strong></td><td>Art. 5 lit. e · Art. 125 LCH</td><td>Obligación legal de destinar fondos a educación cooperativa; el Comité de Educación tiene presupuesto garantizado</td></tr>
+        <tr><td>6</td><td><strong>Cooperación entre cooperativas</strong></td><td>Art. 5 lit. f · Arts. 88-90 LCH</td><td>Las cooperativas se integran en federaciones y la CHC; actúan articuladamente para fortalecer el movimiento</td></tr>
+        <tr><td>7</td><td><strong>Compromiso con la comunidad</strong></td><td>Art. 5 lit. g · Arts. 92-93 RLCH</td><td>Balance social obligatorio; los fondos de bienestar social tienen destinación específica</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Principios como norma vs. principios como cultura.</strong> Un principio puede cumplirse formalmente pero violarse en la práctica. Una cooperativa que celebra asambleas con quórum mínimo y vota sin deliberación real cumple el procedimiento pero viola el espíritu del control democrático. La diferencia entre una cooperativa que practica sus principios y una que solo los declara es visible en su cultura organizacional cotidiana.
+  </div>
+</div>
+
+<div class="panel" id="panel-escenarios">
+  <h1 class="capsula-titulo">Análisis crítico</h1>
+  <p class="capsula-intro" style="font-size:15px">Situaciones donde los principios enfrentan tensiones reales.</p>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">01</span>
+      <span class="escenario-pregunta">El principio de autonomía prohíbe que una cooperativa reciba financiamiento que comprometa su independencia. ¿Dónde está el límite en la práctica?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      El límite lo establece si el financiamiento externo condiciona las decisiones de la cooperativa. Un crédito bancario comercial no viola la autonomía porque no otorga poder de decisión al banco. Pero un convenio de cooperación en el que un organismo internacional exige que la cooperativa cambie su modelo de servicio o su estructura de gobernanza <strong>sí viola el principio de autonomía</strong>. La pregunta clave es: ¿quién toma las decisiones estratégicas? Si la respuesta es "quien financia", la autonomía está comprometida.
+      <div class="escenario-legal">Art. 5 lit. d LCH · Art. 4 LCH: autonomía e independencia cooperativa</div>
+    </div>
+  </div>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">02</span>
+      <span class="escenario-pregunta">El principio de educación obliga a destinar recursos formativos. ¿Cómo se traduce eso en obligaciones concretas según la LCH?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      El Art. 125 LCH establece que las cooperativas deben destinar <strong>al menos el 3% de sus excedentes netos al Fondo de Educación Cooperativa</strong>. Según el Acuerdo J.D. 001-17-07-2025, ese fondo se distribuye así: 2% para educación cooperativa general y 1% dividido entre los programas de género y juventud. El Comité de Educación tiene la responsabilidad de planificar y ejecutar el uso de esos fondos. Incumplir esta obligación no es solo un problema doctrinal; es una infracción legal que puede ser objeto de observación por parte del CONSUCOOP.
+      <div class="escenario-legal">Art. 5 lit. e LCH · Art. 125 LCH · Acuerdo J.D. 001-17-07-2025</div>
+    </div>
+  </div>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">03</span>
+      <span class="escenario-pregunta">Una cooperativa que no practica el principio de cooperación entre cooperativas. ¿Viola la ley o solo la doctrina?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      Depende del nivel de integración. La LCH no obliga a toda cooperativa a afiliarse a una federación, pero establece la estructura de integración en los Arts. 88-90 como parte del sistema cooperativo hondureño. Sin embargo, las cooperativas de ahorro y crédito supervisadas por el CONSUCOOP tienen obligaciones de reporte e integración más específicas. Lo que sí es claro es que una cooperativa que opera de forma completamente aislada <strong>está actuando en contra del espíritu del Art. 5 lit. f</strong> y pierde beneficios reales: representación gremial, formación, acceso a recursos del movimiento y fuerza de negociación colectiva.
+      <div class="escenario-legal">Art. 5 lit. f LCH · Arts. 88-90 LCH: integración cooperativa</div>
+    </div>
+  </div>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">04</span>
+      <span class="escenario-pregunta">¿Puede una cooperativa limitar la membresía por razones económicas sin violar el principio de membresía abierta?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      Sí, dentro de ciertos límites. El principio de membresía abierta no significa que cualquier persona pueda ingresar sin condición alguna. Una cooperativa puede exigir <strong>capacidad de uso del servicio</strong> (por ejemplo, ser productor agrícola en una cooperativa cafetalera) o cumplir requisitos objetivos relacionados con la naturaleza de la organización. Lo que no puede hacer es excluir a personas por razones discriminatorias como género, religión, etnia o filiación política. La LCH establece en los Arts. 19-22 los requisitos de admisión, que deben estar previstos en el estatuto y no pueden ser discriminatorios.
+      <div class="escenario-legal">Art. 5 lit. a LCH · Arts. 19-22 LCH: ingreso a la cooperativa</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-legal">
+  <h1 class="capsula-titulo">Referencias legales</h1>
+  <p class="capsula-intro" style="font-size:15px">Artículos que dan base normativa a los 7 principios cooperativos en Honduras.</p>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 5 LCH</span>
+      <span class="art-card-titulo">Los 7 principios cooperativos</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Son principios básicos que rigen las cooperativas: a) Membresía abierta y voluntaria; b) Control democrático de los miembros; c) Participación económica de los miembros; d) Autonomía e independencia; e) Educación, entrenamiento e información; f) Cooperación entre cooperativas; g) Compromiso con la comunidad."</p>
+      <p class="art-nota">Los siete principios tienen rango legal en Honduras. No son solo declaraciones doctrinales: su incumplimiento puede ser observado por el CONSUCOOP como desviación de la naturaleza cooperativa.</p>
+    </div>
+  </div>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 125 LCH</span>
+      <span class="art-card-titulo">Fondo de Educación Cooperativa</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Las cooperativas destinarán anualmente no menos del tres por ciento (3%) de sus excedentes netos para un fondo de educación cooperativa. Dicho fondo será administrado por el Comité de Educación bajo la supervisión de la Junta Directiva."</p>
+      <p class="art-nota">Este artículo convierte el principio 5 (educación) en una obligación financiera concreta. El Acuerdo J.D. 001-17-07-2025 regula la distribución específica de ese 3%.</p>
+    </div>
+  </div>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 119-E LCH</span>
+      <span class="art-card-titulo">Un voto por afiliado/a</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"En las Asambleas Generales de base, cada Afiliado(a) activo(a) debidamente acreditado(a) tiene derecho a un voto."</p>
+      <p class="art-nota">Este artículo es la expresión legal más directa del principio 2 (control democrático). El voto es individual, igual e intransferible, independientemente del nivel de aportaciones.</p>
+    </div>
+  </div>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Arts. 88-90 LCH</span>
+      <span class="art-card-titulo">Integración cooperativa</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Art. 88.- Las cooperativas podrán organizarse en cooperativas de primer grado. Art. 89.- Las cooperativas de primer grado podrán organizarse en organismos de segundo grado, denominados federaciones, uniones o centrales. Art. 90.- Los organismos de segundo grado podrán organizarse en organismos de tercer grado, denominados confederaciones."</p>
+      <p class="art-nota">Estos artículos institucionalizan el principio 6 (cooperación entre cooperativas) estableciendo la estructura de integración en tres niveles: cooperativas, federaciones y la CHC como confederación nacional.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-verifica">
+  <h1 class="capsula-titulo">Verifica tu lectura</h1>
+  <p class="capsula-intro" style="font-size:15px">Cinco preguntas sobre los principios cooperativos y su base legal.</p>
+
+  <div class="quiz-pregunta" id="q1">
+    <p class="quiz-enunciado">1. ¿Cuántos principios cooperativos reconoce el Art. 5 de la LCH?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">A</span>Cinco</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">B</span>Seis</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',true)"><span class="quiz-letra">C</span>Siete</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">D</span>Ocho</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q1">Art. 5 LCH: reconoce siete principios básicos (incisos a al g), adoptados de la Declaración sobre la Identidad Cooperativa de la ACI de 1995.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q2">
+    <p class="quiz-enunciado">2. El principio de educación cooperativa tiene respaldo en el Art. 125 LCH. ¿Qué porcentaje mínimo de excedentes deben destinar las cooperativas al fondo de educación?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">A</span>1%</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">B</span>2%</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',true)"><span class="quiz-letra">C</span>3%</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">D</span>5%</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q2">Art. 125 LCH: las cooperativas destinarán anualmente no menos del 3% de sus excedentes netos para el fondo de educación cooperativa, administrado por el Comité de Educación.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q3">
+    <p class="quiz-enunciado">3. Una cooperativa recibe una donación de un organismo internacional que exige, como condición, que la Junta Directiva incluya un representante del organismo donante. ¿Qué principio se viola?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">A</span>Membresía abierta y voluntaria</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">B</span>Participación económica de los miembros</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',true)"><span class="quiz-letra">C</span>Autonomía e independencia</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">D</span>Cooperación entre cooperativas</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q3">Art. 5 lit. d LCH: el principio de autonomía e independencia exige que la cooperativa mantenga su control democrático interno. Una condición que otorga poder de decisión a un agente externo viola directamente este principio.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q4">
+    <p class="quiz-enunciado">4. El Art. 119-E LCH establece "un afiliado/a, un voto". ¿A cuál de los 7 principios corresponde directamente?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">A</span>Participación económica de los miembros</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',true)"><span class="quiz-letra">B</span>Control democrático de los miembros</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">C</span>Membresía abierta y voluntaria</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">D</span>Autonomía e independencia</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q4">Art. 119-E LCH es la expresión más directa del principio 2 (control democrático): cada afiliado/a activo/a tiene derecho a un voto, independientemente de su nivel de aportaciones.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q5">
+    <p class="quiz-enunciado">5. Los Arts. 88, 89 y 90 de la LCH (cooperativas de primer, segundo y tercer grado) institucionalizan principalmente qué principio cooperativo:</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">A</span>Compromiso con la comunidad</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">B</span>Educación, entrenamiento e información</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',true)"><span class="quiz-letra">C</span>Cooperación entre cooperativas</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">D</span>Autonomía e independencia</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q5">Arts. 88-90 LCH establecen la estructura de integración cooperativa en tres niveles, institucionalizando el principio 6 (cooperación entre cooperativas) a través de federaciones de segundo grado y la CHC como confederación nacional de tercer grado.</div>
+  </div>
+
+  <div style="text-align:right; margin-top:1.5rem;">
+    <button class="btn-retomar" onclick="retomar()">↺ Retomar test</button>
+  </div>
+</div>
+
+</main>
+</div>
+<script>
+function mostrarPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
+  document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
+  document.getElementById('panel-' + id).classList.add('activo');
+  btn.classList.add('activo');
+}
+function toggleEscenario(card) { card.classList.toggle('abierto'); }
+function toggleArt(card) { card.classList.toggle('abierto'); }
+function responder(opcion, qid, correcta) {
+  const pregunta = document.getElementById(qid);
+  const feedback = document.getElementById('fb-' + qid);
+  pregunta.querySelectorAll('.quiz-opcion').forEach(o => o.classList.add('desactivada'));
+  opcion.classList.add(correcta ? 'correcta' : 'incorrecta');
+  feedback.classList.add('visible');
+}
+function retomar() {
+  document.querySelectorAll('.quiz-pregunta').forEach(q => {
+    q.querySelectorAll('.quiz-opcion').forEach(o => o.classList.remove('correcta','incorrecta','desactivada'));
+    const fb = q.querySelector('.quiz-feedback');
+    if (fb) fb.classList.remove('visible');
+  });
+}
+</script>
+</body>
+</html>

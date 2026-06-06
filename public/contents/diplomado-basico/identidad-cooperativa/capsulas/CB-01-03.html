@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CB-01-03 · Los valores cooperativos</title>
+<style>
+:root {
+  --verde: #1c6b4a; --verde-sec: #2fa36b; --amarillo: #f4c20d;
+  --blanco: #ffffff; --gris-bg: #f7f7f5; --gris-borde: #e4e4e0;
+  --texto: #1a1a18; --texto-sec: #3a3a36; --texto-ter: #6a6a64;
+  --radio: 10px; --radio-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: var(--blanco); color: var(--texto); font-size: 16px; line-height: 1.65; min-height: 100vh; }
+.shell { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid var(--gris-borde); background: var(--blanco); padding: 2rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+.nb-marca { padding: 0 1.25rem 1.75rem; border-bottom: 1px solid var(--gris-borde); }
+.nb-wordmark { margin-bottom: 0.5rem; line-height: 1; }
+.nb-wm-coop { font-size: 17px; font-weight: 700; color: #1c6b4a; letter-spacing: -0.02em; }
+.nb-wm-notebook { font-size: 17px; font-weight: 400; color: #1a1a18; letter-spacing: -0.02em; }
+.nb-marca-titulo { font-size: 12px; font-weight: 500; color: var(--verde); display: block; margin-top: 2px; }
+.nb-nav { list-style: none; padding: 0 .75rem; flex: 1; margin-top: 0.5rem; }
+.nb-nav li { margin-bottom: 2px; }
+.nb-nav button { width: 100%; text-align: left; background: none; border: none; padding: .5rem .75rem; border-radius: var(--radio-sm); font-size: 13px; color: var(--texto-sec); cursor: pointer; font-family: inherit; transition: background .15s, color .15s; line-height: 1.4; }
+.nb-nav button:hover { background: var(--gris-bg); color: var(--texto); }
+.nb-nav button.activo { background: #e8f4ef; color: var(--verde); font-weight: 500; }
+.nb-nav-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #c5d5cd; margin-right: 8px; vertical-align: middle; position: relative; top: -1px; transition: background .15s; }
+.nb-nav button.activo .nb-nav-dot { background: var(--verde); }
+.nb-conceptos { padding: 1.25rem; border-top: 1px solid var(--gris-borde); margin-top: auto; }
+.nb-conceptos-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-ter); margin-bottom: .75rem; display: block; }
+.nb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.nb-tag { font-size: 11px; color: var(--verde); background: #e8f4ef; padding: 3px 8px; border-radius: 20px; }
+.main { flex: 1; max-width: 740px; padding: 3rem 3.5rem; overflow-y: auto; }
+.panel { display: none; }
+.panel.activo { display: block; }
+.capsula-titulo { font-size: 28px; font-weight: 600; color: var(--texto); line-height: 1.25; margin-bottom: .5rem; position: relative; padding-bottom: 0.6rem; }
+.capsula-titulo::after { content: ''; display: block; width: 2.5rem; height: 3px; background: var(--verde); margin-top: 0.5rem; border-radius: 2px; }
+.capsula-meta { font-size: 13px; color: var(--texto-ter); margin-bottom: 2.5rem; }
+.capsula-intro { font-size: 17px; color: var(--texto-sec); line-height: 1.7; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--gris-borde); }
+.capsula-intro strong { color: var(--texto); font-weight: 500; }
+.seccion-h { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-ter); margin: 2.5rem 0 1rem; }
+.tabla-wrap { margin: 1.5rem 0; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.tabla-comp { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla-comp thead tr { background: var(--verde); }
+.tabla-comp thead th { padding: .75rem 1rem; color: var(--blanco); font-weight: 500; text-align: left; font-size: 13px; }
+.tabla-comp tbody tr { border-bottom: 1px solid var(--gris-borde); transition: background .1s; }
+.tabla-comp tbody tr:last-child { border-bottom: none; }
+.tabla-comp tbody tr:hover { background: var(--gris-bg); }
+.tabla-comp td { padding: .7rem 1rem; vertical-align: top; line-height: 1.5; color: var(--texto-sec); font-size: 14px; }
+.tabla-comp td:first-child { font-weight: 600; color: var(--texto); width: 22%; }
+.insight { background: var(--gris-bg); border-left: 3px solid var(--amarillo); padding: 1rem 1.25rem; border-radius: 0 var(--radio-sm) var(--radio-sm) 0; margin: 2rem 0; font-size: 15px; color: var(--texto-sec); line-height: 1.65; }
+.insight strong { color: var(--texto); font-weight: 500; }
+.escenario-card { border: 1px solid var(--gris-borde); border-radius: var(--radio); margin-bottom: 1.25rem; overflow: hidden; }
+.escenario-header { padding: 1rem 1.25rem; background: var(--blanco); cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; transition: background .15s; }
+.escenario-header:hover { background: var(--gris-bg); }
+.escenario-num { font-size: 11px; font-weight: 600; color: var(--texto-ter); flex-shrink: 0; padding-top: 2px; }
+.escenario-pregunta { font-size: 14px; font-weight: 500; color: var(--texto); line-height: 1.45; flex: 1; }
+.escenario-chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--texto-ter); transition: transform .2s; margin-top: 2px; }
+.escenario-card.abierto .escenario-chevron { transform: rotate(180deg); }
+.escenario-body { display: none; padding: 1.25rem; font-size: 14px; color: var(--texto-sec); line-height: 1.65; border-top: 1px solid var(--gris-borde); }
+.escenario-card.abierto .escenario-body { display: block; }
+.escenario-body strong { color: var(--texto); font-weight: 500; }
+.escenario-legal { margin-top: 1rem; padding: .75rem 1rem; background: #e8f4ef; border-radius: var(--radio-sm); font-size: 12px; color: var(--verde); }
+.art-card { margin-bottom: 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.art-card-header { padding: .875rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background .15s; gap: 1rem; }
+.art-card-header:hover { background: var(--gris-bg); }
+.art-card-id { font-size: 12px; font-weight: 600; color: var(--verde); letter-spacing: .06em; flex-shrink: 0; }
+.art-card-titulo { font-size: 14px; color: var(--texto); font-weight: 500; flex: 1; }
+.art-card-body { display: none; padding: 1rem 1.25rem; font-size: 13.5px; color: var(--texto-sec); line-height: 1.7; border-top: 1px solid var(--gris-borde); background: var(--gris-bg); }
+.art-card.abierto .art-card-body { display: block; }
+.art-verbatim { font-style: italic; color: var(--texto); margin-bottom: .75rem; padding: .75rem 1rem; background: var(--blanco); border-left: 3px solid var(--verde-sec); border-radius: 0 var(--radio-sm) var(--radio-sm) 0; font-size: 13px; }
+.art-nota { font-size: 12px; color: var(--texto-ter); }
+.quiz-pregunta { margin-bottom: 2rem; }
+.quiz-enunciado { font-size: 15px; font-weight: 500; color: var(--texto); margin-bottom: 1rem; line-height: 1.5; }
+.quiz-opciones { display: flex; flex-direction: column; gap: .5rem; }
+.quiz-opcion { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio-sm); cursor: pointer; font-size: 14px; color: var(--texto-sec); line-height: 1.45; transition: border-color .15s, background .15s; background: var(--blanco); }
+.quiz-opcion:hover { border-color: #b8d9c9; background: var(--gris-bg); }
+.quiz-opcion.correcta { border-color: var(--verde-sec); background: #e8f4ef; color: var(--verde); }
+.quiz-opcion.incorrecta { border-color: #e5a0a0; background: #fdf0f0; color: #a33; }
+.quiz-opcion.desactivada { pointer-events: none; opacity: .7; }
+.quiz-letra { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--gris-borde); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; color: var(--texto-ter); transition: all .15s; }
+.quiz-opcion.correcta .quiz-letra { border-color: var(--verde); color: var(--verde); }
+.quiz-opcion.incorrecta .quiz-letra { border-color: #c44; color: #c44; }
+.quiz-feedback { margin-top: .75rem; font-size: 13px; color: var(--texto-ter); padding: .5rem .75rem; border-radius: var(--radio-sm); background: var(--gris-bg); display: none; }
+.quiz-feedback.visible { display: block; }
+.btn-retomar { background: none; border: 1.5px solid var(--verde); color: var(--verde); font-family: inherit; font-size: 13px; padding: .4rem .9rem; border-radius: var(--radio-sm); cursor: pointer; transition: background .15s, color .15s; }
+.btn-retomar:hover { background: var(--verde); color: var(--blanco); }
+@media (max-width: 700px) { .sidebar { display: none; } .main { padding: 1.5rem 1.25rem; max-width: 100%; } .capsula-titulo { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="nb-marca">
+    <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
+    <span class="nb-marca-titulo">Identidad cooperativa</span>
+  </div>
+  <ul class="nb-nav">
+    <li><button class="activo" onclick="mostrarPanel('explorar', this)"><span class="nb-nav-dot"></span>Exploración</button></li>
+    <li><button onclick="mostrarPanel('escenarios', this)"><span class="nb-nav-dot"></span>Análisis crítico</button></li>
+    <li><button onclick="mostrarPanel('legal', this)"><span class="nb-nav-dot"></span>Referencias legales</button></li>
+    <li><button onclick="mostrarPanel('verifica', this)"><span class="nb-nav-dot"></span>Verifica tu lectura</button></li>
+  </ul>
+  <div class="nb-conceptos">
+    <span class="nb-conceptos-label">Conceptos relacionados</span>
+    <div class="nb-tags">
+      <span class="nb-tag">autoayuda</span>
+      <span class="nb-tag">solidaridad</span>
+      <span class="nb-tag">equidad</span>
+      <span class="nb-tag">honestidad</span>
+      <span class="nb-tag">Art. 5 LCH</span>
+    </div>
+  </div>
+</nav>
+<main class="main">
+
+<div class="panel activo" id="panel-explorar">
+  <h1 class="capsula-titulo">Los valores cooperativos</h1>
+  <div class="capsula-meta">Art. 5 LCH · Declaración sobre la Identidad Cooperativa, ICA 1995</div>
+  <p class="capsula-intro">Los valores cooperativos no son un código de ética decorativo. Son las <strong>condiciones culturales sin las cuales los principios cooperativos no pueden funcionar</strong>. Una cooperativa que cumple sus procedimientos pero abandona sus valores pierde su razón de ser sin importar cuán eficiente sea administrativamente.</p>
+
+  <p class="seccion-h">Los seis valores de la ICA y su expresión práctica</p>
+  <div class="tabla-wrap">
+    <table class="tabla-comp">
+      <thead><tr><th>Valor</th><th>Qué significa</th><th>Expresión en la cooperativa</th></tr></thead>
+      <tbody>
+        <tr><td>Autoayuda</td><td>Las personas pueden y deben resolver sus propios problemas mediante la organización colectiva</td><td>La cooperativa no espera que el Estado o un benefactor resuelva sus necesidades; las afronta con los recursos de sus propios afiliados/as</td></tr>
+        <tr><td>Autorresponsabilidad</td><td>Las personas son responsables de su organización y responden ante sus compromisos</td><td>Cada afiliado/a es copropietario/a y corresponsable; el fracaso o el éxito es colectivo</td></tr>
+        <tr><td>Democracia</td><td>Las decisiones se toman con participación de todos los integrantes, con igual peso para cada voz</td><td>Asambleas con voto por afiliado/a; directivos/as elegidos/as periódicamente; rendición de cuentas obligatoria</td></tr>
+        <tr><td>Igualdad</td><td>Todos los afiliados/as tienen los mismos derechos sin importar su nivel de aportación</td><td>Un afiliado/a, un voto; acceso igualitario a los servicios de la cooperativa</td></tr>
+        <tr><td>Equidad</td><td>Los beneficios y cargas se distribuyen de forma justa, proporcional a la participación real</td><td>Los excedentes se distribuyen según el uso de los servicios, no según el capital aportado</td></tr>
+        <tr><td>Solidaridad</td><td>Los afiliados/as se apoyan mutuamente y la cooperativa contribuye al bienestar de la comunidad</td><td>Fondos de ayuda mutua, programas sociales, apoyo en situaciones de emergencia para afiliados/as</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Además de estos seis valores, los cooperativistas practican valores éticos específicos:</strong> honestidad, transparencia, responsabilidad social y vocación social. Estos valores éticos son los que regulan el comportamiento de las personas dentro de la organización; los seis valores ICA definen la filosofía de la organización como tal.
+  </div>
+
+  <p class="seccion-h">La diferencia entre igualdad y equidad</p>
+  <p style="font-size:14px; color:var(--texto-sec); line-height:1.65; margin-bottom:1rem;">Estos dos valores suelen confundirse pero tienen significados distintos con consecuencias prácticas diferentes:</p>
+  <div class="tabla-wrap">
+    <table class="tabla-comp">
+      <thead><tr><th>Igualdad</th><th>Equidad</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:400">Mismo trato para todos sin distinción</td><td style="font-weight:400">Trato proporcional según la participación y necesidad</td></tr>
+        <tr><td style="font-weight:400">Un afiliado/a, un voto (independientemente de sus aportaciones)</td><td style="font-weight:400">Excedentes distribuidos según cuánto usó los servicios, no cuánto aportó de capital</td></tr>
+        <tr><td style="font-weight:400">Acceso igualitario a los servicios</td><td style="font-weight:400">Beneficios proporcionales al esfuerzo y la contribución real</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" id="panel-escenarios">
+  <h1 class="capsula-titulo">Análisis crítico</h1>
+  <p class="capsula-intro" style="font-size:15px">Situaciones donde los valores cooperativos entran en tensión con la realidad.</p>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">01</span>
+      <span class="escenario-pregunta">Una cooperativa con resultados financieros excelentes pero con menos del 20% de participación en sus asambleas. ¿Está cumpliendo sus valores?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      Financieramente sí, pero cooperativamente no. El valor de <strong>democracia</strong> exige que los afiliados/as participen activamente en la toma de decisiones. Una asamblea con el 20% de participación puede ser válida legalmente si se cumple el quórum, pero revela un déficit de cultura cooperativa: los afiliados/as no están ejerciendo su copropietariedad. Además, los valores de <strong>autorresponsabilidad</strong> y <strong>autoayuda</strong> implican que los afiliados/as se involucran activamente, no solo reciben servicios. Una cooperativa que funciona bien sin la participación de sus afiliados/as se está comportando más como empresa que como movimiento.
+      <div class="escenario-legal">Art. 5 LCH: principio de control democrático · Declaración ICA 1995: valores de democracia y autorresponsabilidad</div>
+    </div>
+  </div>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">02</span>
+      <span class="escenario-pregunta">¿Puede existir tensión real entre el valor de igualdad y el de equidad dentro de una cooperativa? ¿Cómo se resuelve?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      Sí, existe tensión y es uno de los debates más frecuentes en asambleas. Un afiliado/a con muchos años y altas aportaciones puede sentir que la igualdad de voto no reconoce su mayor contribución. Otro afiliado/a con bajos recursos puede sentir que la distribución proporcional de excedentes lo beneficia menos. La respuesta cooperativa es que <strong>igualdad y equidad no se contradicen: operan en dimensiones distintas</strong>. La igualdad aplica al poder político (el voto); la equidad aplica a la distribución económica (los excedentes). Ninguna supedita a la otra: son dos dimensiones complementarias del mismo modelo.
+      <div class="escenario-legal">Art. 5 LCH: principios de igualdad y equidad · Art. 44 LCH: distribución de excedentes</div>
+    </div>
+  </div>
+
+  <div class="escenario-card" onclick="toggleEscenario(this)">
+    <div class="escenario-header">
+      <span class="escenario-num">03</span>
+      <span class="escenario-pregunta">¿Cómo se manifiesta concretamente el valor de solidaridad en decisiones económicas reales de una cooperativa?</span>
+      <svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="escenario-body">
+      La solidaridad no es solo empatía: se expresa en decisiones concretas con implicaciones económicas. Ejemplos: <strong>destinar parte de los excedentes a un fondo de ayuda mutua</strong> en lugar de distribuirlos todos; aprobar en asamblea una moratoria para afiliados/as que enfrentan emergencias en lugar de ejecutar garantías inmediatamente; mantener servicios en zonas con baja rentabilidad porque hay afiliados/as que los necesitan. Cada una de estas decisiones implica que algunos afiliados/as renuncian a un beneficio inmediato para sostener el bienestar colectivo. Eso es solidaridad en sentido cooperativo, no como sentimiento sino como decisión institucional.
+      <div class="escenario-legal">Art. 5 LCH: principio de compromiso con la comunidad · Art. 44 LCH: fondos especiales</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-legal">
+  <h1 class="capsula-titulo">Referencias legales</h1>
+  <p class="capsula-intro" style="font-size:15px">El fundamento normativo de los valores cooperativos en Honduras.</p>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 5 LCH</span>
+      <span class="art-card-titulo">Principios y valores rectores</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Son principios básicos que rigen las cooperativas: a) Membresía abierta y voluntaria; b) Control democrático de los miembros; c) Participación económica de los miembros; d) Autonomía e independencia; e) Educación, entrenamiento e información; f) Cooperación entre cooperativas; g) Compromiso con la comunidad."</p>
+      <p class="art-nota">Los principios del Art. 5 son la expresión legal de los valores. Cada principio presupone uno o varios valores; sin los valores, los principios se reducen a procedimientos vacíos.</p>
+    </div>
+  </div>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 4 LCH</span>
+      <span class="art-card-titulo">Bien común como finalidad</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Las cooperativas son empresas del Sector Social de la Economía, sin fines de lucro y de duración indefinida, que mediante la acción conjunta de sus integrantes tienden al bien común y a la satisfacción de necesidades colectivas."</p>
+      <p class="art-nota">"Bien común" y "satisfacción de necesidades colectivas" son la traducción legal de los valores de solidaridad, autoayuda y autorresponsabilidad. La ley no solo regula procedimientos; encarna una filosofía.</p>
+    </div>
+  </div>
+
+  <div class="art-card" onclick="toggleArt(this)">
+    <div class="art-card-header">
+      <span class="art-card-id">Art. 44 LCH</span>
+      <span class="art-card-titulo">Distribución de excedentes</span>
+    </div>
+    <div class="art-card-body">
+      <p class="art-verbatim">"Los excedentes se distribuirán en la forma siguiente: a) Por lo menos un diez por ciento (10%) para formar un fondo de reserva legal acumulable anualmente... c) El resto se distribuirá entre los cooperativistas de acuerdo al patrocinio efectuado con la cooperativa..."</p>
+      <p class="art-nota">"Patrocinio" significa uso de los servicios cooperativos, no capital invertido. Esta disposición es la expresión legal del valor de equidad: los beneficios son proporcionales a la participación, no al capital.</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-verifica">
+  <h1 class="capsula-titulo">Verifica tu lectura</h1>
+  <p class="capsula-intro" style="font-size:15px">Cinco preguntas sobre los valores cooperativos y su aplicación.</p>
+
+  <div class="quiz-pregunta" id="q1">
+    <p class="quiz-enunciado">1. ¿Cuántos valores reconoce la Alianza Cooperativa Internacional en su Declaración de 1995?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">A</span>Cuatro</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">B</span>Cinco</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',true)"><span class="quiz-letra">C</span>Seis</div>
+      <div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">D</span>Siete</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q1">La Declaración ICA 1995 reconoce seis valores: autoayuda, autorresponsabilidad, democracia, igualdad, equidad y solidaridad. Adicionalmente, los cooperativistas practican valores éticos como honestidad, transparencia y responsabilidad social.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q2">
+    <p class="quiz-enunciado">2. El valor de equidad en una cooperativa se expresa principalmente en:</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">A</span>Que todos los afiliados/as tienen el mismo voto en la asamblea</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',true)"><span class="quiz-letra">B</span>Que los excedentes se distribuyen según el uso de los servicios, no según el capital aportado</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">C</span>Que todos los afiliados/as pagan la misma cuota de ingreso</div>
+      <div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">D</span>Que los directivos/as tienen el mismo salario independientemente del cargo</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q2">Art. 44 LCH: la equidad se expresa en la distribución de excedentes según el "patrocinio", es decir, según cuánto usó cada afiliado/a los servicios cooperativos, no según cuánto capital aportó.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q3">
+    <p class="quiz-enunciado">3. ¿Cuál es la diferencia entre el valor de igualdad y el valor de equidad en el contexto cooperativo?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">A</span>La igualdad aplica a los excedentes y la equidad al voto</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',true)"><span class="quiz-letra">B</span>La igualdad aplica al poder político (el voto) y la equidad a la distribución económica (los excedentes)</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">C</span>Son sinónimos que se usan indistintamente en la doctrina cooperativa</div>
+      <div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">D</span>La igualdad es para afiliados/as nuevos y la equidad para afiliados/as con más años</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q3">Igualdad y equidad operan en dimensiones distintas. La igualdad garantiza el mismo poder de decisión (un voto por persona sin importar el capital). La equidad garantiza que los beneficios económicos sean proporcionales a la participación real en la actividad cooperativa.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q4">
+    <p class="quiz-enunciado">4. El valor de autoayuda en el cooperativismo significa que:</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">A</span>Cada afiliado/a resuelve sus problemas individualmente sin apoyo de la cooperativa</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">B</span>La cooperativa no necesita apoyo externo de ningún tipo para funcionar</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',true)"><span class="quiz-letra">C</span>Las personas pueden resolver sus problemas mediante la organización y la acción colectiva propia</div>
+      <div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">D</span>La cooperativa debe autofinanciarse sin acceder a créditos externos</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q4">Autoayuda no es individualismo ni autarquía: es la convicción de que las personas, organizadas colectivamente, tienen la capacidad de resolver sus propias necesidades sin depender de un benefactor externo o del Estado.</div>
+  </div>
+
+  <div class="quiz-pregunta" id="q5">
+    <p class="quiz-enunciado">5. ¿Cuál de los siguientes es un valor ÉTICO cooperativo, distinto de los seis valores ICA?</p>
+    <div class="quiz-opciones">
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">A</span>Equidad</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">B</span>Solidaridad</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',true)"><span class="quiz-letra">C</span>Transparencia</div>
+      <div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">D</span>Autoayuda</div>
+    </div>
+    <div class="quiz-feedback" id="fb-q5">Transparencia es uno de los valores éticos que los cooperativistas practican individualmente: honestidad, transparencia, responsabilidad social y vocación social. Los seis valores ICA (autoayuda, autorresponsabilidad, democracia, igualdad, equidad, solidaridad) definen la filosofía organizacional.</div>
+  </div>
+
+  <div style="text-align:right; margin-top:1.5rem;">
+    <button class="btn-retomar" onclick="retomar()">↺ Retomar test</button>
+  </div>
+</div>
+
+</main>
+</div>
+<script>
+function mostrarPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
+  document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
+  document.getElementById('panel-' + id).classList.add('activo');
+  btn.classList.add('activo');
+}
+function toggleEscenario(card) { card.classList.toggle('abierto'); }
+function toggleArt(card) { card.classList.toggle('abierto'); }
+function responder(opcion, qid, correcta) {
+  const pregunta = document.getElementById(qid);
+  const feedback = document.getElementById('fb-' + qid);
+  pregunta.querySelectorAll('.quiz-opcion').forEach(o => o.classList.add('desactivada'));
+  opcion.classList.add(correcta ? 'correcta' : 'incorrecta');
+  feedback.classList.add('visible');
+}
+function retomar() {
+  document.querySelectorAll('.quiz-pregunta').forEach(q => {
+    q.querySelectorAll('.quiz-opcion').forEach(o => o.classList.remove('correcta','incorrecta','desactivada'));
+    const fb = q.querySelector('.quiz-feedback');
+    if (fb) fb.classList.remove('visible');
+  });
+}
+</script>
+</body>
+</html>
