@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CB-07-10 · Voz, voto y tipos de votación</title><style>:root {
+  --verde: #1c6b4a; --verde-sec: #2fa36b; --amarillo: #f4c20d;
+  --blanco: #ffffff; --gris-bg: #f7f7f5; --gris-borde: #e4e4e0;
+  --texto: #1a1a18; --texto-sec: #3a3a36; --texto-ter: #6a6a64;
+  --radio: 10px; --radio-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: var(--blanco); color: var(--texto); font-size: 16px; line-height: 1.65; min-height: 100vh; }
+.shell { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid var(--gris-borde); background: var(--blanco); padding: 2rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+.nb-marca { padding: 0 1.25rem 1.75rem; border-bottom: 1px solid var(--gris-borde); }
+.nb-wordmark { margin-bottom: 0.5rem; line-height: 1; }
+.nb-wm-coop { font-size: 17px; font-weight: 700; color: #1c6b4a; letter-spacing: -0.02em; }
+.nb-wm-notebook { font-size: 17px; font-weight: 400; color: #1a1a18; letter-spacing: -0.02em; }
+.nb-marca-titulo { font-size: 12px; font-weight: 500; color: var(--verde); display: block; margin-top: 2px; }
+.nb-nav { list-style: none; padding: 0 .75rem; flex: 1; margin-top: 0.5rem; }
+.nb-nav li { margin-bottom: 2px; }
+.nb-nav button { width: 100%; text-align: left; background: none; border: none; padding: .5rem .75rem; border-radius: var(--radio-sm); font-size: 13px; color: var(--texto-sec); cursor: pointer; font-family: inherit; transition: background .15s, color .15s; line-height: 1.4; }
+.nb-nav button:hover { background: var(--gris-bg); color: var(--texto); }
+.nb-nav button.activo { background: #e8f4ef; color: var(--verde); font-weight: 500; }
+.nb-nav-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #c5d5cd; margin-right: 8px; vertical-align: middle; position: relative; top: -1px; transition: background .15s; }
+.nb-nav button.activo .nb-nav-dot { background: var(--verde); }
+.nb-conceptos { padding: 1.25rem; border-top: 1px solid var(--gris-borde); margin-top: auto; }
+.nb-conceptos-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-ter); margin-bottom: .75rem; display: block; }
+.nb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.nb-tag { font-size: 11px; color: var(--verde); background: #e8f4ef; padding: 3px 8px; border-radius: 20px; }
+.main { flex: 1; max-width: 740px; padding: 3rem 3.5rem; overflow-y: auto; }
+.panel { display: none; }
+.panel.activo { display: block; }
+.capsula-titulo { font-size: 28px; font-weight: 600; color: var(--texto); line-height: 1.25; margin-bottom: .5rem; position: relative; padding-bottom: 0.6rem; }
+.capsula-titulo::after { content: ''; display: block; width: 2.5rem; height: 3px; background: var(--verde); margin-top: 0.5rem; border-radius: 2px; }
+.capsula-meta { font-size: 13px; color: var(--texto-ter); margin-bottom: 2.5rem; }
+.capsula-intro { font-size: 17px; color: var(--texto-sec); line-height: 1.7; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--gris-borde); }
+.capsula-intro strong { color: var(--texto); font-weight: 500; }
+.seccion-h { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-ter); margin: 2.5rem 0 1rem; }
+.tabla-wrap { margin: 1.5rem 0; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.tabla-comp { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla-comp thead tr { background: var(--verde); }
+.tabla-comp thead th { padding: .75rem 1rem; color: var(--blanco); font-weight: 500; text-align: left; font-size: 13px; }
+.tabla-comp tbody tr { border-bottom: 1px solid var(--gris-borde); transition: background .1s; }
+.tabla-comp tbody tr:last-child { border-bottom: none; }
+.tabla-comp tbody tr:hover { background: var(--gris-bg); }
+.tabla-comp td { padding: .7rem 1rem; vertical-align: top; line-height: 1.5; color: var(--texto-sec); font-size: 14px; }
+.tabla-comp td:first-child { font-weight: 600; color: var(--texto); }
+.insight { background: var(--gris-bg); border-left: 3px solid var(--amarillo); padding: 1rem 1.25rem; border-radius: 0 var(--radio-sm) var(--radio-sm) 0; margin: 2rem 0; font-size: 15px; color: var(--texto-sec); line-height: 1.65; }
+.insight strong { color: var(--texto); font-weight: 500; }
+.puntos { margin: 1.5rem 0; display: flex; flex-direction: column; gap: .75rem; }
+.punto { display: flex; gap: 1rem; align-items: flex-start; padding: .875rem 1.125rem; border: 1px solid var(--gris-borde); border-radius: var(--radio); background: var(--blanco); }
+.punto-icono { width: 28px; height: 28px; border-radius: 50%; background: #e8f4ef; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--verde); margin-top: 1px; }
+.punto-texto { font-size: 14px; color: var(--texto-sec); line-height: 1.55; }
+.punto-texto strong { color: var(--texto); font-weight: 500; }
+.escenario-card { border: 1px solid var(--gris-borde); border-radius: var(--radio); margin-bottom: 1.25rem; overflow: hidden; }
+.escenario-header { padding: 1rem 1.25rem; background: var(--blanco); cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; transition: background .15s; }
+.escenario-header:hover { background: var(--gris-bg); }
+.escenario-num { font-size: 11px; font-weight: 600; color: var(--texto-ter); flex-shrink: 0; padding-top: 2px; }
+.escenario-pregunta { font-size: 14px; font-weight: 500; color: var(--texto); line-height: 1.45; flex: 1; }
+.escenario-chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--texto-ter); transition: transform .2s; margin-top: 2px; }
+.escenario-card.abierto .escenario-chevron { transform: rotate(180deg); }
+.escenario-body { display: none; padding: 1.25rem; font-size: 14px; color: var(--texto-sec); line-height: 1.65; border-top: 1px solid var(--gris-borde); }
+.escenario-card.abierto .escenario-body { display: block; }
+.escenario-body strong { color: var(--texto); font-weight: 500; }
+.escenario-legal { margin-top: 1rem; padding: .75rem 1rem; background: #e8f4ef; border-radius: var(--radio-sm); font-size: 12px; color: var(--verde); }
+.art-card { margin-bottom: 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
+.art-card-header { padding: .875rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background .15s; gap: 1rem; }
+.art-card-header:hover { background: var(--gris-bg); }
+.art-card-id { font-size: 12px; font-weight: 600; color: var(--verde); letter-spacing: .06em; flex-shrink: 0; }
+.art-card-titulo { font-size: 14px; color: var(--texto); font-weight: 500; flex: 1; }
+.art-card-body { display: none; padding: 1rem 1.25rem; font-size: 13.5px; color: var(--texto-sec); line-height: 1.7; border-top: 1px solid var(--gris-borde); background: var(--gris-bg); }
+.art-card.abierto .art-card-body { display: block; }
+.art-verbatim { font-style: italic; color: var(--texto); margin-bottom: .75rem; padding: .75rem 1rem; background: var(--blanco); border-left: 3px solid var(--verde-sec); border-radius: 0 var(--radio-sm) var(--radio-sm) 0; font-size: 13px; }
+.art-nota { font-size: 12px; color: var(--texto-ter); }
+.quiz-pregunta { margin-bottom: 2rem; }
+.quiz-enunciado { font-size: 15px; font-weight: 500; color: var(--texto); margin-bottom: 1rem; line-height: 1.5; }
+.quiz-opciones { display: flex; flex-direction: column; gap: .5rem; }
+.quiz-opcion { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem 1rem; border: 1px solid var(--gris-borde); border-radius: var(--radio-sm); cursor: pointer; font-size: 14px; color: var(--texto-sec); line-height: 1.45; transition: border-color .15s, background .15s; background: var(--blanco); }
+.quiz-opcion:hover { border-color: #b8d9c9; background: var(--gris-bg); }
+.quiz-opcion.correcta { border-color: var(--verde-sec); background: #e8f4ef; color: var(--verde); }
+.quiz-opcion.incorrecta { border-color: #e5a0a0; background: #fdf0f0; color: #a33; }
+.quiz-opcion.desactivada { pointer-events: none; opacity: .7; }
+.quiz-letra { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--gris-borde); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; color: var(--texto-ter); }
+.quiz-opcion.correcta .quiz-letra { border-color: var(--verde); color: var(--verde); }
+.quiz-opcion.incorrecta .quiz-letra { border-color: #c44; color: #c44; }
+.quiz-feedback { margin-top: .75rem; font-size: 13px; color: var(--texto-ter); padding: .5rem .75rem; border-radius: var(--radio-sm); background: var(--gris-bg); display: none; }
+.quiz-feedback.visible { display: block; }
+.btn-retomar { background: none; border: 1.5px solid var(--verde); color: var(--verde); font-family: inherit; font-size: 13px; padding: .4rem .9rem; border-radius: var(--radio-sm); cursor: pointer; transition: background .15s, color .15s; }
+.btn-retomar:hover { background: var(--verde); color: var(--blanco); }
+@media (max-width: 700px) { .sidebar { display: none; } .main { padding: 1.5rem 1.25rem; max-width: 100%; } .capsula-titulo { font-size: 22px; } }
+</style></head><body><div class="shell"><nav class="sidebar"><div class="nb-marca"><div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div><span class="nb-marca-titulo">Asambleas y normas parlamentarias</span></div><ul class="nb-nav"><li><button class="activo" onclick="mostrarPanel('explorar', this)"><span class="nb-nav-dot"></span>Exploración</button></li><li><button onclick="mostrarPanel('escenarios', this)"><span class="nb-nav-dot"></span>Análisis crítico</button></li><li><button onclick="mostrarPanel('legal', this)"><span class="nb-nav-dot"></span>Referencias legales</button></li><li><button onclick="mostrarPanel('verifica', this)"><span class="nb-nav-dot"></span>Verifica tu lectura</button></li></ul><div class="nb-conceptos"><span class="nb-conceptos-label">Conceptos relacionados</span><div class="nb-tags"><span class="nb-tag">voz y voto</span><span class="nb-tag">votación secreta</span><span class="nb-tag">Art. 107 RLCH</span><span class="nb-tag">Art. 108 RLCH</span><span class="nb-tag">habilitados</span></div></div></nav><main class="main"><div class="panel activo" id="panel-explorar">
+<h1 class="capsula-titulo">Voz, voto y tipos de votación</h1>
+<div class="capsula-meta">RLCH Arts. 98, 107, 108</div>
+<p class="capsula-intro">No basta con estar presente en una asamblea: hay que saber <strong>quién puede hablar, quién puede votar y cómo se cuenta cada tipo de voto</strong>. Estas reglas no son tecnicismos: son las condiciones que hacen que el resultado de una votación sea legítimo y no impugnable.</p>
+<p class="seccion-h">¿Quién tiene derecho a voz y voto?</p>
+<div class="puntos">
+<div class="punto"><div class="punto-icono">1</div><p class="punto-texto"><strong>Derecho a voz y voto:</strong> Art. 107 RLCH: los afiliados/as o delegados/as que a la fecha de la convocatoria estén debidamente habilitados. El estatuto regula qué condiciones deben cumplirse para estar habilitado/a (aportaciones al día, sin suspensión, etc.).</p></div>
+<div class="punto"><div class="punto-icono">2</div><p class="punto-texto"><strong>Edad mínima para votar:</strong> 16 años para votar en asambleas; 18 años para ocupar cargo directivo (Art. 95 RLCH).</p></div>
+<div class="punto"><div class="punto-icono">3</div><p class="punto-texto"><strong>Invitados/as:</strong> Personas que asisten por invitación pero no forman parte del quórum. Tienen voz cuando son invitados/as a participar, pero no tienen voto.</p></div>
+</div>
+<p class="seccion-h">Tres tipos de votación</p>
+<div class="tabla-wrap"><table class="tabla-comp">
+<thead><tr><th>Tipo</th><th>Cómo funciona</th><th>Cuándo se usa</th></tr></thead>
+<tbody>
+<tr><td>Por aclamación</td><td>La presidencia consulta y es evidente que la mayoría o unanimidad está de acuerdo, sin que nadie exija conteo formal</td><td>Actos rutinarios: aprobación del acta anterior, levantamiento de la sesión</td></tr>
+<tr><td>Ordinaria</td><td>Los presentes levantan la mano o se ponen de pie; se cuenta las manos levantadas a favor, en contra y abstenciones</td><td>La mayoría de los acuerdos de la asamblea</td></tr>
+<tr><td>Secreta</td><td>Cada presente recibe una boleta; el resultado lo cuentan al menos dos personas. El voto nulo ocurre cuando se marcan ambas opciones</td><td>Generalmente para elegir directivos/as; cuando se requiere proteger el anonimato</td></tr>
+</tbody></table></div>
+<div class="insight"><strong>Voto directo, nominal y secreto en la LCH:</strong> El Art. 108 RLCH permite tres formas adicionales en la elección de directivos/as: votación directa (la persona hace la manifestación), nominal (se pregunta por nombre, útil en empates) y secreta (protección del anonimato). La asamblea decide cuál usar en cada caso.</div>
+</div><div class="panel" id="panel-escenarios"><h1 class="capsula-titulo">Análisis crítico</h1><p class="capsula-intro" style="font-size:15px">Situaciones sobre voz, voto y validez de votaciones.</p><div class="escenario-card" onclick="toggleEscenario(this)"><div class="escenario-header"><span class="escenario-num">01</span><span class="escenario-pregunta">Un asesor externo contratado por la cooperativa asiste a la asamblea. ¿Puede votar en los acuerdos?</span><svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="escenario-body">No. El asesor externo es un invitado que no tiene condición de afiliado/a ni de delegado/a. Según el Art. 107 RLCH, tienen derecho a voz y voto solo los afiliados/as o delegados/as debidamente habilitados/as. <strong>Los invitados tienen voz cuando la presidencia les cede la palabra, pero no tienen voto</strong>. Dejar votar a un no-afiliado/a en una asamblea cooperativa es un vicio que puede invalidar los acuerdos si la participación de ese voto fue determinante.<div class="escenario-legal">Art. 107 RLCH: derecho a voz y voto · Manual de Reglas Parlamentarias</div></div></div><div class="escenario-card" onclick="toggleEscenario(this)"><div class="escenario-header"><span class="escenario-num">02</span><span class="escenario-pregunta">La asamblea debe elegir la nueva Junta Directiva. Un grupo de afiliados/as exige votación secreta; otro prefiere votación a mano alzada. ¿Quién decide?</span><svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="escenario-body">La propia asamblea decide el sistema de votación. El Art. 108 RLCH establece que la elección puede verificarse por votación directa, nominal o secreta <strong>según lo decida la asamblea</strong>. La presidencia presenta las opciones y la asamblea vota cuál método usar. Ningún grupo puede imponer unilateralmente el método; es una decisión colectiva. Lo habitual en elecciones de directivos/as es la votación secreta para proteger a los afiliados/as de presiones.<div class="escenario-legal">Art. 108 RLCH: sistema de elección de directivos/as</div></div></div><div class="escenario-card" onclick="toggleEscenario(this)"><div class="escenario-header"><span class="escenario-num">03</span><span class="escenario-pregunta">Durante una votación secreta, una afiliada marca ambas opciones en su boleta. ¿Qué pasa con ese voto?</span><svg class="escenario-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="escenario-body">Es un voto nulo. La votación secreta cuando el votante marca ambas opciones deliberadamente o hace marcas que no indican posición clara a favor de una u otra opción produce un voto nulo. <strong>El voto nulo no cuenta ni a favor ni en contra</strong>; simplemente no se contabiliza en el resultado. El Secretario/a debe registrarlo como nulo por separado. La existencia de votos nulos no invalida la votación siempre que la mayoría requerida se alcance con los votos válidos.<div class="escenario-legal">Art. 98 RLCH · Manual de Reglas Parlamentarias: voto nulo</div></div></div></div><div class="panel" id="panel-legal"><h1 class="capsula-titulo">Referencias legales</h1><p class="capsula-intro" style="font-size:15px">Artículos que regulan el derecho a voto y los sistemas de votación.</p><div class="art-card" onclick="toggleArt(this)"><div class="art-card-header"><span class="art-card-id">Art. 107 RLCH</span><span class="art-card-titulo">Derecho a Voz y Voto en la Asamblea</span></div><div class="art-card-body"><p class="art-verbatim">"Tienen derecho a voz y voto en la Asamblea los Afiliados(as) o delegado(s) que a la fecha de la respectiva convocatoria estén debidamente habilitados, para lo cual el Estatuto Social debe regular lo pertinente sobre la materia."</p><p class="art-nota">El derecho a voto se determina a la fecha de la convocatoria, no el día de la asamblea. Un afiliado/a que se regulariza después de la convocatoria no recupera el voto para esa asamblea.</p></div></div><div class="art-card" onclick="toggleArt(this)"><div class="art-card-header"><span class="art-card-id">Art. 108 RLCH</span><span class="art-card-titulo">Sistema de Elección de Directivos</span></div><div class="art-card-body"><p class="art-verbatim">"La elección de directivos para integrar los órganos previstos en el Estatuto Social, debe efectuarse en Asamblea General Ordinaria. Esta puede verificarse por votación directa, nominal o secreta según lo decida la Asamblea. Serán electos los candidatos que obtengan la mayor cantidad de votos."</p><p class="art-nota">Tres sistemas de votación para elecciones: la asamblea elige cuál usar. El sistema más protector del anonimato es el secreto; el más ágilfes el directo.</p></div></div></div><div class="panel" id="panel-verifica"><h1 class="capsula-titulo">Verifica tu lectura</h1><p class="capsula-intro" style="font-size:15px">Cinco preguntas sobre lo esencial de esta cápsula.</p><div class="quiz-pregunta" id="q1"><p class="quiz-enunciado">1. ¿Quién tiene derecho a voto en la Asamblea General según el Art. 107 RLCH?</p><div class="quiz-opciones"><div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">A</span>Todos los presentes en la asamblea, incluyendo invitados</div><div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">B</span>Solo los miembros de la Junta Directiva y la Junta de Vigilancia</div><div class="quiz-opcion" onclick="responder(this,'q1',true)"><span class="quiz-letra">C</span>Los afiliados/as o delegados/as debidamente habilitados a la fecha de la convocatoria</div><div class="quiz-opcion" onclick="responder(this,'q1',false)"><span class="quiz-letra">D</span>Todos los afiliados/as registrados, estén presentes o no</div></div><div class="quiz-feedback" id="fb-q1">Art. 107 RLCH: tienen derecho a voz y voto los afiliados/as o delegados/as que estén debidamente habilitados a la fecha de la convocatoria.</div></div><div class="quiz-pregunta" id="q2"><p class="quiz-enunciado">2. ¿En qué tipo de votación cada presente recibe una boleta para marcar su opción en privado?</p><div class="quiz-opciones"><div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">A</span>Votación por aclamación</div><div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">B</span>Votación ordinaria a mano alzada</div><div class="quiz-opcion" onclick="responder(this,'q2',true)"><span class="quiz-letra">C</span>Votación secreta</div><div class="quiz-opcion" onclick="responder(this,'q2',false)"><span class="quiz-letra">D</span>Votación nominal</div></div><div class="quiz-feedback" id="fb-q2">Votación secreta: cada presente recibe una boleta y marca su opción en privado. Es la más usada para la elección de directivos/as, ya que protege el anonimato y reduce presiones.</div></div><div class="quiz-pregunta" id="q3"><p class="quiz-enunciado">3. ¿Cuál es la consecuencia de un voto nulo en una votación secreta?</p><div class="quiz-opciones"><div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">A</span>Invalida toda la votación y debe repetirse</div><div class="quiz-opcion" onclick="responder(this,'q3',true)"><span class="quiz-letra">B</span>No se contabiliza ni a favor ni en contra; se registra por separado</div><div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">C</span>Se suma a los votos en contra</div><div class="quiz-opcion" onclick="responder(this,'q3',false)"><span class="quiz-letra">D</span>Se descarta y reduce el quórum necesario</div></div><div class="quiz-feedback" id="fb-q3">Un voto nulo no cuenta ni a favor ni en contra. Se registra por separado. La votación es válida siempre que la mayoría requerida se alcance con los votos válidos.</div></div><div class="quiz-pregunta" id="q4"><p class="quiz-enunciado">4. Un afiliado/a de 17 años asiste a la asamblea. ¿Puede votar?</p><div class="quiz-opciones"><div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">A</span>No, debe tener al menos 18 años</div><div class="quiz-opcion" onclick="responder(this,'q4',true)"><span class="quiz-letra">B</span>Sí, puede votar pero no puede postularse como directivo/a</div><div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">C</span>No puede ni votar ni participar hasta cumplir 18 años</div><div class="quiz-opcion" onclick="responder(this,'q4',false)"><span class="quiz-letra">D</span>Solo puede votar con autorización de sus padres o tutor</div></div><div class="quiz-feedback" id="fb-q4">Art. 95 RLCH: la edad mínima para votar es 16 años. Para ocupar un cargo directivo se requiere mayoría de edad (18 años). Un afiliado/a de 17 años puede votar pero no puede ser electo/a directivo/a.</div></div><div class="quiz-pregunta" id="q5"><p class="quiz-enunciado">5. La asamblea quiere elegir su nueva Junta Directiva. ¿Quién decide si la votación será directa, nominal o secreta?</p><div class="quiz-opciones"><div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">A</span>La Junta Directiva saliente</div><div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">B</span>El CONSUCOOP como ente supervisor</div><div class="quiz-opcion" onclick="responder(this,'q5',true)"><span class="quiz-letra">C</span>La propia Asamblea General</div><div class="quiz-opcion" onclick="responder(this,'q5',false)"><span class="quiz-letra">D</span>El Presidente/a de la asamblea unilateralmente</div></div><div class="quiz-feedback" id="fb-q5">Art. 108 RLCH: la elección puede verificarse por votación directa, nominal o secreta según lo decida la Asamblea. Es una decisión colectiva de los presentes, no unilateral de la presidencia.</div></div><div style="text-align:right;margin-top:1.5rem;"><button class="btn-retomar" onclick="retomar()">↺ Retomar test</button></div></div></main></div><script>function mostrarPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
+  document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
+  document.getElementById('panel-' + id).classList.add('activo');
+  btn.classList.add('activo');
+}
+function toggleEscenario(card) { card.classList.toggle('abierto'); }
+function toggleArt(card) { card.classList.toggle('abierto'); }
+function responder(opcion, qid, correcta) {
+  const pregunta = document.getElementById(qid);
+  const feedback = document.getElementById('fb-' + qid);
+  pregunta.querySelectorAll('.quiz-opcion').forEach(o => o.classList.add('desactivada'));
+  opcion.classList.add(correcta ? 'correcta' : 'incorrecta');
+  feedback.classList.add('visible');
+}
+function retomar() {
+  document.querySelectorAll('.quiz-pregunta').forEach(q => {
+    q.querySelectorAll('.quiz-opcion').forEach(o => o.classList.remove('correcta','incorrecta','desactivada'));
+    const fb = q.querySelector('.quiz-feedback');
+    if (fb) fb.classList.remove('visible');
+  });
+}
+</script></body></html>
