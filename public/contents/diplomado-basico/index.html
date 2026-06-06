@@ -1,103 +1,408 @@
-<nav class="module-list">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contenidos — Cooperativa Notebook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <a href="/contents/diplomado-basico/identidad-cooperativa/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">01</span>
-      <span class="module-title">Identidad cooperativa</span>
+    :root {
+      --verde:       #1c6b4a;
+      --verde-claro: #e8f4ef;
+      --verde-borde: #b8dccc;
+      --gris-texto:  #1a1a1a;
+      --gris-sec:    #4a4a4a;
+      --gris-borde:  #d8d8d8;
+      --blanco:      #ffffff;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: var(--font);
+      background: var(--blanco);
+      color: var(--gris-texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      border-bottom: 1px solid var(--gris-borde);
+      background: var(--blanco);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark { width: 28px; height: 28px; flex-shrink: 0; }
+
+    .topbar-wordmark {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .wordmark-top {
+      font-size: 11px;
+      font-weight: 400;
+      color: #999;
+      letter-spacing: 0.04em;
+    }
+
+    .wordmark-bottom {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gris-texto);
+    }
+
+    .topbar-breadcrumb {
+      font-size: 12px;
+      font-weight: 300;
+      color: #bbb;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topbar-breadcrumb a {
+      color: #bbb;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .topbar-breadcrumb a:hover { color: var(--verde); }
+
+    .topbar-breadcrumb .sep { opacity: 0.5; }
+
+    .topbar-breadcrumb .current {
+      color: var(--gris-sec);
+      font-weight: 400;
+    }
+
+    /* ── CANVAS ── */
+    .canvas {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px 24px 80px;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+
+    .page-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--verde);
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--gris-texto);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .page-title strong { font-weight: 500; }
+
+    .page-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: #999;
+      line-height: 1.6;
+    }
+
+    /* ── CLUSTER LIST ── */
+    .cluster-lista {
+      width: 100%;
+      max-width: 640px;
+      border: 1px solid var(--gris-borde);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cluster-fila {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 22px;
+      border-bottom: 1px solid var(--gris-borde);
+      text-decoration: none;
+      color: var(--gris-texto);
+      transition: background 0.15s;
+      gap: 16px;
+      min-height: 56px;
+      position: relative;
+    }
+
+    .cluster-fila:last-child { border-bottom: none; }
+
+    .cluster-fila::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--verde);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .cluster-fila:hover { background: var(--verde-claro); }
+    .cluster-fila:hover::before { opacity: 1; }
+    .cluster-fila:active { background: #dff0e8; }
+
+    .cluster-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cluster-num {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--verde);
+      letter-spacing: 0.06em;
+      opacity: 0.6;
+      flex-shrink: 0;
+      width: 18px;
+    }
+
+    .cluster-titulo {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gris-texto);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cluster-arrow {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      color: var(--verde);
+      opacity: 0.35;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .cluster-arrow svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cluster-fila:hover .cluster-arrow {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    /* ── FOOTNOTE ── */
+    .footnote {
+      margin-top: 48px;
+      text-align: center;
+    }
+
+    .footnote-text {
+      font-size: 11px;
+      font-weight: 300;
+      color: #c8c8c0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header   { animation: fadeUp 0.4s ease both; }
+    .cluster-lista { animation: fadeUp 0.4s ease 0.08s both; }
+    .footnote      { animation: fadeUp 0.4s ease 0.16s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .topbar { padding: 13px 20px; }
+      .topbar-breadcrumb .sep,
+      .topbar-breadcrumb a { display: none; }
+      .canvas { padding: 40px 16px 56px; }
+      .cluster-fila { padding: 16px 18px; min-height: 52px; }
+      .cluster-titulo { font-size: 15px; white-space: normal; }
+      .cluster-arrow { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a href="/" class="topbar-brand">
+      <svg class="logo-mark" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg-arc-c" x1="8" y1="4" x2="56" y2="52" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#1aff9e"/>
+            <stop offset="50%"  stop-color="#1affb8"/>
+            <stop offset="100%" stop-color="#29d6e8"/>
+          </linearGradient>
+        </defs>
+        <path d="M30 5.5 A24.5 24.5 0 1 1 53.5 43" stroke="url(#lg-arc-c)" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <circle cx="15"  cy="9.5"  r="2.8" fill="#1aff9e"/>
+        <circle cx="8.5" cy="19"   r="3.6" fill="#1aff9e" opacity="0.88"/>
+        <circle cx="6"   cy="30"   r="2.5" fill="#1aff9e" opacity="0.65"/>
+        <circle cx="7"   cy="40"   r="1.7" fill="#1aff9e" opacity="0.45"/>
+        <path d="M30 13 C21 13 16 19 16 26 C16 31 18.5 35 23 38 L23 43 L37 43 L37 38 C41.5 35 44 31 44 26 C44 19 39 13 30 13 Z" fill="#fbd418"/>
+        <ellipse cx="25" cy="21" rx="3.5" ry="5" fill="#fff176" opacity="0.45"/>
+        <path d="M24 39 Q26 36.5 28 39 Q30 36.5 32 39 Q34 36.5 36 39" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <line x1="27" y1="39.5" x2="27" y2="42.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="33" y1="39.5" x2="33" y2="42.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+        <rect x="24.5" y="43" width="11" height="2.8" rx="1.4" fill="#e8a010" opacity="0.9"/>
+        <rect x="26.5" y="46.5" width="7" height="2.2" rx="1.1" fill="#e8a010" opacity="0.6"/>
+      </svg>
+      <div class="topbar-wordmark">
+        <span class="wordmark-top">Cooperativa</span>
+        <span class="wordmark-bottom">Notebook</span>
+      </div>
+    </a>
+
+    <nav class="topbar-breadcrumb">
+      <a href="/">Inicio</a>
+      <span class="sep">›</span>
+      <span class="current">Contenidos</span>
+    </nav>
+  </header>
+
+  <!-- CANVAS -->
+  <main class="canvas">
+
+    <div class="page-header">
+      <p class="page-eyebrow">Contenidos</p>
+      <h1 class="page-title">Diplomado <strong>Básico</strong></h1>
+      <p class="page-sub">Elige un cluster para explorar sus conceptos, marcos legales y escenarios aplicados.</p>
     </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
 
-  <a href="/contents/diplomado-basico/marco-legal/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">02</span>
-      <span class="module-title">Marco legal cooperativo</span>
+    <nav class="cluster-lista">
+
+      <a href="/contents/diplomado-basico/identidad-cooperativa/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">01</span>
+          <span class="cluster-titulo">Identidad cooperativa</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/marco-legal/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">02</span>
+          <span class="cluster-titulo">Marco legal cooperativo</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/afiliados/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">03</span>
+          <span class="cluster-titulo">Afiliados/as: derechos y deberes</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/recursos-economicos/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">04</span>
+          <span class="cluster-titulo">Recursos económicos y finanzas</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/gobernabilidad/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">05</span>
+          <span class="cluster-titulo">Gobernabilidad y estructura orgánica</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/cuerpos-directivos/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">06</span>
+          <span class="cluster-titulo">Funciones de los cuerpos directivos</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/asambleas/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">07</span>
+          <span class="cluster-titulo">Asambleas y normas parlamentarias</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/integracion/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">08</span>
+          <span class="cluster-titulo">Integración cooperativa</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/incidencia/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">09</span>
+          <span class="cluster-titulo">Incidencia cooperativa y desarrollo local</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+      <a href="/contents/diplomado-basico/liderazgo/" class="cluster-fila">
+        <div class="cluster-meta">
+          <span class="cluster-num">10</span>
+          <span class="cluster-titulo">Liderazgo y competencias directivas</span>
+        </div>
+        <span class="cluster-arrow"><svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg></span>
+      </a>
+
+    </nav>
+
+    <div class="footnote">
+      <p class="footnote-text">Oliver Ayala</p>
     </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
 
-  <a href="/contents/diplomado-basico/afiliados-derechos-deberes/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">03</span>
-      <span class="module-title">Afiliados/as: derechos y deberes</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
+  </main>
 
-  <a href="/contents/diplomado-basico/recursos-economicos-finanzas/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">04</span>
-      <span class="module-title">Recursos económicos y finanzas</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/gobernabilidad-estructura/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">05</span>
-      <span class="module-title">Gobernabilidad y estructura orgánica</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/cuerpos-directivos/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">06</span>
-      <span class="module-title">Funciones de los cuerpos directivos</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/asambleas-normas-parlamentarias/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">07</span>
-      <span class="module-title">Asambleas y normas parlamentarias</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/integracion-cooperativa/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">08</span>
-      <span class="module-title">Integración cooperativa</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/incidencia-desarrollo-local/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">09</span>
-      <span class="module-title">Incidencia cooperativa y desarrollo local</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-  <a href="/contents/diplomado-basico/liderazgo-competencias/" class="module-row">
-    <div class="module-meta">
-      <span class="module-num">10</span>
-      <span class="module-title">Liderazgo y competencias directivas</span>
-    </div>
-    <span class="module-arrow">
-      <svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-    </span>
-  </a>
-
-</nav>
+</body>
+</html>
