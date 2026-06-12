@@ -173,8 +173,28 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   .contraste-grid .cl { border-right: none; }
 }
 </style>
+<style id="coop-nav-css">
+.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
+.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
+.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
+.coop-global-nav.open .coop-menu-panel{display:block}
+.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
+.coop-menu-panel a:last-child{border-bottom:0}
+.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
+.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
+.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
+.coop-page-btn.next{text-align:right;align-items:flex-end}
+.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
+.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
+.coop-page-empty{border:1px solid transparent}
+@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
+</style>
 </head>
 <body>
+<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../../index.html">Inicio</a><a href="../../index.html">Contenidos</a><a href="../../diplomado-basico/index.html">Diplomado Básico</a><a href="../index.html">Cooperativismo Aplicado</a><a href="../../../tools/index.html">Herramientas</a></nav></div>
 <button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir men&uacute;">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
 </button>
@@ -386,7 +406,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
     <tr><td>Educaci&oacute;n y capacitaci&oacute;n a cooperativistas</td><td>2%</td><td>Art. 125-a RLCH</td></tr>
     <tr><td>Educaci&oacute;n y capacitaci&oacute;n de juventud y g&eacute;nero</td><td>1%</td><td>Art. 125-b RLCH</td></tr>
   </tbody></table></div>
-  <div class="insight"><strong>La l&oacute;gica detr&aacute;s del 3%.</strong> El fondo se calcula sobre el ingreso neto del periodo fiscal anterior y no es opcional: si no se ejecuta en el a&ntilde;o, se acumula al siguiente, y si tampoco se usa, se traslada al CONSUCOOP y la CHC. La ley protege el dinero de la educaci&oacute;n para que no se diluya: sin afiliados/as formados/as, no hay relevo, no hay delegados/as preparados/as, no hay cooperativa fuerte. Por eso est&aacute;s aqu&iacute;.</div>
+  <div class="insight"><strong>La l&oacute;gica detr&aacute;s del 3%.</strong> El fondo se calcula sobre el ingreso neto del periodo fiscal anterior y no es opcional: si no se ejecuta en el a&ntilde;o, se acumula al siguiente, y si tampoco se usa, se traslada al CONSUCOOP y los organismos de integración nacional. La ley protege el dinero de la educaci&oacute;n para que no se diluya: sin afiliados/as formados/as, no hay relevo, no hay delegados/as preparados/as, no hay cooperativa fuerte. Por eso est&aacute;s aqu&iacute;.</div>
 </div>
 
 <div class="panel" id="panel-t07">
@@ -510,7 +530,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   </div>
   <div class="art-card" onclick="toggleArt(this)">
     <div class="art-card-header"><span class="art-card-id">RLCH Art. 125</span><span class="art-card-titulo">Fondo de Educaci&oacute;n Cooperativa (3%)</span><svg class="art-card-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-    <div class="art-card-body"><p class="art-verbatim">Constituci&oacute;n del Fondo de Educaci&oacute;n Cooperativa. El Fondo de Educaci&oacute;n Cooperativo no puede ser inferior al tres por ciento (3%) del ingreso neto anual del presupuesto, calculado del periodo fiscal anterior. Este debe distribuirse de la forma siguiente: a) Dos por ciento (2%) a Educaci&oacute;n y Capacitaci&oacute;n a Cooperativistas; y, b) Uno por ciento (1%) a Educaci&oacute;n y Capacitaci&oacute;n de la Juventud y G&eacute;nero. Los excedentes del fondo no ejecutados en un ejercicio econ&oacute;mico, se deben mantener en la dotaci&oacute;n del ejercicio siguiente. En caso de no ser utilizados en dicho t&eacute;rmino, debe ser trasladado proporcionalmente al CONSUCOOP y a la CHC.</p><p class="art-nota">El 3% es un piso, no un techo. La ley blinda el fondo: si no se usa, se acumula o se traslada, pero no se reparte. As&iacute; protege la educaci&oacute;n cooperativa.</p></div>
+    <div class="art-card-body"><p class="art-verbatim">Constituci&oacute;n del Fondo de Educaci&oacute;n Cooperativa. El Fondo de Educaci&oacute;n Cooperativo no puede ser inferior al tres por ciento (3%) del ingreso neto anual del presupuesto, calculado del periodo fiscal anterior. Este debe distribuirse de la forma siguiente: a) Dos por ciento (2%) a Educaci&oacute;n y Capacitaci&oacute;n a Cooperativistas; y, b) Uno por ciento (1%) a Educaci&oacute;n y Capacitaci&oacute;n de la Juventud y G&eacute;nero. Los excedentes del fondo no ejecutados en un ejercicio econ&oacute;mico, se deben mantener en la dotaci&oacute;n del ejercicio siguiente. En caso de no ser utilizados en dicho t&eacute;rmino, debe ser trasladado proporcionalmente al CONSUCOOP y a los organismos de integración nacional.</p><p class="art-nota">El 3% es un piso, no un techo. La ley blinda el fondo: si no se usa, se acumula o se traslada, pero no se reparte. As&iacute; protege la educaci&oacute;n cooperativa.</p></div>
   </div>
   <p class="seccion-h">El d&iacute;a de la asamblea</p>
   <div class="art-card" onclick="toggleArt(this)">
@@ -527,6 +547,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   </div>
 </div>
 
+<nav class="coop-capsule-pager" aria-label="Navegación entre cápsulas"><a class="coop-page-btn prev" href="../../diplomado-basico/liderazgo-diplomado/liderazgo-diplomado.html"><span class="coop-page-label">Anterior</span><span class="coop-page-title">← Liderazgo</span></a><a class="coop-page-btn next" href="../Liderazgo/liderazgo-comunicacion-lidercoop.html"><span class="coop-page-label">Siguiente</span><span class="coop-page-title">Liderazgo y comunicación →</span></a></nav>
 </main>
 </div>
 <script>
@@ -548,6 +569,15 @@ function mostrarTab(id, btn) {
   cerrarMenu();
 }
 function toggleArt(card) { card.classList.toggle('abierto'); }
+</script>
+<script id="coop-nav-js">
+(function(){
+  var nav = document.querySelector(".coop-global-nav");
+  if(!nav) return;
+  var btn = nav.querySelector(".coop-menu-toggle");
+  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
+  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
+})();
 </script>
 </body>
 </html>
