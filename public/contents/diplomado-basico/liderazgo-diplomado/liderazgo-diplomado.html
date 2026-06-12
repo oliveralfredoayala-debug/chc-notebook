@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -89,31 +89,65 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   .tabla-wrap td:first-child { white-space: normal; }
   .formula-eq { font-size: 22px; }
 }
-</style>
-<style id="coop-nav-css">
-.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
-.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
-.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
-.coop-global-nav.open .coop-menu-panel{display:block}
-.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
-.coop-menu-panel a:last-child{border-bottom:0}
-.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
-.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
-.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
-.coop-page-btn.next{text-align:right;align-items:flex-end}
-.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
-.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
-.coop-page-empty{border:1px solid transparent}
-@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
+
+/* Boton hamburguesa y overlay para navegacion interna en mobile */
+.nb-toggle { display: none; }
+.nb-overlay { display: none; }
+.nb-cerrar { display: none; }
+@media (max-width: 700px) {
+  .nb-toggle {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; top: 12px; left: 12px; z-index: 50;
+    width: 44px; height: 44px;
+    background: var(--blanco); border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm); cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    padding: 0;
+  }
+  .nb-toggle svg { width: 22px; height: 22px; color: var(--verde); }
+  .sidebar {
+    display: flex;
+    position: fixed; top: 0; left: 0; z-index: 60;
+    width: 82%; max-width: 320px; height: 100vh;
+    border-right: 1px solid var(--gris-borde); border-bottom: none;
+    transform: translateX(-100%);
+    transition: transform .26s ease;
+    box-shadow: 2px 0 16px rgba(0,0,0,.12);
+  }
+  .sidebar.abierto { transform: translateX(0); }
+  .nb-cerrar {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--texto-ter);
+  }
+  .nb-cerrar svg { width: 22px; height: 22px; }
+  .nb-nav button { min-height: 44px; }
+  .nb-conceptos { display: block; }
+  .nb-overlay {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .26s ease;
+  }
+  .nb-overlay.visible { opacity: 1; pointer-events: auto; }
+  .main { padding-top: 4.5rem; }
+}
+
 </style>
 </head>
 <body>
-<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../../index.html">Inicio</a><a href="../../index.html">Contenidos</a><a href="../index.html">Diplomado Básico</a><a href="../../cooperativismo-aplicado/index.html">Cooperativismo Aplicado</a><a href="../../../tools/index.html">Herramientas</a></nav></div>
+
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <div class="shell">
 <nav class="sidebar">
+  <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
   <div class="nb-marca">
     <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
     <span class="nb-marca-titulo">Liderazgo cooperativo y oportunidades</span>
@@ -125,8 +159,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
     <li><button onclick="mostrarTab('t03', this)"><span class="nb-nav-num">03</span>Escuela para l&iacute;deres</button></li>
     <li><button onclick="mostrarTab('t3b', this)"><span class="nb-nav-num">04</span>El crecimiento del l&iacute;der</button></li>
     <li><button onclick="mostrarTab('t04', this)"><span class="nb-nav-num">05</span>Las tres equidades</button></li>
-    <li><button onclick="mostrarTab('t05', this)"><span class="nb-nav-num">06</span>&iquest;Mismas condiciones? Los retos</button></li>
-    <li><button onclick="mostrarTab('t06', this)"><span class="nb-nav-num">07</span>&iquest;Cumplimos la promesa?</button></li>
+    <li><button onclick="mostrarTab('t05', this)"><span class="nb-nav-num">06</span>&iquest;Mismas condiciones Los retos</button></li>
+    <li><button onclick="mostrarTab('t06', this)"><span class="nb-nav-num">07</span>&iquest;Cumplimos la promesa</button></li>
   </ul>
   <div class="nb-conceptos">
     <span class="nb-conceptos-label">Conceptos relacionados</span>
@@ -139,15 +173,15 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 <div class="panel activo" id="panel-portada">
   <h1 class="capsula-titulo">Liderazgo cooperativo y la construcci&oacute;n de oportunidades</h1>
   <p class="capsula-intro">A las personas las forma la sociedad. Esa formaci&oacute;n nos da <strong>fortalezas, capacidades y tambi&eacute;n l&iacute;mites</strong>. Sobre esa base construimos nuestro liderazgo. El cooperativismo naci&oacute; para <strong>ampliar las oportunidades</strong> de participar y desarrollarse.</p>
-  <div class="insight"><strong>La pregunta de la jornada.</strong> &iquest;Esas oportunidades ya est&aacute;n realmente al alcance de todas las personas?</div>
+  <div class="insight"><strong>La pregunta de la jornada.</strong> &iquest;Esas oportunidades ya est&aacute;n realmente al alcance de todas las personas</div>
   <p class="seccion-h">El recorrido</p>
   <div class="ideas">
     <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>El perfil del l&iacute;der cooperativista</strong> &mdash; qu&eacute; cargo estamos describiendo</div></div>
     <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>Las competencias del l&iacute;der</strong> &mdash; saber, saber hacer y saber ser</div></div>
     <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>Escuela para l&iacute;deres</strong> &mdash; el l&iacute;der se forma, a cualquier edad</div></div>
     <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>Las tres equidades</strong> &mdash; formaci&oacute;n, informaci&oacute;n y participaci&oacute;n</div></div>
-    <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>&iquest;Mismas condiciones? Los retos</strong> &mdash; las barreras reales</div></div>
-    <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>&iquest;Cumplimos la promesa?</strong> &mdash; balance y compromiso</div></div>
+    <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>&iquest;Mismas condiciones Los retos</strong> &mdash; las barreras reales</div></div>
+    <div class="idea"><div class="idea-bullet"></div><div class="idea-texto"><strong>&iquest;Cumplimos la promesa</strong> &mdash; balance y compromiso</div></div>
   </div>
   <p class="seccion-h">Tres acuerdos para conversar</p>
   <div class="ideas">
@@ -160,8 +194,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 <!-- ===== 01 PERFIL ===== -->
 <div class="panel" id="panel-t01">
   <h1 class="capsula-titulo">El perfil del l&iacute;der cooperativista</h1>
-  <div class="capsula-meta">&iquest;Qu&eacute; cargo estamos describiendo realmente?</div>
-  <p class="capsula-intro">Imaginemos por un momento que somos el &aacute;rea de <strong>recursos humanos</strong> de la cooperativa y debemos reclutar a alguien para un cargo con todas las funciones y atribuciones de un cuerpo directivo. &iquest;Qu&eacute; perfil escribir&iacute;amos? Antes de buscar a la persona, hay que tener claro <strong>qu&eacute; puesto se est&aacute; llenando.</strong></p>
+  <div class="capsula-meta">&iquest;Qu&eacute; cargo estamos describiendo realmente</div>
+  <p class="capsula-intro">Imaginemos por un momento que somos el &aacute;rea de <strong>recursos humanos</strong> de la cooperativa y debemos reclutar a alguien para un cargo con todas las funciones y atribuciones de un cuerpo directivo. &iquest;Qu&eacute; perfil escribir&iacute;amos Antes de buscar a la persona, hay que tener claro <strong>qu&eacute; puesto se est&aacute; llenando.</strong></p>
 
   <p class="seccion-h">La misi&oacute;n del cargo</p>
   <div class="insight">La Junta Directiva tiene un <strong>doble mandato</strong>: guiar a la cooperativa en el cumplimiento de su misi&oacute;n social y, al mismo tiempo, proteger sus activos a lo largo del tiempo. Es el enlace entre la Asamblea y la gerencia, y el rostro visible de la cooperativa.</div>
@@ -341,12 +375,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
     </div>
   </div>
 
-  <div class="insight"><strong>La pregunta que abre el resto del taller.</strong> La ley supone que todos los afiliados/as llegan con el mismo acceso a formaci&oacute;n, informaci&oacute;n y participaci&oacute;n. &iquest;Es realmente as&iacute;? &iquest;Estamos en las mismas condiciones?</div>
+  <div class="insight"><strong>La pregunta que abre el resto del taller.</strong> La ley supone que todos los afiliados/as llegan con el mismo acceso a formaci&oacute;n, informaci&oacute;n y participaci&oacute;n. &iquest;Es realmente as&iacute; &iquest;Estamos en las mismas condiciones</div>
 </div>
 
 <!-- ===== 06 MISMAS CONDICIONES / RETOS ===== -->
 <div class="panel" id="panel-t05">
-  <h1 class="capsula-titulo">&iquest;Mismas condiciones? Los retos reales</h1>
+  <h1 class="capsula-titulo">&iquest;Mismas condiciones Los retos reales</h1>
   <div class="capsula-meta">Percepci&oacute;n social &middot; Roles &middot; Las barreras invisibles</div>
   <p class="capsula-intro">No todas las personas llegan al liderazgo con el <strong>mismo entrenamiento ni el mismo acceso.</strong> Conviene mirar con honestidad por qu&eacute; &mdash; sin victimizar ni culpar.</p>
 
@@ -375,12 +409,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   </table></div>
   <div class="insight">El <strong>laberinto</strong> es la imagen m&aacute;s honesta: no dice que el liderazgo femenino sea imposible &mdash; dice que el camino es desigual. Reconocerlo no es buscar culpables; es el primer paso para acortar el recorrido.</div>
 
-  <div class="insight"><strong>Reflexi&oacute;n personal.</strong> &iquest;Qu&eacute; capacidad de liderazgo me toca a m&iacute; desarrollar? &iquest;Y qu&eacute; puedo hacer para que otra persona tenga el acceso que a m&iacute; me falt&oacute;?</div>
+  <div class="insight"><strong>Reflexi&oacute;n personal.</strong> &iquest;Qu&eacute; capacidad de liderazgo me toca a m&iacute; desarrollar &iquest;Y qu&eacute; puedo hacer para que otra persona tenga el acceso que a m&iacute; me falt&oacute;</div>
 </div>
 
 <!-- ===== 07 PROMESA ===== -->
 <div class="panel" id="panel-t06">
-  <h1 class="capsula-titulo">&iquest;Estamos cumpliendo la promesa?</h1>
+  <h1 class="capsula-titulo">&iquest;Estamos cumpliendo la promesa</h1>
   <div class="capsula-meta">Avances &middot; Retos &middot; Responsabilidad individual y organizacional</div>
   <p class="capsula-intro">Un balance honesto: <strong>sin triunfalismo ni derrotismo.</strong></p>
   <p class="seccion-h">D&oacute;nde estamos</p>
@@ -408,27 +442,32 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   </div>
 </div>
 
-<nav class="coop-capsule-pager" aria-label="Navegación entre cápsulas"><a class="coop-page-btn prev" href="../incidencia-politica/incidencia-politica.html"><span class="coop-page-label">Anterior</span><span class="coop-page-title">← Incidencia política</span></a><a class="coop-page-btn next" href="../../cooperativismo-aplicado/identidad-standalones/modelocooperativo-empoderamiento.html"><span class="coop-page-label">Siguiente</span><span class="coop-page-title">Modelo cooperativo →</span></a></nav>
 </main>
 </div>
 <script>
+
+function abrirMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.add('abierto');
+  if (overlay) overlay.classList.add('visible');
+}
+function cerrarMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.remove('abierto');
+  if (overlay) overlay.classList.remove('visible');
+}
+
 function mostrarTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
   document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
   document.getElementById('panel-' + id).classList.add('activo');
   btn.classList.add('activo');
+  if (window.innerWidth <= 700) cerrarMenu();
   document.querySelector('.main').scrollTop = 0;
 }
 function toggleArt(card) { card.classList.toggle('abierto'); }
-</script>
-<script id="coop-nav-js">
-(function(){
-  var nav = document.querySelector(".coop-global-nav");
-  if(!nav) return;
-  var btn = nav.querySelector(".coop-menu-toggle");
-  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
-  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
-})();
 </script>
 </body>
 </html>

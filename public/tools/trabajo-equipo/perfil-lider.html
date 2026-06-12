@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -106,28 +106,8 @@ h1::after { content: ''; display: block; width: 2.5rem; height: 3px; background:
   .btn { width: 100%; }
 }
 </style>
-<style id="coop-nav-css">
-.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
-.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
-.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
-.coop-global-nav.open .coop-menu-panel{display:block}
-.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
-.coop-menu-panel a:last-child{border-bottom:0}
-.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
-.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
-.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
-.coop-page-btn.next{text-align:right;align-items:flex-end}
-.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
-.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
-.coop-page-empty{border:1px solid transparent}
-@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
-</style>
 </head>
 <body>
-<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../index.html">Inicio</a><a href="../../contents/index.html">Contenidos</a><a href="../../contents/diplomado-basico/index.html">Diplomado Básico</a><a href="../../contents/cooperativismo-aplicado/index.html">Cooperativismo Aplicado</a><a href="../index.html">Herramientas</a></nav></div>
 <div class="wrap">
   <div class="cab-marca"><span class="cab-coop">Coop</span><span class="cab-notebook">Notebook</span></div>
 
@@ -211,11 +191,11 @@ h1::after { content: ''; display: block; width: 2.5rem; height: 3px; background:
       <textarea id="capaSer" placeholder="Escriban aquí..."></textarea>
     </div>
 
-    <div class="formula-nota"><strong>Recuerden la fórmula:</strong> V = (C + H) × A. Los conocimientos y las habilidades se suman, pero la actitud multiplica. Al armar el perfil, ¿cuánto peso le dan al "saber ser"?</div>
+    <div class="formula-nota"><strong>Recuerden la fórmula:</strong> V = (C + H) × A. Los conocimientos y las habilidades se suman, pero la actitud multiplica. Al armar el perfil, ¿cuánto peso le dan al "saber ser"</div>
 
     <div class="capa">
       <div class="capa-titulo">La conclusión del equipo</div>
-      <div class="capa-sub">En una o dos frases: ¿qué es lo más importante de este perfil?</div>
+      <div class="capa-sub">En una o dos frases: ¿qué es lo más importante de este perfil</div>
       <textarea id="capaConclusion" placeholder="Escriban aquí..."></textarea>
     </div>
 
@@ -229,11 +209,11 @@ h1::after { content: ''; display: block; width: 2.5rem; height: 3px; background:
 
 <script>
 const CASOS = [
-  { t: "El perfil de quien quiero elegir", d: "¿En qué deberíamos fijarnos al votar por la Junta Directiva o la Junta de Vigilancia?", p: "Piensen en la próxima elección: ¿qué cualidades y competencias buscarían en quien reciba su voto?" },
-  { t: "Mi propio perfil", d: "¿Qué ya tenemos y qué nos falta aprender para llegar a un cargo directivo?", p: "Hagan un autodiagnóstico honesto del equipo: fortalezas que ya traen y lo que necesitan desarrollar." },
-  { t: "El perfil para un comité", d: "Si tuviéramos que elegir a alguien para presidir o integrar un comité, ¿qué buscaríamos?", p: "Elijan un comité (educación, género, crédito...) y definan el perfil de quien debería integrarlo." },
-  { t: "El perfil que le falta a mi cooperativa", d: "¿Qué tipo de liderazgo necesita hoy nuestra cooperativa y todavía no tiene?", p: "Miren su realidad: ¿qué competencias o actitudes hacen falta en quienes hoy dirigen?" },
-  { t: "El relevo", d: "¿A quién estamos formando para que tome nuestro lugar, y qué necesita desarrollar?", p: "Piensen en la persona que viene detrás: ¿qué perfil tiene y qué le falta para asumir el cargo?" }
+  { t: "El perfil de quien quiero elegir", d: "¿En qué deberíamos fijarnos al votar por la Junta Directiva o la Junta de Vigilancia", p: "Piensen en la próxima elección: ¿qué cualidades y competencias buscarían en quien reciba su voto" },
+  { t: "Mi propio perfil", d: "¿Qué ya tenemos y qué nos falta aprender para llegar a un cargo directivo", p: "Hagan un autodiagnóstico honesto del equipo: fortalezas que ya traen y lo que necesitan desarrollar." },
+  { t: "El perfil para un comité", d: "Si tuviéramos que elegir a alguien para presidir o integrar un comité, ¿qué buscaríamos", p: "Elijan un comité (educación, género, crédito...) y definan el perfil de quien debería integrarlo." },
+  { t: "El perfil que le falta a mi cooperativa", d: "¿Qué tipo de liderazgo necesita hoy nuestra cooperativa y todavía no tiene", p: "Miren su realidad: ¿qué competencias o actitudes hacen falta en quienes hoy dirigen" },
+  { t: "El relevo", d: "¿A quién estamos formando para que tome nuestro lugar, y qué necesita desarrollar", p: "Piensen en la persona que viene detrás: ¿qué perfil tiene y qué le falta para asumir el cargo" }
 ];
 
 let casoSel = -1;
@@ -291,27 +271,8 @@ document.getElementById('btnDescargar').addEventListener('click', () => {
     + 'h2{font-size:11pt;color:#1c6b4a;margin-top:14pt;margin-bottom:3pt;text-transform:uppercase;letter-spacing:.5pt}'
     + '.caso{background:#e8f4ef;border:1pt solid #b8dccc;padding:8pt 12pt;margin:10pt 0}'
     + '.caso b{color:#1c6b4a}.resp{border-left:3pt solid #2fa36b;padding:4pt 10pt;background:#f7f7f5;margin-bottom:6pt}'
-    + '</style><style id="coop-nav-css">
-.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
-.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
-.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
-.coop-global-nav.open .coop-menu-panel{display:block}
-.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
-.coop-menu-panel a:last-child{border-bottom:0}
-.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
-.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
-.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
-.coop-page-btn.next{text-align:right;align-items:flex-end}
-.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
-.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
-.coop-page-empty{border:1px solid transparent}
-@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
-</style>
+    + '</style>
 </head><body>
-<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../index.html">Inicio</a><a href="../../contents/index.html">Contenidos</a><a href="../../contents/diplomado-basico/index.html">Diplomado Básico</a><a href="../../contents/cooperativismo-aplicado/index.html">Cooperativismo Aplicado</a><a href="../index.html">Herramientas</a></nav></div>
 '
     + '<h1>Construyamos un perfil</h1>'
     + '<div class="caso"><b>Caso ' + (casoSel+1) + ' &mdash; ' + esc(c.t) + '</b><br>' + esc(c.d) + '</div>'
@@ -319,15 +280,7 @@ document.getElementById('btnDescargar').addEventListener('click', () => {
     + '<h2>Saber hacer (habilidades)</h2><div class="resp">' + esc(hacer) + '</div>'
     + '<h2>Saber ser (actitud)</h2><div class="resp">' + esc(ser) + '</div>'
     + '<h2>Conclusi&oacute;n del equipo</h2><div class="resp">' + esc(concl) + '</div>'
-    + '<script id="coop-nav-js">
-(function(){
-  var nav = document.querySelector(".coop-global-nav");
-  if(!nav) return;
-  var btn = nav.querySelector(".coop-menu-toggle");
-  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
-  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
-})();
-</script>
+    + '
 </body></html>';
 
   const blob = new Blob(['\ufeff', doc], { type: 'application/msword' });
@@ -341,15 +294,6 @@ document.getElementById('btnDescargar').addEventListener('click', () => {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
-</script>
-<script id="coop-nav-js">
-(function(){
-  var nav = document.querySelector(".coop-global-nav");
-  if(!nav) return;
-  var btn = nav.querySelector(".coop-menu-toggle");
-  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
-  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
-})();
 </script>
 </body>
 </html>

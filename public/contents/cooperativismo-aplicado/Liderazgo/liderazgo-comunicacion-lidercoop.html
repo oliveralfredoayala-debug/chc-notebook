@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -110,7 +110,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 .tri-vertice-desc { font-size: 13px; color: var(--texto-sec); }
 .tri-base { display: flex; gap: 2.5rem; margin-top: 1rem; }
 .tri-lineas { width: 1.5px; height: 24px; background: var(--gris-borde); }
-/* CICLO DE VIDA DEL LÍDER */
+/* CICLO DE VIDA DEL L�?DER */
 .ciclo-wrap { margin: 2rem 0; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
 .ciclo-orbita { position: relative; width: 320px; height: 320px; flex-shrink: 0; }
 .ciclo-orbita::before { content: ''; position: absolute; inset: 46px; border: 2px dashed var(--gris-borde); border-radius: 50%; animation: girar 40s linear infinite; }
@@ -153,7 +153,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 .comp-coop { font-size: 14px; color: var(--texto); line-height: 1.6; padding-top: .875rem; }
 .comp-coop strong { color: var(--verde); font-weight: 600; }
 .comp-coop-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--verde-sec); font-weight: 600; display: block; margin-bottom: .35rem; }
-/* MAPA DEL LÍDER */
+/* MAPA DEL L�?DER */
 .mapa-señal { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
 .señal { border: 1px solid var(--gris-borde); border-radius: var(--radio); padding: 1rem 1.125rem; background: var(--blanco); }
 .señal-titulo { font-size: 14px; font-weight: 600; color: var(--verde); margin-bottom: .35rem; }
@@ -196,31 +196,65 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   .tri-base { gap: 1.5rem; }
   .com-label { width: 96px; font-size: 12px; }
 }
-</style>
-<style id="coop-nav-css">
-.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
-.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
-.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
-.coop-global-nav.open .coop-menu-panel{display:block}
-.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
-.coop-menu-panel a:last-child{border-bottom:0}
-.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
-.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
-.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
-.coop-page-btn.next{text-align:right;align-items:flex-end}
-.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
-.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
-.coop-page-empty{border:1px solid transparent}
-@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
+
+/* Boton hamburguesa y overlay para navegacion interna en mobile */
+.nb-toggle { display: none; }
+.nb-overlay { display: none; }
+.nb-cerrar { display: none; }
+@media (max-width: 700px) {
+  .nb-toggle {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; top: 12px; left: 12px; z-index: 50;
+    width: 44px; height: 44px;
+    background: var(--blanco); border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm); cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    padding: 0;
+  }
+  .nb-toggle svg { width: 22px; height: 22px; color: var(--verde); }
+  .sidebar {
+    display: flex;
+    position: fixed; top: 0; left: 0; z-index: 60;
+    width: 82%; max-width: 320px; height: 100vh;
+    border-right: 1px solid var(--gris-borde); border-bottom: none;
+    transform: translateX(-100%);
+    transition: transform .26s ease;
+    box-shadow: 2px 0 16px rgba(0,0,0,.12);
+  }
+  .sidebar.abierto { transform: translateX(0); }
+  .nb-cerrar {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--texto-ter);
+  }
+  .nb-cerrar svg { width: 22px; height: 22px; }
+  .nb-nav button { min-height: 44px; }
+  .nb-conceptos { display: block; }
+  .nb-overlay {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .26s ease;
+  }
+  .nb-overlay.visible { opacity: 1; pointer-events: auto; }
+  .main { padding-top: 4.5rem; }
+}
+
 </style>
 </head>
 <body>
-<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../../index.html">Inicio</a><a href="../../index.html">Contenidos</a><a href="../../diplomado-basico/index.html">Diplomado Básico</a><a href="../index.html">Cooperativismo Aplicado</a><a href="../../../tools/index.html">Herramientas</a></nav></div>
+
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <div class="shell">
 <nav class="sidebar">
+  <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
   <div class="nb-marca">
     <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
     <span class="nb-marca-titulo">Habilidades de Liderazgo y Comunicación</span>
@@ -247,12 +281,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="capsula-meta">Clausura del programa · Sesión presencial</div>
   <p class="capsula-intro">Una reflexión sobre la responsabilidad del liderazgo con sentido: <strong>escuchar para entender, comunicar para desarrollar y crear condiciones</strong> para que otros descubran y amplíen sus propias capacidades. No es un repaso de técnicas, sino una conversación sobre qué clase de líder elegimos ser.</p>
 
-  <p class="detonadora">¿Quién creyó en ti antes de que tú creyeras en ti mismo?</p>
+  <p class="detonadora">¿Quién creyó en ti antes de que tú creyeras en ti mismo</p>
   <p class="prosa">Detente en esa persona. Probablemente no recuerdes con precisión qué te dijo ni los datos que te compartió. Recuerdas lo que te hizo sentir capaz.</p>
 
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Trae a la memoria a quien creyó en ti. ¿Qué hizo exactamente que te marcó: lo que te <em>dijo</em> o lo que te hizo <em>vivir</em>?</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">En tu cooperativa, ¿qué dirigentes son recordados por lo que hicieron sentir y no por lo que dijeron?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Trae a la memoria a quien creyó en ti. ¿Qué hizo exactamente que te marcó: lo que te <em>dijo</em> o lo que te hizo <em>vivir</em></span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">En tu cooperativa, ¿qué dirigentes son recordados por lo que hicieron sentir y no por lo que dijeron</span></div>
   </div>
 </div>
 
@@ -275,7 +309,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="capsula-meta">Empatía, simpatía y juicio · Cómo leemos a las personas</div>
   <p class="capsula-intro">Entre escuchar a alguien y comprenderlo hay varios territorios que solemos confundir. Distinguirlos cambia la forma en que una dirigencia acompaña a sus afiliados/as y conduce una asamblea.</p>
 
-  <p class="detonadora">¿Cómo comprendemos realmente a otras personas?</p>
+  <p class="detonadora">¿Cómo comprendemos realmente a otras personas</p>
 
   <div class="idea">
     <div class="idea-rotulo">Idea central</div>
@@ -340,12 +374,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 
   <p class="seccion-h">Para discutir</p>
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Si la empatía es un skill que se entrena, ¿cómo se practica en la vida cooperativa? ¿En qué momento dejaste de juzgar y empezaste a comprender a un afiliado/a?</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">Toma a una persona difícil de tu cooperativa y recórrela por los cinco niveles. ¿Su acción se entiende distinto cuando lees su narrativa y lo que cree de su propia capacidad?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Si la empatía es un skill que se entrena, ¿cómo se practica en la vida cooperativa ¿En qué momento dejaste de juzgar y empezaste a comprender a un afiliado/a</span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">Toma a una persona difícil de tu cooperativa y recórrela por los cinco niveles. ¿Su acción se entiende distinto cuando lees su narrativa y lo que cree de su propia capacidad</span></div>
   </div>
 </div>
 
-<!-- 02 · LA INTELIGENCIA DEL LÍDER -->
+<!-- 02 · LA INTELIGENCIA DEL L�?DER -->
 <div class="panel" id="panel-t02">
   <h1 class="capsula-titulo">La inteligencia del líder</h1>
   <div class="capsula-meta">Procesos cognitivos al servicio del desarrollo de otros</div>
@@ -424,8 +458,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 
   <p class="seccion-h">Para discutir</p>
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Si la memoria se fija mejor en climas de confianza, ¿cómo deberían sentirse las capacitaciones de tu cooperativa para que de verdad se aprendan?</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">¿Tu cooperativa premia más la solución convergente (resultados conocidos) o la divergente (alternativas nuevas)? ¿Qué se pierde con el desequilibrio?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">Si la memoria se fija mejor en climas de confianza, ¿cómo deberían sentirse las capacitaciones de tu cooperativa para que de verdad se aprendan</span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">¿Tu cooperativa premia más la solución convergente (resultados conocidos) o la divergente (alternativas nuevas) ¿Qué se pierde con el desequilibrio</span></div>
   </div>
 </div>
 
@@ -435,7 +469,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="capsula-meta">Cómo se construye la confianza real</div>
   <p class="capsula-intro">Solemos imaginar que primero llega la confianza y luego nos atrevemos a actuar. La secuencia real es la inversa, y la psicología del deporte lo muestra con claridad.</p>
 
-  <p class="detonadora">¿Cómo desarrollan las personas confianza en sí mismas?</p>
+  <p class="detonadora">¿Cómo desarrollan las personas confianza en sí mismas</p>
 
   <div class="idea">
     <div class="idea-rotulo">Idea central</div>
@@ -472,8 +506,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 
   <p class="seccion-h">Para discutir</p>
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Por qué muchos dirigentes prefieren «hacerlo ellos mismos» antes que arriesgar que un afiliado/a nuevo aprenda haciendo y construya su propia evidencia?</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">Como «entrenador», ¿cómo mides el avance de alguien a quien estás formando, sin quitarle el mérito de su propio resultado?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Por qué muchos dirigentes prefieren «hacerlo ellos mismos» antes que arriesgar que un afiliado/a nuevo aprenda haciendo y construya su propia evidencia</span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">Como «entrenador», ¿cómo mides el avance de alguien a quien estás formando, sin quitarle el mérito de su propio resultado</span></div>
   </div>
 </div>
 
@@ -483,7 +517,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="capsula-meta">Saberme capaz y saberme limitado, a la vez</div>
   <p class="capsula-intro">La madurez no se asocia con la edad, sino con el autoconocimiento. Vive en el punto medio entre dos extremos que la distorsionan.</p>
 
-  <p class="detonadora">¿Qué hacemos con lo que descubrimos sobre nosotros mismos?</p>
+  <p class="detonadora">¿Qué hacemos con lo que descubrimos sobre nosotros mismos</p>
 
   <div class="idea">
     <div class="idea-rotulo">Idea central</div>
@@ -516,8 +550,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 
   <p class="seccion-h">Para discutir</p>
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Es posible ser maduro en un ámbito de la vida cooperativa e inmaduro en otro? Da un ejemplo.</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">«Dar un paso al lado» a veces se lee como debilidad. ¿Cómo distinguir la renuncia madura del simple abandono?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Es posible ser maduro en un ámbito de la vida cooperativa e inmaduro en otro Da un ejemplo.</span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">«Dar un paso al lado» a veces se lee como debilidad. ¿Cómo distinguir la renuncia madura del simple abandono</span></div>
   </div>
 </div>
 
@@ -527,7 +561,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="capsula-meta">Aprender, caminar y enseñar — siempre, al mismo tiempo</div>
   <p class="capsula-intro">El liderazgo no es una etapa que se alcanza y se conserva: es un ciclo que se sostiene toda la vida. En todo momento un líder debería tener cerca a alguien mayor, a alguien de su misma edad y a alguien menor. No por turnos, sino de forma simultánea y permanente.</p>
 
-  <p class="detonadora">¿Para qué sirve todo lo aprendido?</p>
+  <p class="detonadora">¿Para qué sirve todo lo aprendido</p>
 
   <div class="idea">
     <div class="idea-rotulo">Idea central</div>
@@ -575,20 +609,34 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 
   <p class="seccion-h">Para cerrar la conversación</p>
   <div class="discutir">
-    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Tienes hoy, al mismo tiempo, a alguien mayor, alguien igual y alguien menor en tu vida cooperativa? ¿Cuál de los tres te falta?</span></div>
-    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">¿Tu comité de educación funciona en ambas direcciones, o solo baja contenido a la base? ¿Qué cambiarías?</span></div>
+    <div class="discutir-item"><span class="discutir-q">1</span><span class="discutir-txt">¿Tienes hoy, al mismo tiempo, a alguien mayor, alguien igual y alguien menor en tu vida cooperativa ¿Cuál de los tres te falta</span></div>
+    <div class="discutir-item"><span class="discutir-q">2</span><span class="discutir-txt">¿Tu comité de educación funciona en ambas direcciones, o solo baja contenido a la base ¿Qué cambiarías</span></div>
   </div>
 </div>
 
-<nav class="coop-capsule-pager" aria-label="Navegación entre cápsulas"><a class="coop-page-btn prev" href="../identidad-standalones/modelocooperativo-empoderamiento.html"><span class="coop-page-label">Anterior</span><span class="coop-page-title">← Modelo cooperativo</span></a><span class="coop-page-empty"></span></nav>
 </main>
 </div>
 <script>
+
+function abrirMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.add('abierto');
+  if (overlay) overlay.classList.add('visible');
+}
+function cerrarMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.remove('abierto');
+  if (overlay) overlay.classList.remove('visible');
+}
+
 function mostrarTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
   document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
   document.getElementById('panel-' + id).classList.add('activo');
   btn.classList.add('activo');
+  if (window.innerWidth <= 700) cerrarMenu();
   document.querySelector('.main').scrollTo({top:0});
   window.scrollTo({top:0});
   const panel = document.getElementById('panel-' + id);
@@ -631,15 +679,6 @@ document.querySelectorAll('.ciclo-rol').forEach(btn => {
     }, 150);
   });
 });
-</script>
-<script id="coop-nav-js">
-(function(){
-  var nav = document.querySelector(".coop-global-nav");
-  if(!nav) return;
-  var btn = nav.querySelector(".coop-menu-toggle");
-  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
-  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
-})();
 </script>
 </body>
 </html>

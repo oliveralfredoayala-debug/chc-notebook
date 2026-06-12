@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -83,7 +83,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 .panel { display: none; }
 .panel.activo { display: block; }
 
-/* TÍTULO */
+/* T�?TULO */
 .capsula-titulo {
   font-size: 26px; font-weight: 600; color: var(--texto);
   line-height: 1.25; margin-bottom: .4rem;
@@ -134,7 +134,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 .punto-texto { font-size: 14px; color: var(--texto-sec); line-height: 1.55; }
 .punto-texto strong { color: var(--texto); font-weight: 500; }
 
-/* ARTÍCULOS */
+/* ART�?CULOS */
 .art-card { margin-bottom: .875rem; border: 1px solid var(--gris-borde); border-radius: var(--radio); overflow: hidden; }
 .art-card-header { padding: .8rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background .15s; gap: 1rem; }
 .art-card-header:hover { background: var(--gris-bg); }
@@ -246,31 +246,65 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
 }
 .conv-nota { font-size: 12px; color: var(--texto-ter); }
 
-</style>
-<style id="coop-nav-css">
-.coop-global-nav{position:fixed;top:14px;right:14px;z-index:9999;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-menu-toggle{border:1px solid #e4e4e0;background:#fff;color:#1a1a18;border-radius:8px;padding:.55rem .8rem;font:600 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(28,107,74,.08)}
-.coop-menu-toggle:hover{border-color:#b8dccc;color:#1c6b4a}
-.coop-menu-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:260px;border:1px solid #e4e4e0;border-radius:10px;background:#fff;box-shadow:0 16px 40px rgba(26,26,24,.12);overflow:hidden}
-.coop-global-nav.open .coop-menu-panel{display:block}
-.coop-menu-head{padding:.85rem 1rem;border-bottom:1px solid #e4e4e0;font-size:12px;color:#6a6a64;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.coop-menu-panel a{display:block;padding:.75rem 1rem;text-decoration:none;color:#3a3a36;font-size:14px;line-height:1.35;border-bottom:1px solid #f0f0ec}
-.coop-menu-panel a:last-child{border-bottom:0}
-.coop-menu-panel a:hover{background:#e8f4ef;color:#1c6b4a}
-.coop-capsule-pager{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:3rem 0 0;padding-top:1.5rem;border-top:1px solid #e4e4e0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.coop-page-btn{min-height:70px;display:flex;flex-direction:column;justify-content:center;text-decoration:none;border:1px solid #e4e4e0;border-radius:10px;background:#fff;padding:.85rem 1rem;color:#1a1a18;transition:background .15s,border-color .15s,transform .15s}
-.coop-page-btn:hover{background:#e8f4ef;border-color:#b8dccc;transform:translateY(-1px)}
-.coop-page-btn.next{text-align:right;align-items:flex-end}
-.coop-page-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a64;font-weight:700;margin-bottom:.2rem}
-.coop-page-title{font-size:14px;line-height:1.35;color:#1c6b4a;font-weight:600}
-.coop-page-empty{border:1px solid transparent}
-@media(max-width:700px){.coop-global-nav{top:10px;right:10px}.coop-menu-panel{width:min(280px,calc(100vw - 20px))}.coop-capsule-pager{grid-template-columns:1fr}.coop-page-btn.next{text-align:left;align-items:flex-start}}
+
+/* Boton hamburguesa y overlay para navegacion interna en mobile */
+.nb-toggle { display: none; }
+.nb-overlay { display: none; }
+.nb-cerrar { display: none; }
+@media (max-width: 700px) {
+  .nb-toggle {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; top: 12px; left: 12px; z-index: 50;
+    width: 44px; height: 44px;
+    background: var(--blanco); border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-sm); cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    padding: 0;
+  }
+  .nb-toggle svg { width: 22px; height: 22px; color: var(--verde); }
+  .sidebar {
+    display: flex;
+    position: fixed; top: 0; left: 0; z-index: 60;
+    width: 82%; max-width: 320px; height: 100vh;
+    border-right: 1px solid var(--gris-borde); border-bottom: none;
+    transform: translateX(-100%);
+    transition: transform .26s ease;
+    box-shadow: 2px 0 16px rgba(0,0,0,.12);
+  }
+  .sidebar.abierto { transform: translateX(0); }
+  .nb-cerrar {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--texto-ter);
+  }
+  .nb-cerrar svg { width: 22px; height: 22px; }
+  .nb-nav button { min-height: 44px; }
+  .nb-conceptos { display: block; }
+  .nb-overlay {
+    display: block; position: fixed; inset: 0; z-index: 55;
+    background: rgba(0,0,0,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .26s ease;
+  }
+  .nb-overlay.visible { opacity: 1; pointer-events: auto; }
+  .main { padding-top: 4.5rem; }
+}
+
 </style>
 </head>
 <body>
-<div class="coop-global-nav"><button class="coop-menu-toggle" type="button" aria-label="Abrir menú">Menú</button><nav class="coop-menu-panel" aria-label="Navegación principal"><div class="coop-menu-head">CoopNotebook</div><a href="../../../index.html">Inicio</a><a href="../../index.html">Contenidos</a><a href="../index.html">Diplomado Básico</a><a href="../../cooperativismo-aplicado/index.html">Cooperativismo Aplicado</a><a href="../../../tools/index.html">Herramientas</a></nav></div>
+
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <div class="shell">
 <nav class="sidebar">
+  <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
   <div class="nb-marca">
     <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
     <span class="nb-marca-titulo">Asambleas y normas parlamentarias</span>
@@ -350,7 +384,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <div class="cinco-q-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/><line x1="12" y1="4" x2="12" y2="4"/><path d="M5 3 L12 1 L19 3"/></svg>
       </div>
-      <span class="cinco-q-pregunta">¿Qué es?</span>
+      <span class="cinco-q-pregunta">¿Qué es</span>
     </div>
     <p class="cinco-q-resp">El órgano supremo de la cooperativa que expresa la voluntad colectiva de sus afiliados/as. Sus acuerdos son obligatorios para todos, incluidos ausentes y disidentes.</p>
     <span class="cinco-q-art">Art. 23 LCH</span>
@@ -361,7 +395,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <div class="cinco-q-icon">
         <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 20v-2a5 5 0 0 1 5-5h2"/><circle cx="17" cy="7" r="3"/><path d="M21 20v-2a5 5 0 0 0-5-5h-2"/></svg>
       </div>
-      <span class="cinco-q-pregunta">¿Quiénes la integran?</span>
+      <span class="cinco-q-pregunta">¿Quiénes la integran</span>
     </div>
     <p class="cinco-q-resp">Todos los afiliados/as activos/as con derecho a voz y voto. Cuando la cooperativa supera 3,000 afiliados/as, participan los delegados/as electos en asambleas sectoriales.</p>
     <span class="cinco-q-art">Arts. 22, 23 LCH</span>
@@ -372,7 +406,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <div class="cinco-q-icon">
         <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       </div>
-      <span class="cinco-q-pregunta">¿Quién la convoca?</span>
+      <span class="cinco-q-pregunta">¿Quién la convoca</span>
     </div>
     <p class="cinco-q-resp">La Secretaría de la Junta Directiva, a nombre de la JD. También puede convocar la Junta de Vigilancia, el 30% de la membresía o el CONSUCOOP.</p>
     <span class="cinco-q-art">RLCH Arts. 94, 113, 114</span>
@@ -383,7 +417,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <div class="cinco-q-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
-      <span class="cinco-q-pregunta">¿Cuándo se celebra?</span>
+      <span class="cinco-q-pregunta">¿Cuándo se celebra</span>
     </div>
     <p class="cinco-q-resp">La ordinaria dentro de los 3 meses siguientes al cierre del ejercicio social. La extraordinaria cuando se presenten las causas específicas que la ley establece.</p>
     <span class="cinco-q-art">LCH Art. 24 · RLCH Art. 91</span>
@@ -394,7 +428,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <div class="cinco-q-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
-      <span class="cinco-q-pregunta">¿Cómo se conduce?</span>
+      <span class="cinco-q-pregunta">¿Cómo se conduce</span>
     </div>
     <p class="cinco-q-resp">Con normas parlamentarias: un asunto a la vez, libre debate para todas las partes, igualdad de derechos entre los presentes, la mayoría decide y la minoría tiene derecho a ser escuchada.</p>
     <span class="cinco-q-art">RLCH Art. 97 · Manual de Reglas Parlamentarias</span>
@@ -625,7 +659,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <h1 class="capsula-titulo">La convocatoria</h1>
   <div class="capsula-meta">LCH Art. 106 · RLCH Arts. 91, 94, 95, 104, 105, 113, 114, 114-A</div>
   <p class="capsula-intro">Una Asamblea General sin convocatoria válida es una Asamblea General nula. La convocatoria garantiza que todos los afiliados/as tengan la oportunidad real de participar y lleguen informados. Quién puede convocar, qué debe acompañar, con cuánto tiempo y por qué medios son preguntas con respuesta legal precisa.</p>
-<p class="seccion-h">Contenido obligatorio</p><div class="puntos"><div class="punto"><div class="punto-icono">1</div><p class="punto-texto"><strong>Anticipación mínima de 15 días:</strong> El plazo corre desde la emisión hasta la fecha de la asamblea (RLCH Art. 91). No puede reducirse por urgencia.</p></div><div class="punto"><div class="punto-icono">2</div><p class="punto-texto"><strong>Agenda con temas específicos:</strong> Cada punto debe ser identificable. Un punto genérico como "varios" no cumple el requisito del RLCH Art. 104.</p></div><div class="punto"><div class="punto-icono">3</div><p class="punto-texto"><strong>Primera y segunda convocatoria:</strong> Pueden incluirse en el mismo aviso. La segunda se celebra una hora después si no hay quórum en la primera (RLCH Art. 95).</p></div><div class="punto"><div class="punto-icono">4</div><p class="punto-texto"><strong>Medios válidos:</strong> a) Listado que pase la Secretaría a los afiliados/as; b) Medio electrónico validable (correo, mensaje, redes sociales); c) Circular o publicación en medio escrito, radial o televisivo de difusión nacional (RLCH Art. 94).</p></div><div class="punto"><div class="punto-icono">5</div><p class="punto-texto"><strong>Evidencia del hecho:</strong> La Secretaría de la JD ejecuta el acuerdo y debe dejar constancia de que todos los afiliados/as fueron notificados (RLCH Art. 94).</p></div><div class="punto"><div class="punto-icono">6</div><p class="punto-texto"><strong>Documentos disponibles con anticipación:</strong> La convocatoria debe indicar dónde los afiliados/as pueden consultar la memoria de labores, los estados financieros auditados, el dictamen de la JV, el POA y el presupuesto general antes de la sesión (LCH Art. 106). Una asamblea donde los afiliados/as ven esos documentos por primera vez el día de la sesión no cumple el espíritu de la participación democrática informada.</p></div></div><div class="insight"><strong>Ejemplo de texto de convocatoria.</strong> En cumplimiento del Acuerdo de Junta Directiva y de conformidad con los artículos 24 LCH y 91-95 RLCH, se CONVOCA a los afiliados/as a la ASAMBLEA GENERAL ORDINARIA que se celebrará el día [fecha] a las [hora] en [lugar]. <em>Primera convocatoria:</em> [hora]. Si no se reuniere el quórum requerido, la asamblea se instalará en <em>segunda convocatoria</em> a las [hora + 1 hora], con los afiliados/as presentes que no sean menos de la mitad más uno de la asistencia mínima de constitución. <strong>Agenda:</strong> [puntos específicos]. Los documentos del Art. 106 LCH (memoria, estados financieros, dictamen de JV, POA y presupuesto) pueden consultarse en [lugar/medio] a partir de [fecha]. [Fecha de emisión de la convocatoria]. <em>Secretaría de la Junta Directiva.</em></div><p class="seccion-h">¿Quién puede convocar?</p><div class="conv-grid"><div class="conv-card" onclick="this.classList.toggle('abierto')">
+<p class="seccion-h">Contenido obligatorio</p><div class="puntos"><div class="punto"><div class="punto-icono">1</div><p class="punto-texto"><strong>Anticipación mínima de 15 días:</strong> El plazo corre desde la emisión hasta la fecha de la asamblea (RLCH Art. 91). No puede reducirse por urgencia.</p></div><div class="punto"><div class="punto-icono">2</div><p class="punto-texto"><strong>Agenda con temas específicos:</strong> Cada punto debe ser identificable. Un punto genérico como "varios" no cumple el requisito del RLCH Art. 104.</p></div><div class="punto"><div class="punto-icono">3</div><p class="punto-texto"><strong>Primera y segunda convocatoria:</strong> Pueden incluirse en el mismo aviso. La segunda se celebra una hora después si no hay quórum en la primera (RLCH Art. 95).</p></div><div class="punto"><div class="punto-icono">4</div><p class="punto-texto"><strong>Medios válidos:</strong> a) Listado que pase la Secretaría a los afiliados/as; b) Medio electrónico validable (correo, mensaje, redes sociales); c) Circular o publicación en medio escrito, radial o televisivo de difusión nacional (RLCH Art. 94).</p></div><div class="punto"><div class="punto-icono">5</div><p class="punto-texto"><strong>Evidencia del hecho:</strong> La Secretaría de la JD ejecuta el acuerdo y debe dejar constancia de que todos los afiliados/as fueron notificados (RLCH Art. 94).</p></div><div class="punto"><div class="punto-icono">6</div><p class="punto-texto"><strong>Documentos disponibles con anticipación:</strong> La convocatoria debe indicar dónde los afiliados/as pueden consultar la memoria de labores, los estados financieros auditados, el dictamen de la JV, el POA y el presupuesto general antes de la sesión (LCH Art. 106). Una asamblea donde los afiliados/as ven esos documentos por primera vez el día de la sesión no cumple el espíritu de la participación democrática informada.</p></div></div><div class="insight"><strong>Ejemplo de texto de convocatoria.</strong> En cumplimiento del Acuerdo de Junta Directiva y de conformidad con los artículos 24 LCH y 91-95 RLCH, se CONVOCA a los afiliados/as a la ASAMBLEA GENERAL ORDINARIA que se celebrará el día [fecha] a las [hora] en [lugar]. <em>Primera convocatoria:</em> [hora]. Si no se reuniere el quórum requerido, la asamblea se instalará en <em>segunda convocatoria</em> a las [hora + 1 hora], con los afiliados/as presentes que no sean menos de la mitad más uno de la asistencia mínima de constitución. <strong>Agenda:</strong> [puntos específicos]. Los documentos del Art. 106 LCH (memoria, estados financieros, dictamen de JV, POA y presupuesto) pueden consultarse en [lugar/medio] a partir de [fecha]. [Fecha de emisión de la convocatoria]. <em>Secretaría de la Junta Directiva.</em></div><p class="seccion-h">¿Quién puede convocar</p><div class="conv-grid"><div class="conv-card" onclick="this.classList.toggle('abierto')">
     <div class="conv-card-header">
       <span class="conv-badge jd">Junta Directiva</span>
       <span class="conv-card-titulo">Convocante ordinaria</span>
@@ -699,7 +733,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <div class="art-card" onclick="toggleArt(this)">
     <div class="art-card-header">
       <span class="art-card-id">RLCH Art. 107</span>
-      <span class="art-card-titulo">¿Quién tiene derecho a voz y voto?</span>
+      <span class="art-card-titulo">¿Quién tiene derecho a voz y voto</span>
       <svg class="art-card-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="art-card-body">
@@ -817,7 +851,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   </div><div class="art-card" onclick="toggleArt(this)">
     <div class="art-card-header">
       <span class="art-card-id">RLCH Art. 128</span>
-      <span class="art-card-titulo">¿Qué son los Programas de Desarrollo Cooperativo?</span>
+      <span class="art-card-titulo">¿Qué son los Programas de Desarrollo Cooperativo</span>
       <svg class="art-card-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="art-card-body">
@@ -829,7 +863,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
   <h1 class="capsula-titulo">Plan operativo anual (POA)</h1>
   <div class="capsula-meta">LCH Art. 24 lit. e · RLCH Art. 79</div>
   <p class="capsula-intro">El Plan Operativo Anual traduce los objetivos estratégicos de la cooperativa en acciones concretas para el siguiente ejercicio. La Asamblea General Ordinaria lo aprueba; la Junta Directiva y la Gerencia lo ejecutan. Sin POA aprobado, la gestión carece de mandato asambleario.</p>
-  <div class="insight"><strong>Base legal.</strong> LCH Art. 24 lit. e: Corresponde a la Asamblea General Ordinaria: e) Aprobar el plan operativo anual. RLCH Art. 79: La Junta de Vigilancia deberá elaborar un Plan Anual de Trabajo de Auditoría Interna y presentarlo a la Asamblea General Ordinaria.</div><p class="seccion-h">¿Qué es el POA?</p><div class="puntos"><div class="punto"><div class="punto-icono">1</div><p class="punto-texto"><strong>Definición:</strong> El plan de trabajo institucional para el siguiente ejercicio social. Incluye objetivos, actividades, responsables, cronograma y presupuesto para cada área de la cooperativa.</p></div><div class="punto"><div class="punto-icono">2</div><p class="punto-texto"><strong>Cobertura:</strong> Debe involucrar a todos los comités obligatorios (educación, crédito, género, vigilancia), las áreas operativas y las distintas zonas geográficas donde tenga presencia la cooperativa.</p></div><div class="punto"><div class="punto-icono">3</div><p class="punto-texto"><strong>Articulación con el presupuesto:</strong> El POA y el presupuesto general son documentos complementarios que se presentan juntos a la asamblea. El presupuesto le da los recursos; el POA le da la dirección.</p></div></div><p class="seccion-h">Ideas para un POA cooperativo bien construido</p><div class="tabla-wrap"><table><thead><tr><th>Área</th><th>Contenido sugerido</th></tr></thead><tbody><tr><td>Educación cooperativa</td><td>Actividades formativas para afiliados/as, directivos/as y jóvenes. Incluye el fondo del 3% y la planificación del Comité de Educación</td></tr><tr><td>Desarrollo de afiliados/as</td><td>Programas de atención a las necesidades específicas: salud, vivienda, crédito, asesoría técnica según el tipo de cooperativa</td></tr><tr><td>Gobernanza</td><td>Reuniones de JD, JV y comités. Auditorías internas. Actualizaciones del estatuto si corresponde</td></tr><tr><td>Perspectiva de género</td><td>Metas de representación, actividades del Comité de Género, acciones afirmativas para participación de mujeres y jóvenes</td></tr><tr><td>Integración cooperativa</td><td>Aportes a organismos de segundo y tercer grado, participación en actividades de la federación o los organismos de integración nacional</td></tr><tr><td>Balance social</td><td>Indicadores que se medirán durante el ejercicio para el próximo balance social</td></tr></tbody></table></div>
+  <div class="insight"><strong>Base legal.</strong> LCH Art. 24 lit. e: Corresponde a la Asamblea General Ordinaria: e) Aprobar el plan operativo anual. RLCH Art. 79: La Junta de Vigilancia deberá elaborar un Plan Anual de Trabajo de Auditoría Interna y presentarlo a la Asamblea General Ordinaria.</div><p class="seccion-h">¿Qué es el POA</p><div class="puntos"><div class="punto"><div class="punto-icono">1</div><p class="punto-texto"><strong>Definición:</strong> El plan de trabajo institucional para el siguiente ejercicio social. Incluye objetivos, actividades, responsables, cronograma y presupuesto para cada área de la cooperativa.</p></div><div class="punto"><div class="punto-icono">2</div><p class="punto-texto"><strong>Cobertura:</strong> Debe involucrar a todos los comités obligatorios (educación, crédito, género, vigilancia), las áreas operativas y las distintas zonas geográficas donde tenga presencia la cooperativa.</p></div><div class="punto"><div class="punto-icono">3</div><p class="punto-texto"><strong>Articulación con el presupuesto:</strong> El POA y el presupuesto general son documentos complementarios que se presentan juntos a la asamblea. El presupuesto le da los recursos; el POA le da la dirección.</p></div></div><p class="seccion-h">Ideas para un POA cooperativo bien construido</p><div class="tabla-wrap"><table><thead><tr><th>�?rea</th><th>Contenido sugerido</th></tr></thead><tbody><tr><td>Educación cooperativa</td><td>Actividades formativas para afiliados/as, directivos/as y jóvenes. Incluye el fondo del 3% y la planificación del Comité de Educación</td></tr><tr><td>Desarrollo de afiliados/as</td><td>Programas de atención a las necesidades específicas: salud, vivienda, crédito, asesoría técnica según el tipo de cooperativa</td></tr><tr><td>Gobernanza</td><td>Reuniones de JD, JV y comités. Auditorías internas. Actualizaciones del estatuto si corresponde</td></tr><tr><td>Perspectiva de género</td><td>Metas de representación, actividades del Comité de Género, acciones afirmativas para participación de mujeres y jóvenes</td></tr><tr><td>Integración cooperativa</td><td>Aportes a organismos de segundo y tercer grado, participación en actividades de la federación o los organismos de integración nacional</td></tr><tr><td>Balance social</td><td>Indicadores que se medirán durante el ejercicio para el próximo balance social</td></tr></tbody></table></div>
 </div>
 <div class="panel" id="panel-t10">
   <h1 class="capsula-titulo">Elección de cuerpos directivos</h1>
@@ -876,26 +910,31 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--blan
       <p class="art-nota">El órgano provisional no asume las funciones plenas de la JD: su único propósito es garantizar que se convoque una nueva asamblea para elegir la directiva definitiva. El estatuto debe contemplar su figura para que pueda activarse.</p>
     </div>
   </div></div>
-<nav class="coop-capsule-pager" aria-label="Navegación entre cápsulas"><a class="coop-page-btn prev" href="../identidad-cooperativa/estructura-organica.html"><span class="coop-page-label">Anterior</span><span class="coop-page-title">← Estructura orgánica</span></a><a class="coop-page-btn next" href="../incidencia-politica/incidencia-politica.html"><span class="coop-page-label">Siguiente</span><span class="coop-page-title">Incidencia política →</span></a></nav>
 </main>
 </div>
 <script>
+
+function abrirMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.add('abierto');
+  if (overlay) overlay.classList.add('visible');
+}
+function cerrarMenu() {
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.remove('abierto');
+  if (overlay) overlay.classList.remove('visible');
+}
+
 function mostrarTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
   document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
   document.getElementById('panel-' + id).classList.add('activo');
   btn.classList.add('activo');
+  if (window.innerWidth <= 700) cerrarMenu();
 }
 function toggleArt(card) { card.classList.toggle('abierto'); }
-</script>
-<script id="coop-nav-js">
-(function(){
-  var nav = document.querySelector(".coop-global-nav");
-  if(!nav) return;
-  var btn = nav.querySelector(".coop-menu-toggle");
-  btn.addEventListener("click", function(){ nav.classList.toggle("open"); });
-  document.addEventListener("click", function(e){ if(!nav.contains(e.target)) nav.classList.remove("open"); });
-})();
 </script>
 </body>
 </html>
