@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plan de Incidencia Política Cooperativa</title>
-  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
   <style>
     :root {
       --verde: #1c6b4a;
@@ -509,7 +509,7 @@
       </div>
 
       <div class="resumen-acciones">
-        <button class="btn-accion gold" onclick="descargarPPTX()">⬇ Descargar PowerPoint</button>
+        <button class="btn-accion gold" onclick="descargarWord()">⬇ Descargar Word</button>
         <button class="btn-accion secondary" style="background:none;color:var(--verde);border:1px solid var(--verde-borde);" onclick="irAPaso('p1')">← Editar respuestas</button>
       </div>
 
@@ -658,102 +658,104 @@
     irAPaso('presumen');
   }
 
-  function descargarPPTX() {
-    var pptx = new PptxGenJS();
-    var VERDE = '1c6b4a';
-    var AMARILLO = 'e8b84b';
-    var BLANCO = 'FFFFFF';
-    var GRIS = '4a4a4a';
-    var GRIS_FONDO = 'f7f7f5';
+  function descargarWord() {
+    var casoVal = document.getElementById('caso-select').value;
+    var casoTitulo = casoVal ? casosTitulos[casoVal] : '—';
+    var casoTexto = casoVal && casos[casoVal]
+      ? casos[casoVal].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+      : '—';
 
-    function slide1() {
-      var s = pptx.addSlide();
-      s.background = { color: VERDE };
-      var casoVal = document.getElementById('caso-select').value;
-      var casoTitulo = casoVal ? casosTitulos[casoVal] : '—';
-      var casoNum = casoVal ? 'Caso ' + casoVal : '—';
-      // Número de caso grande como portada
-      s.addText(casoNum, { x: 0.5, y: 0.5, w: 9, h: 1.8, fontSize: 72, bold: true, color: AMARILLO, fontFace: 'Calibri', align: 'center' });
-      s.addText(casoTitulo, { x: 0.5, y: 2.4, w: 9, h: 0.7, fontSize: 20, bold: true, color: BLANCO, fontFace: 'Calibri', align: 'center' });
-      s.addText('Notebook Cooperativa · Plan de Incidencia Política', { x: 0.5, y: 4.8, w: 9, h: 0.3, fontSize: 10, color: AMARILLO, fontFace: 'Calibri', align: 'center', italic: true });
+    function fila(label, val) {
+      return '<tr>' +
+        '<td style="background:#e8f4ef;color:#1c6b4a;font-weight:bold;padding:6px 10px;width:35%;border:1px solid #b8dccc;font-size:11pt;">' + label + '</td>' +
+        '<td style="padding:6px 10px;border:1px solid #d8d8d8;font-size:11pt;">' + (val || '—') + '</td>' +
+        '</tr>';
     }
 
-    function slide2() {
-      var s = pptx.addSlide();
-      s.background = { color: GRIS_FONDO };
-      s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 10, h: 0.6, fill: { color: VERDE } });
-      s.addText('El Caso', { x: 0.4, y: 0.1, w: 9, h: 0.4, fontSize: 14, bold: true, color: BLANCO, fontFace: 'Calibri' });
-      var casoVal = document.getElementById('caso-select').value;
-      var casoTitulo = casoVal ? casosTitulos[casoVal] : '—';
-      s.addText(casoTitulo, { x: 0.4, y: 0.75, w: 9, h: 0.4, fontSize: 14, bold: true, color: VERDE, fontFace: 'Calibri' });
-      var casoTexto = casoVal && casos[casoVal] ? casos[casoVal].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : '—';
-      var resumen = casoTexto.substring(0, 700) + (casoTexto.length > 700 ? '…' : '');
-      s.addShape(pptx.ShapeType.rect, { x: 0.4, y: 1.25, w: 9.2, h: 4.0, fill: { color: 'e8f4ef' }, line: { color: 'b8dccc', width: 1 } });
-      s.addText(resumen, { x: 0.5, y: 1.3, w: 9, h: 3.9, fontSize: 11, color: '1a1a1a', fontFace: 'Calibri', valign: 'top' });
-    }
+    var html = '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;margin:2cm;">' +
 
-    function slide3() {
-      var s = pptx.addSlide();
-      s.background = { color: GRIS_FONDO };
-      s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 10, h: 0.6, fill: { color: VERDE } });
-      s.addText('Paso 1 — El Problema', { x: 0.4, y: 0.1, w: 9, h: 0.4, fontSize: 14, bold: true, color: BLANCO, fontFace: 'Calibri' });
-      var items = [
-        { label: 'Problema formulado', val: g('problema-texto') },
-        { label: 'A quiénes afecta', val: g('afectados-texto') },
-        { label: 'Decisión pública que lo produce', val: g('decision-texto') }
-      ];
-      var y = 0.8;
-      items.forEach(function(item) {
-        s.addText(item.label.toUpperCase(), { x: 0.4, y: y, w: 9, h: 0.25, fontSize: 9, bold: true, color: VERDE, fontFace: 'Calibri' });
-        y += 0.28;
-        s.addShape(pptx.ShapeType.rect, { x: 0.4, y: y, w: 9.2, h: 0.7, fill: { color: 'e8f4ef' }, line: { color: 'b8dccc', width: 1 } });
-        s.addText(item.val, { x: 0.5, y: y + 0.05, w: 9, h: 0.6, fontSize: 11, color: '1a1a1a', fontFace: 'Calibri', valign: 'top' });
-        y += 0.85;
-      });
-    }
+      // PORTADA
+      '<div style="background:#1c6b4a;color:white;padding:40px 30px;margin-bottom:30px;">' +
+        '<p style="font-size:36pt;font-weight:bold;color:#e8b84b;margin:0;">' + (casoVal ? 'Caso ' + casoVal : '—') + '</p>' +
+        '<p style="font-size:16pt;font-weight:bold;color:white;margin:10px 0 0;">' + casoTitulo + '</p>' +
+        '<p style="font-size:10pt;color:#e8b84b;margin:16px 0 0;font-style:italic;">Notebook Cooperativa · Plan de Incidencia Política</p>' +
+      '</div>' +
 
-    function slide4() {
-      var s = pptx.addSlide();
-      s.background = { color: GRIS_FONDO };
-      s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 10, h: 0.6, fill: { color: VERDE } });
-      s.addText('Paso 2 — Objeto de Cambio', { x: 0.4, y: 0.1, w: 9, h: 0.4, fontSize: 14, bold: true, color: BLANCO, fontFace: 'Calibri' });
-      s.addText('OBJETO DE CAMBIO', { x: 0.4, y: 0.8, w: 9, h: 0.25, fontSize: 9, bold: true, color: VERDE, fontFace: 'Calibri' });
-      s.addShape(pptx.ShapeType.rect, { x: 0.4, y: 1.1, w: 9.2, h: 1.2, fill: { color: 'e8f4ef' }, line: { color: 'b8dccc', width: 1 } });
-      s.addText(g('objeto-texto'), { x: 0.5, y: 1.15, w: 9, h: 1.1, fontSize: 13, color: '1a1a1a', fontFace: 'Calibri', valign: 'top' });
-      s.addText('LEGITIMIDAD COOPERATIVA', { x: 0.4, y: 2.5, w: 9, h: 0.25, fontSize: 9, bold: true, color: VERDE, fontFace: 'Calibri' });
-      s.addShape(pptx.ShapeType.rect, { x: 0.4, y: 2.8, w: 9.2, h: 1.2, fill: { color: GRIS_FONDO }, line: { color: 'd8d8d8', width: 1 } });
-      s.addText(g('legitimidad-texto'), { x: 0.5, y: 2.85, w: 9, h: 1.1, fontSize: 11, color: GRIS, fontFace: 'Calibri', valign: 'top' });
-    }
+      // CASO
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">El Caso</h2>' +
+      '<div style="background:#e8f4ef;border-left:4px solid #1c6b4a;padding:14px 16px;margin-bottom:24px;font-size:11pt;line-height:1.6;">' +
+        casoTexto +
+      '</div>' +
 
-    function slide5() {
-      var s = pptx.addSlide();
-      s.background = { color: GRIS_FONDO };
-      s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 10, h: 0.6, fill: { color: VERDE } });
-      s.addText('Paso 4 — Plan 5W1H', { x: 0.4, y: 0.1, w: 9, h: 0.4, fontSize: 14, bold: true, color: BLANCO, fontFace: 'Calibri' });
-      var items = [
-        { key: 'WHAT', val: g('w-what') },
-        { key: 'WHY', val: g('w-why') },
-        { key: 'WHO', val: g('w-who') },
-        { key: 'WHERE', val: g('w-where') },
-        { key: 'WHEN', val: g('w-when') },
-        { key: 'HOW', val: g('w-how') }
-      ];
-      var cols = [[0,1,2],[3,4,5]];
-      cols.forEach(function(col, ci) {
-        var x = ci === 0 ? 0.3 : 5.2;
-        col.forEach(function(idx, ri) {
-          var item = items[idx];
-          var y = 0.8 + ri * 1.5;
-          s.addShape(pptx.ShapeType.rect, { x: x, y: y, w: 0.7, h: 0.35, fill: { color: 'e8f4ef' }, line: { color: 'b8dccc', width: 1 } });
-          s.addText(item.key, { x: x, y: y + 0.03, w: 0.7, h: 0.3, fontSize: 10, bold: true, color: VERDE, align: 'center', fontFace: 'Calibri' });
-          s.addShape(pptx.ShapeType.rect, { x: x, y: y + 0.38, w: 4.6, h: 1.0, fill: { color: BLANCO }, line: { color: 'd8d8d8', width: 1 } });
-          s.addText(item.val, { x: x + 0.1, y: y + 0.43, w: 4.4, h: 0.9, fontSize: 10, color: '1a1a1a', fontFace: 'Calibri', valign: 'top' });
-        });
-      });
-    }
+      // PASO 1
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">Paso 1 — El Problema</h2>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:24px;">' +
+        fila('Problema formulado', g('problema-texto')) +
+        fila('A quiénes afecta', g('afectados-texto')) +
+        fila('Decisión pública que lo produce', g('decision-texto')) +
+      '</table>' +
 
-    slide1(); slide2(); slide3(); slide4(); slide5();
-    pptx.writeFile({ fileName: 'Plan-Incidencia-Cooperativa.pptx' });
+      // PASO 2
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">Paso 2 — Objeto de Cambio</h2>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:24px;">' +
+        fila('Objeto de cambio', g('objeto-texto')) +
+        fila('Legitimidad cooperativa', g('legitimidad-texto')) +
+      '</table>' +
+
+      // PASO 3 ACTORES
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">Paso 3 — Mapa de Actores</h2>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:24px;">' +
+        '<tr style="background:#1c6b4a;color:white;">' +
+          '<th style="padding:7px 10px;text-align:left;font-size:11pt;">Actor</th>' +
+          '<th style="padding:7px 10px;text-align:left;font-size:11pt;">Tipo</th>' +
+          '<th style="padding:7px 10px;text-align:left;font-size:11pt;">Posición</th>' +
+          '<th style="padding:7px 10px;text-align:left;font-size:11pt;">Estrategia</th>' +
+        '</tr>' +
+        (function() {
+          var rows = '';
+          document.querySelectorAll('#actores-body tr').forEach(function(tr, i) {
+            var inputs = tr.querySelectorAll('input[type="text"], select');
+            if (inputs.length < 4) return;
+            var nombre = inputs[0].value.trim();
+            if (!nombre) return;
+            var bg = i % 2 === 0 ? 'white' : '#f7f7f5';
+            rows += '<tr style="background:' + bg + ';">' +
+              '<td style="padding:6px 10px;border:1px solid #d8d8d8;font-size:11pt;">' + nombre + '</td>' +
+              '<td style="padding:6px 10px;border:1px solid #d8d8d8;font-size:11pt;">' + inputs[1].value + '</td>' +
+              '<td style="padding:6px 10px;border:1px solid #d8d8d8;font-size:11pt;">' + inputs[2].value + '</td>' +
+              '<td style="padding:6px 10px;border:1px solid #d8d8d8;font-size:11pt;">' + inputs[3].value + '</td>' +
+              '</tr>';
+          });
+          return rows || '<tr><td colspan="4" style="padding:6px 10px;color:#aaa;font-style:italic;font-size:11pt;">Sin actores registrados</td></tr>';
+        })() +
+      '</table>' +
+
+      // PASO 4 5W1H
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">Paso 4 — Plan 5W1H</h2>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:24px;">' +
+        fila('WHAT — ¿Qué cambio concreto se propone?', g('w-what')) +
+        fila('WHY — ¿Por qué es necesario?', g('w-why')) +
+        fila('WHO — ¿Quién decide y quién representa?', g('w-who')) +
+        fila('WHERE — ¿En qué institución o espacio?', g('w-where')) +
+        fila('WHEN — ¿Cuál es el momento estratégico?', g('w-when')) +
+        fila('HOW — ¿Cómo se ejecuta?', g('w-how')) +
+      '</table>' +
+
+      // PASO 5 CIERRE
+      '<h2 style="color:#1c6b4a;border-bottom:2px solid #e8f4ef;padding-bottom:6px;font-size:14pt;">Paso 5 — Balance Social</h2>' +
+      '<div style="background:#e8f4ef;border-left:4px solid #1c6b4a;padding:14px 16px;font-size:11pt;line-height:1.6;">' +
+        (g('balance-texto') || '—') +
+      '</div>' +
+
+      '</body></html>';
+
+    var docx = htmlDocx.asBlob(html, { orientation: 'portrait', margins: { top: 720, bottom: 720, left: 900, right: 900 } });
+    var url = URL.createObjectURL(docx);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'Plan-Incidencia-Cooperativa.docx';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 </script>
 </body>
