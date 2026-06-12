@@ -391,35 +391,61 @@
       .mod-header { padding: 16px 16px 12px; }
       .mod-header h1 { font-size: 17px; }
       .mod-cuerpo { flex-direction: column; }
-      .tabs-nav {
-        width: 100%;
-        display: flex; flex-direction: row;
-        overflow-x: auto; -webkit-overflow-scrolling: touch;
-        border-right: none; border-bottom: 2px solid var(--gris-borde);
-        padding: 0; position: sticky; top: 0; z-index: 10;
-        background: var(--blanco); scrollbar-width: none;
-        max-height: none;
-      }
-      .tabs-nav::-webkit-scrollbar { display: none; }
-      .tabs-nav-label { display: none; }
-      .tab-btn {
-        flex-shrink: 0; flex-direction: column; align-items: flex-start;
-        border-left: none; border-bottom: 3px solid transparent;
-        min-height: 44px; padding: 8px 14px;
-        border-radius: 0; white-space: nowrap; gap: 2px;
-      }
-      .tab-btn.activo {
-        border-left-color: transparent;
-        border-bottom-color: var(--verde);
-      }
-      .tab-num { margin-top: 0; }
       .tab-panels { padding: 16px; }
       .escala-grid { grid-template-columns: 1fr; }
       .fed-grid { grid-template-columns: 1fr; }
     }
-  </style>
+    .nb-toggle { display: none; }
+    .nb-overlay { display: none; }
+    .nb-cerrar { display: none; }
+    @media (max-width: 640px) {
+      .nb-toggle {
+        display: flex; align-items: center; justify-content: center;
+        position: fixed; top: 12px; left: 12px; z-index: 50;
+        width: 44px; height: 44px;
+        background: var(--blanco); border: 1px solid var(--gris-borde);
+        border-radius: 4px; cursor: pointer;
+        box-shadow: 0 1px 4px rgba(0,0,0,.08);
+        padding: 0;
+      }
+      .nb-toggle svg { width: 22px; height: 22px; color: var(--verde); }
+      .tabs-nav {
+        display: block; position: fixed; top: 0; left: 0; z-index: 60;
+        width: 82%; max-width: 320px; height: 100vh;
+        border-right: 1px solid var(--gris-borde); border-bottom: none;
+        padding: 20px 0; overflow-y: auto;
+        background: var(--blanco);
+        transform: translateX(-100%);
+        transition: transform .26s ease;
+        box-shadow: 2px 0 16px rgba(0,0,0,.12);
+      }
+      .tabs-nav.abierto { transform: translateX(0); }
+      .tabs-nav-label { display: block; padding-right: 60px; }
+      .nb-cerrar {
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; top: 14px; right: 14px;
+        width: 36px; height: 36px;
+        background: none; border: none; cursor: pointer; padding: 0;
+        color: var(--gris-sec);
+      }
+      .nb-cerrar svg { width: 22px; height: 22px; }
+      .tab-btn { min-height: 44px; }
+      .nb-overlay {
+        display: block; position: fixed; inset: 0; z-index: 55;
+        background: rgba(0,0,0,.4);
+        opacity: 0; pointer-events: none;
+        transition: opacity .26s ease;
+      }
+      .nb-overlay.visible { opacity: 1; pointer-events: auto; }
+      .tab-panels { padding-top: 64px; }
+    }
+</style>
 </head>
 <body>
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <header class="mod-header">
   <div class="mod-header-serie">Marco teórico</div>
   <h1>Incidencia Política</h1>
@@ -431,6 +457,9 @@
 
     <!-- NAV -->
     <nav class="tabs-nav">
+      <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
       <div class="tabs-nav-label">Temas</div>
       <button class="tab-btn activo" data-tab="t1">
         ¿Qué es incidir
@@ -785,6 +814,20 @@
 </div><!-- /mod-wrapper -->
 
 <script>
+  function abrirMenu() {
+    var sidebar = document.querySelector('.tabs-nav');
+    var overlay = document.querySelector('.nb-overlay');
+    if (sidebar) sidebar.classList.add('abierto');
+    if (overlay) overlay.classList.add('visible');
+  }
+
+  function cerrarMenu() {
+    var sidebar = document.querySelector('.tabs-nav');
+    var overlay = document.querySelector('.nb-overlay');
+    if (sidebar) sidebar.classList.remove('abierto');
+    if (overlay) overlay.classList.remove('visible');
+  }
+
   document.querySelectorAll('.tab-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var target = this.getAttribute('data-tab');
@@ -792,6 +835,7 @@
       document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('activo'); });
       this.classList.add('activo');
       document.getElementById(target).classList.add('activo');
+      if (window.innerWidth <= 640) cerrarMenu();
     });
   });
 
@@ -808,7 +852,7 @@
     btn.addEventListener('click', function() {
       var texto = this.closest('.articulo-card').querySelector('.articulo-texto');
       texto.classList.toggle('visible');
-      this.textContent = texto.classList.contains('visible')  'Ocultar' : 'Ver artículo';
+      this.textContent = texto.classList.contains('visible') ? 'Ocultar' : 'Ver artículo';
     });
   });
 </script>
