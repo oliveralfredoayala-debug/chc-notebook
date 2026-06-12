@@ -178,12 +178,37 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
   .tabla-wrap{overflow-x:auto}
   .resumen-grid{grid-template-columns:1fr 1fr}
 }
+
+/* Boton hamburguesa y overlay para navegacion interna en mobile */
+.nb-toggle{display:none}
+.nb-overlay{display:none}
+.nb-cerrar{display:none}
+@media(max-width:700px){
+  .nb-toggle{display:flex;align-items:center;justify-content:center;position:fixed;top:12px;left:12px;z-index:50;width:44px;height:44px;background:var(--blanco);border:1px solid var(--gris-borde);border-radius:var(--radio-sm);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);padding:0}
+  .nb-toggle svg{width:22px;height:22px;color:var(--verde)}
+  .sidebar{display:flex;position:fixed;top:0;left:0;z-index:60;width:82%;max-width:320px;height:100vh;border-right:1px solid var(--gris-borde);border-bottom:none;transform:translateX(-100%);transition:transform .26s ease;box-shadow:2px 0 16px rgba(0,0,0,.12)}
+  .sidebar.abierto{transform:translateX(0)}
+  .nb-cerrar{display:flex;align-items:center;justify-content:center;position:absolute;top:14px;right:14px;width:36px;height:36px;background:none;border:none;cursor:pointer;padding:0;color:var(--texto-ter)}
+  .nb-cerrar svg{width:22px;height:22px}
+  .nb-nav button{min-height:44px}
+  .nb-conceptos{display:block}
+  .nb-overlay{display:block;position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .26s ease}
+  .nb-overlay.visible{opacity:1;pointer-events:auto}
+  .main{padding-top:4.5rem}
+}
 </style>
 </head>
 <body>
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <div class="shell">
 
 <nav class="sidebar">
+  <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
   <a class="nb-marca" href="../index.html" aria-label="Volver a herramientas">
     <div class="nb-wordmark">
       <span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span>
@@ -980,11 +1005,24 @@ document.getElementById('nf-terceros').addEventListener('input', e => {
   document.getElementById(id).addEventListener('input', render);
 });
 
+function abrirMenu(){
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.add('abierto');
+  if (overlay) overlay.classList.add('visible');
+}
+function cerrarMenu(){
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.nb-overlay');
+  if (sidebar) sidebar.classList.remove('abierto');
+  if (overlay) overlay.classList.remove('visible');
+}
 function tab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
   document.querySelectorAll('.nb-nav button').forEach(b => b.classList.remove('activo'));
   document.getElementById('panel-'+id).classList.add('activo');
   btn.classList.add('activo');
+  if (window.innerWidth <= 700) cerrarMenu();
 }
 function toggleArt(card) { card.classList.toggle('abierto'); }
 

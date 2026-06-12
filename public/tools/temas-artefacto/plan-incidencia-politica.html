@@ -242,9 +242,60 @@
       .actores-grupos { flex-direction: column; }
       .w5h1-resumen-grid { grid-template-columns: 1fr; }
     }
+    .nb-toggle { display: none; }
+    .nb-overlay { display: none; }
+    .nb-cerrar { display: none; }
+    @media (max-width: 640px) {
+      .nb-toggle {
+        display: flex; align-items: center; justify-content: center;
+        position: fixed; top: 12px; left: 12px; z-index: 50;
+        width: 44px; height: 44px;
+        background: var(--blanco); border: 1px solid var(--gris-borde);
+        border-radius: 4px; cursor: pointer;
+        box-shadow: 0 1px 4px rgba(0,0,0,.08);
+        padding: 0;
+      }
+      .nb-toggle svg { width: 22px; height: 22px; color: var(--verde); }
+      .sidebar {
+        display: block; position: fixed; top: 0; left: 0; z-index: 60;
+        width: 82%; max-width: 320px; height: 100vh;
+        border-right: 1px solid var(--gris-borde); border-bottom: none;
+        padding: 20px 0; overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform .26s ease;
+        box-shadow: 2px 0 16px rgba(0,0,0,.12);
+        scrollbar-width: auto;
+      }
+      .sidebar.abierto { transform: translateX(0); }
+      .sidebar-label { display: block; padding-right: 60px; }
+      .nb-cerrar {
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; top: 14px; right: 14px;
+        width: 36px; height: 36px;
+        background: none; border: none; cursor: pointer; padding: 0;
+        color: var(--gris-sec);
+      }
+      .nb-cerrar svg { width: 22px; height: 22px; }
+      .step-btn { flex-direction: row; width: 100%; align-items: flex-start; border-left: 3px solid transparent; border-bottom: none; padding: 10px 20px; min-height: 44px; gap: 12px; }
+      .step-btn.activo { border-left-color: var(--verde); border-bottom-color: transparent; }
+      .step-titulo { font-size: 13px; white-space: normal; }
+      .step-sub { display: block; }
+      .nb-overlay {
+        display: block; position: fixed; inset: 0; z-index: 55;
+        background: rgba(0,0,0,.4);
+        opacity: 0; pointer-events: none;
+        transition: opacity .26s ease;
+      }
+      .nb-overlay.visible { opacity: 1; pointer-events: auto; }
+      .content { padding-top: 64px; }
+    }
   </style>
 </head>
 <body>
+<button class="nb-toggle" onclick="abrirMenu()" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="nb-overlay" onclick="cerrarMenu()"></div>
 <header class="app-header">
   <a class="app-brand" href="../index.html" aria-label="Volver a herramientas"><h1>Plan de <em>Incidencia Política</em></h1></a>
   <span class="app-header-sub">Notebook Cooperativa</span>
@@ -252,6 +303,9 @@
 
 <div class="app-body">
   <nav class="sidebar">
+    <button class="nb-cerrar" onclick="cerrarMenu()" aria-label="Cerrar menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
     <div class="sidebar-label">Pasos del plan</div>
     <button class="step-btn activo" data-paso="p0"><span class="step-num">★</span><div class="step-info"><div class="step-titulo">Inicio</div><div class="step-sub">Presentación</div></div></button>
     <button class="step-btn" data-paso="p1"><span class="step-num">1</span><div class="step-info"><div class="step-titulo">El problema</div><div class="step-sub">Formulación precisa</div></div></button>
@@ -579,12 +633,27 @@
     }
   }
 
+  function abrirMenu() {
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.querySelector('.nb-overlay');
+    if (sidebar) sidebar.classList.add('abierto');
+    if (overlay) overlay.classList.add('visible');
+  }
+
+  function cerrarMenu() {
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.querySelector('.nb-overlay');
+    if (sidebar) sidebar.classList.remove('abierto');
+    if (overlay) overlay.classList.remove('visible');
+  }
+
   function irAPaso(id) {
     document.querySelectorAll('.paso').forEach(function(p) { p.classList.remove('activo'); });
     document.querySelectorAll('.step-btn').forEach(function(b) { b.classList.remove('activo'); });
     document.getElementById(id).classList.add('activo');
     var btn = document.querySelector('[data-paso="' + id + '"]');
     if (btn) btn.classList.add('activo');
+    if (window.innerWidth <= 640) cerrarMenu();
     window.scrollTo(0, 0);
   }
 
