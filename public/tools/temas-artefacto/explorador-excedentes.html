@@ -24,7 +24,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 
 /* SIDEBAR */
 .sidebar{width:240px;flex-shrink:0;border-right:1px solid var(--gris-borde);background:var(--blanco);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.nb-marca{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0}
+.nb-marca{display:block;padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0;color:inherit;text-decoration:none}
 .nb-wordmark{margin-bottom:4px;line-height:1}
 .nb-wm-coop{font-size:17px;font-weight:700;color:#1c6b4a;letter-spacing:-0.02em}
 .nb-wm-notebook{font-size:17px;font-weight:400;color:#1a1a18;letter-spacing:-0.02em}
@@ -184,12 +184,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 <div class="shell">
 
 <nav class="sidebar">
-  <div class="nb-marca">
+  <a class="nb-marca" href="../index.html" aria-label="Volver a herramientas">
     <div class="nb-wordmark">
       <span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span>
     </div>
     <span class="nb-marca-titulo">Recursos económicos y finanzas</span>
-  </div>
+  </a>
   <ul class="nb-nav">
     <li><button class="activo" onclick="tab('portada',this)">
       <span class="nb-nav-num">00</span>Portada
@@ -821,7 +821,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 
 <script>
 const fmt = n => 'L ' + Math.round(n).toLocaleString('es-HN');
-const pct = (n, d) => d === 0  '0%' : (n / d * 100).toFixed(1) + '%';
+const pct = (n, d) => d === 0 ? '0%' : (n / d * 100).toFixed(1) + '%';
 
 function getPropio() { return Math.max(0, parseFloat(document.getElementById('nf-propio').value) || 0); }
 function getTerceros() { return Math.max(0, parseFloat(document.getElementById('nf-terceros').value) || 0); }
@@ -918,7 +918,7 @@ function render() {
       const y1 = cy + r * Math.sin(startAngle);
       const x2 = cx + r * Math.cos(endAngle);
       const y2 = cy + r * Math.sin(endAngle);
-      const large = angle > Math.PI  1 : 0;
+      const large = angle > Math.PI ? 1 : 0;
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', `M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 ${large},1 ${x2.toFixed(2)},${y2.toFixed(2)} Z`);
       path.setAttribute('fill', d.color);
@@ -942,23 +942,23 @@ function render() {
   // RESUMEN
   document.getElementById('r-total').textContent = fmt(total);
   document.getElementById('r-propio').textContent = fmt(propio);
-  document.getElementById('r-propio-pct').textContent = total > 0  pct(propio, total) + ' del total' : '—';
+  document.getElementById('r-propio-pct').textContent = total > 0 ? pct(propio, total) + ' del total' : '—';
   document.getElementById('r-terceros').textContent = fmt(terceros);
-  document.getElementById('r-terceros-pct').textContent = total > 0  pct(terceros, total) + ' del total' : '—';
+  document.getElementById('r-terceros-pct').textContent = total > 0 ? pct(terceros, total) + ' del total' : '—';
   document.getElementById('r-reserva').textContent = fmt(vReserva);
-  document.getElementById('r-reserva-pct').textContent = propio > 0  pReserva.toFixed(1) + '% del excedente propio' : '—';
+  document.getElementById('r-reserva-pct').textContent = propio > 0 ? pReserva.toFixed(1) + '% del excedente propio' : '—';
   document.getElementById('r-especiales').textContent = fmt(vEsp);
-  document.getElementById('r-especiales-pct').textContent = propio > 0  pEsp.toFixed(1) + '% del excedente propio' : '—';
+  document.getElementById('r-especiales-pct').textContent = propio > 0 ? pEsp.toFixed(1) + '% del excedente propio' : '—';
   document.getElementById('r-educacion').textContent = fmt(vEdu);
   document.getElementById('r-edu-cap').textContent = fmt(vEduCap);
   document.getElementById('r-edu-jg').textContent = fmt(vEduJG);
   document.getElementById('r-total-fondos').textContent = fmt(vTotalFondos);
-  document.getElementById('r-total-fondos-pct').textContent = propio > 0  pTotalFondos.toFixed(1) + '% — tope legal 50%' : '—';
+  document.getElementById('r-total-fondos-pct').textContent = propio > 0 ? pTotalFondos.toFixed(1) + '% — tope legal 50%' : '—';
   document.getElementById('r-rep').textContent = fmt(vRep);
-  document.getElementById('r-rep-pct').textContent = propio > 0  pct(vRep, propio) + ' del excedente propio' : '—';
+  document.getElementById('r-rep-pct').textContent = propio > 0 ? pct(vRep, propio) + ' del excedente propio' : '—';
   document.getElementById('r-prog').textContent = fmt(terceros);
   document.getElementById('t-ejercicio').textContent = fmt(terceros);
-  document.getElementById('t-pct').textContent = total > 0  pct(terceros, total) : '0%';
+  document.getElementById('t-pct').textContent = total > 0 ? pct(terceros, total) : '0%';
 }
 
 // SLIDERS

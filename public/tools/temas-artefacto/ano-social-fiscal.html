@@ -24,7 +24,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 
 /* ── SIDEBAR ── */
 .sidebar{width:228px;flex-shrink:0;border-right:1px solid var(--gris-borde);background:var(--blanco);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.nb-marca{padding:1.4rem 1.25rem 1.1rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0}
+.nb-marca{display:block;padding:1.4rem 1.25rem 1.1rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0;color:inherit;text-decoration:none}
 .nb-wordmark{line-height:1;margin-bottom:4px}
 .nb-wm-coop{font-size:16px;font-weight:700;color:var(--verde);letter-spacing:-0.02em}
 .nb-wm-nb{font-size:16px;font-weight:400;color:var(--texto);letter-spacing:-0.02em}
@@ -170,12 +170,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 <!-- SIDEBAR -->
 <nav class="sidebar">
-  <div class="nb-marca">
+  <a class="nb-marca" href="../index.html" aria-label="Volver a herramientas">
     <div class="nb-wordmark">
       <span class="nb-wm-coop">Coop</span><span class="nb-wm-nb">Notebook</span>
     </div>
     <span class="nb-subtema">Administración de Asambleas</span>
-  </div>
+  </a>
   <ul class="nb-nav">
     <li><button class="activo" onclick="tab('inicio',this)">
       <span class="nb-nav-num">01</span>La diferencia
@@ -582,13 +582,13 @@ function calcular(val) {
   // CONSUCOOP: 30 días hábiles ≈ 6 semanas antes del límite AGO
   // Estimamos: inicio del mes AGO (primera quincena)
   const idxNotif = mesPlus(idx, 2);
-  document.getElementById('resConsucoop').textContent = 'Primera quincena de ' + MESES[mesPlus(idx, 2) === idxAGO  idx + 2 : mesPlus(idx, 2)];
+  document.getElementById('resConsucoop').textContent = 'Primera quincena de ' + MESES[mesPlus(idx, 2) === idxAGO ? idx + 2 : mesPlus(idx, 2)];
   document.getElementById('resConsucoop').textContent = 'Primera quincena de ' + MESES[idxAGO];
   document.getElementById('resConsucoopSub').textContent = '30 días hábiles antes del ' + diaAGO + ' de ' + MESES[idxAGO];
 
   // Alerta coincidencia diciembre
   const alertaEl = document.getElementById('alertaCoincide');
-  alertaEl.style.display = idx === 11  'flex' : 'none';
+  alertaEl.style.display = idx === 11 ? 'flex' : 'none';
 
   // TIMELINE
   const tl = document.getElementById('tlContainer');
@@ -602,8 +602,8 @@ function calcular(val) {
   ];
   tl.innerHTML = steps.map(s => `
     <div class="tl-step">
-      <div class="tl-dot ${s.tipo === 'alt'  'alt' : s.tipo === 'gris'  'gris' : ''}"></div>
-      <div class="tl-label"><strong>${s.label}</strong>${s.sub}<br><em>${s.tipo === 'alt'  'Art. 44 LCH' : 'Art. 91 RLCH'}</em></div>
+      <div class="tl-dot ${s.tipo === 'alt' ? 'alt' : s.tipo === 'gris' ? 'gris' : ''}"></div>
+      <div class="tl-label"><strong>${s.label}</strong>${s.sub}<br><em>${s.tipo === 'alt' ? 'Art. 44 LCH' : 'Art. 91 RLCH'}</em></div>
     </div>
   `).join('');
 }

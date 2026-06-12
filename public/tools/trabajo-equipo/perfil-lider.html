@@ -191,11 +191,11 @@ h1::after { content: ''; display: block; width: 2.5rem; height: 3px; background:
       <textarea id="capaSer" placeholder="Escriban aquí..."></textarea>
     </div>
 
-    <div class="formula-nota"><strong>Recuerden la fórmula:</strong> V = (C + H) × A. Los conocimientos y las habilidades se suman, pero la actitud multiplica. Al armar el perfil, ¿cuánto peso le dan al "saber ser"</div>
+    <div class="formula-nota"><strong>Recuerden la fórmula:</strong> V = (C + H) × A. Los conocimientos y las habilidades se suman, pero la actitud multiplica. Al armar el perfil, ¿cuánto peso le dan al "saber ser"?</div>
 
     <div class="capa">
       <div class="capa-titulo">La conclusión del equipo</div>
-      <div class="capa-sub">En una o dos frases: ¿qué es lo más importante de este perfil</div>
+      <div class="capa-sub">En una o dos frases: ¿qué es lo más importante de este perfil?</div>
       <textarea id="capaConclusion" placeholder="Escriban aquí..."></textarea>
     </div>
 
@@ -209,11 +209,11 @@ h1::after { content: ''; display: block; width: 2.5rem; height: 3px; background:
 
 <script>
 const CASOS = [
-  { t: "El perfil de quien quiero elegir", d: "¿En qué deberíamos fijarnos al votar por la Junta Directiva o la Junta de Vigilancia", p: "Piensen en la próxima elección: ¿qué cualidades y competencias buscarían en quien reciba su voto" },
-  { t: "Mi propio perfil", d: "¿Qué ya tenemos y qué nos falta aprender para llegar a un cargo directivo", p: "Hagan un autodiagnóstico honesto del equipo: fortalezas que ya traen y lo que necesitan desarrollar." },
-  { t: "El perfil para un comité", d: "Si tuviéramos que elegir a alguien para presidir o integrar un comité, ¿qué buscaríamos", p: "Elijan un comité (educación, género, crédito...) y definan el perfil de quien debería integrarlo." },
-  { t: "El perfil que le falta a mi cooperativa", d: "¿Qué tipo de liderazgo necesita hoy nuestra cooperativa y todavía no tiene", p: "Miren su realidad: ¿qué competencias o actitudes hacen falta en quienes hoy dirigen" },
-  { t: "El relevo", d: "¿A quién estamos formando para que tome nuestro lugar, y qué necesita desarrollar", p: "Piensen en la persona que viene detrás: ¿qué perfil tiene y qué le falta para asumir el cargo" }
+  { t: "El perfil de quien quiero elegir", d: "¿En qué deberíamos fijarnos al votar por la Junta Directiva o la Junta de Vigilancia?", p: "Piensen en la próxima elección: ¿qué cualidades y competencias buscarían en quien reciba su voto?" },
+  { t: "Mi propio perfil", d: "¿Qué ya tenemos y qué nos falta aprender para llegar a un cargo directivo?", p: "Hagan un autodiagnóstico honesto del equipo: fortalezas que ya traen y lo que necesitan desarrollar." },
+  { t: "El perfil para un comité", d: "Si tuviéramos que elegir a alguien para presidir o integrar un comité, ¿qué buscaríamos?", p: "Elijan un comité (educación, género, crédito...) y definan el perfil de quien debería integrarlo." },
+  { t: "El perfil que le falta a mi cooperativa", d: "¿Qué tipo de liderazgo necesita hoy nuestra cooperativa y todavía no tiene?", p: "Miren su realidad: ¿qué competencias o actitudes hacen falta en quienes hoy dirigen?" },
+  { t: "El relevo", d: "¿A quién estamos formando para que tome nuestro lugar, y qué necesita desarrollar?", p: "Piensen en la persona que viene detrás: ¿qué perfil tiene y qué le falta para asumir el cargo?" }
 ];
 
 let casoSel = -1;
@@ -271,17 +271,14 @@ document.getElementById('btnDescargar').addEventListener('click', () => {
     + 'h2{font-size:11pt;color:#1c6b4a;margin-top:14pt;margin-bottom:3pt;text-transform:uppercase;letter-spacing:.5pt}'
     + '.caso{background:#e8f4ef;border:1pt solid #b8dccc;padding:8pt 12pt;margin:10pt 0}'
     + '.caso b{color:#1c6b4a}.resp{border-left:3pt solid #2fa36b;padding:4pt 10pt;background:#f7f7f5;margin-bottom:6pt}'
-    + '</style>
-</head><body>
-'
+    + '</style></head><body>'
     + '<h1>Construyamos un perfil</h1>'
     + '<div class="caso"><b>Caso ' + (casoSel+1) + ' &mdash; ' + esc(c.t) + '</b><br>' + esc(c.d) + '</div>'
     + '<h2>Saber (conocimientos)</h2><div class="resp">' + esc(saber) + '</div>'
     + '<h2>Saber hacer (habilidades)</h2><div class="resp">' + esc(hacer) + '</div>'
     + '<h2>Saber ser (actitud)</h2><div class="resp">' + esc(ser) + '</div>'
     + '<h2>Conclusi&oacute;n del equipo</h2><div class="resp">' + esc(concl) + '</div>'
-    + '
-</body></html>';
+    + '</body></html>';
 
   const blob = new Blob(['\ufeff', doc], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);

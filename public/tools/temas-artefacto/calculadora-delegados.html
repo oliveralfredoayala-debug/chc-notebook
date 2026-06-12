@@ -17,7 +17,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 
 /* SIDEBAR */
 .sidebar{width:240px;flex-shrink:0;border-right:1px solid var(--gris-borde);background:var(--blanco);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.nb-marca{padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0}
+.nb-marca{display:block;padding:1.5rem 1.25rem 1.25rem;border-bottom:1px solid var(--gris-borde);flex-shrink:0;color:inherit;text-decoration:none}
 .nb-wordmark{margin-bottom:4px;line-height:1}
 .nb-wm-coop{font-size:17px;font-weight:700;color:#1c6b4a;letter-spacing:-0.02em}
 .nb-wm-notebook{font-size:17px;font-weight:400;color:#1a1a18;letter-spacing:-0.02em}
@@ -174,10 +174,10 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--blanco);col
 <div class="shell">
 
 <nav class="sidebar">
-  <div class="nb-marca">
+  <a class="nb-marca" href="../index.html" aria-label="Volver a herramientas">
     <div class="nb-wordmark"><span class="nb-wm-coop">Coop</span><span class="nb-wm-notebook">Notebook</span></div>
     <span class="nb-marca-titulo">Asambleas por delegados</span>
-  </div>
+  </a>
   <ul class="nb-nav">
     <li><button class="activo" onclick="tab('portada',this)"><span class="nb-nav-num">00</span>Portada</button></li>
     <li><button onclick="tab('t01',this)"><span class="nb-nav-num">01</span>Cuándo procede</button></li>
@@ -469,7 +469,7 @@ function toggleArt(card){ card.classList.toggle('abierto'); }
     TRAMOS.forEach(function(t){
       var personas=0;
       if(n>=t.ini){ personas=Math.max(0, Math.min(n,t.fin)-t.ini+1); }
-      var deleg=personas>0Math.floor(personas/t.div):0;
+      var deleg=personas>0?Math.floor(personas/t.div):0;
       total+=deleg;
       filas.push({t:t, personas:personas, deleg:deleg});
     });
@@ -477,7 +477,7 @@ function toggleArt(card){ card.classList.toggle('abierto'); }
   }
 
   // capacidad visual para el último tramo (abierto): usamos 1000 como referencia de ancho
-  function capVisual(t){ return t.cap===null1000:t.cap; }
+  function capVisual(t){ return t.cap===null?1000:t.cap; }
 
   function render(){
     var n=parseInt(input.value,10);
@@ -496,16 +496,16 @@ function toggleArt(card){ card.classList.toggle('abierto'); }
       info.innerHTML='<b>'+f.t.rango+'</b><span>1 por cada '+f.t.div+'</span>';
 
       var bar=document.createElement('div');bar.className='prog-bar';
-      var fill=document.createElement('div');fill.className='prog-fill'+(pct>=100' lleno':'');
+      var fill=document.createElement('div');fill.className='prog-fill'+(pct>=100?' lleno':'');
       fill.style.width=pct+'%';
       fill.style.background=f.t.color;
       var cnt=document.createElement('div');cnt.className='prog-count';
-      cnt.textContent=f.personas>0(f.personas+(f.t.cap!==null(' / '+f.t.cap):'')):'';
+      cnt.textContent=f.personas>0?(f.personas+(f.t.cap!==null?(' / '+f.t.cap):'')):'';
       bar.appendChild(fill);bar.appendChild(cnt);
 
       var del=document.createElement('div');del.className='prog-deleg';
-      del.textContent=f.deleg>0(f.deleg+' deleg.'):'—';
-      del.style.color=f.deleg>0'var(--verde)':'#b0b0aa';
+      del.textContent=f.deleg>0?(f.deleg+' deleg.'):'—';
+      del.style.color=f.deleg>0?'var(--verde)':'#b0b0aa';
 
       row.appendChild(info);row.appendChild(bar);row.appendChild(del);
       progEl.appendChild(row);
@@ -518,11 +518,11 @@ function toggleArt(card){ card.classList.toggle('abierto'); }
       var sw=document.createElement('div');sw.className='bd-swatch';sw.style.background=f.t.color;
       var main=document.createElement('div');main.className='bd-main';
       var formula=f.personas>0
-         f.personas+' personas ÷ '+f.t.div+' = '+(f.personas/f.t.div).toFixed(f.personas%f.t.div===00:2)
+        ? f.personas+' personas ÷ '+f.t.div+' = '+(f.personas/f.t.div).toFixed(f.personas%f.t.div===0?0:2)
         : 'sin afiliados/as en este tramo';
       main.innerHTML='<b>'+f.t.rango+'</b> (1 por cada '+f.t.div+')<span class="bd-formula">'+formula+'</span>';
-      var del=document.createElement('div');del.className='bd-deleg'+(f.deleg===0' cero':'');
-      del.textContent=f.deleg+(f.deleg===1' delegado/a':' delegados/as');
+      var del=document.createElement('div');del.className='bd-deleg'+(f.deleg===0?' cero':'');
+      del.textContent=f.deleg+(f.deleg===1?' delegado/a':' delegados/as');
       row.appendChild(sw);row.appendChild(main);row.appendChild(del);
       bdEl.appendChild(row);
     });
@@ -537,8 +537,8 @@ function toggleArt(card){ card.classList.toggle('abierto'); }
     var sr=document.createElement('div');sr.className='bd-row bd-supl';
     var ss=document.createElement('div');ss.className='bd-swatch';ss.style.background='#c8c8c2';
     var sm=document.createElement('div');sm.className='bd-main';
-    sm.innerHTML='Suplentes<span class="bd-formula">'+r.total+' propietarios ÷ 10 = '+(r.total/10).toFixed(r.total%10===00:1)+'</span>';
-    var sd=document.createElement('div');sd.className='bd-deleg';sd.textContent=sup+(sup===1' suplente':' suplentes');
+    sm.innerHTML='Suplentes<span class="bd-formula">'+r.total+' propietarios ÷ 10 = '+(r.total/10).toFixed(r.total%10===0?0:1)+'</span>';
+    var sd=document.createElement('div');sd.className='bd-deleg';sd.textContent=sup+(sup===1?' suplente':' suplentes');
     sr.appendChild(ss);sr.appendChild(sm);sr.appendChild(sd);
     bdEl.appendChild(sr);
   }
